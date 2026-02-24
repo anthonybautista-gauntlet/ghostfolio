@@ -6,6 +6,7 @@ import { CurrentRateService } from '@ghostfolio/api/app/portfolio/current-rate.s
 import { PortfolioService } from '@ghostfolio/api/app/portfolio/portfolio.service';
 import { RulesService } from '@ghostfolio/api/app/portfolio/rules.service';
 import { RedisCacheModule } from '@ghostfolio/api/app/redis-cache/redis-cache.module';
+import { SymbolModule } from '@ghostfolio/api/app/symbol/symbol.module';
 import { UserModule } from '@ghostfolio/api/app/user/user.module';
 import { ApiModule } from '@ghostfolio/api/services/api/api.module';
 import { BenchmarkModule } from '@ghostfolio/api/services/benchmark/benchmark.module';
@@ -25,6 +26,8 @@ import { Module } from '@nestjs/common';
 
 import { AiController } from './ai.controller';
 import { AiService } from './ai.service';
+import { PrismaSessionStoreService } from './prisma-session-store.service';
+import { VerificationService } from './verification.service';
 
 @Module({
   controllers: [AiController],
@@ -42,6 +45,7 @@ import { AiService } from './ai.service';
     PrismaModule,
     PropertyModule,
     RedisCacheModule,
+    SymbolModule,
     SymbolProfileModule,
     UserModule
   ],
@@ -53,7 +57,9 @@ import { AiService } from './ai.service';
     MarketDataService,
     PortfolioCalculatorFactory,
     PortfolioService,
-    RulesService
+    RulesService,
+    PrismaSessionStoreService,
+    VerificationService
   ]
 })
 export class AiModule {}

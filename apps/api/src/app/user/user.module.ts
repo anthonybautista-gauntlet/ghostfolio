@@ -1,4 +1,5 @@
 import { OrderModule } from '@ghostfolio/api/app/order/order.module';
+import { RedisCacheModule } from '@ghostfolio/api/app/redis-cache/redis-cache.module';
 import { SubscriptionModule } from '@ghostfolio/api/app/subscription/subscription.module';
 import { RedactValuesInResponseModule } from '@ghostfolio/api/interceptors/redact-values-in-response/redact-values-in-response.module';
 import { ConfigurationModule } from '@ghostfolio/api/services/configuration/configuration.module';
@@ -26,6 +27,7 @@ import { UserService } from './user.service';
       signOptions: { expiresIn: '30 days' }
     }),
     OrderModule,
+    RedisCacheModule,
     PrismaModule,
     PropertyModule,
     RedactValuesInResponseModule,

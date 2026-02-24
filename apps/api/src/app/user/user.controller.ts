@@ -1,3 +1,4 @@
+import { RedisCacheService } from '@ghostfolio/api/app/redis-cache/redis-cache.service';
 import { HasPermission } from '@ghostfolio/api/decorators/has-permission.decorator';
 import { HasPermissionGuard } from '@ghostfolio/api/guards/has-permission.guard';
 import { RedactValuesInResponseInterceptor } from '@ghostfolio/api/interceptors/redact-values-in-response/redact-values-in-response.interceptor';
@@ -32,7 +33,8 @@ import {
   Post,
   Put,
   UseGuards,
-  UseInterceptors
+  UseInterceptors,
+  Logger
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
@@ -45,12 +47,15 @@ import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
+  private static readonly logger = new Logger(UserController.name);
+
   public constructor(
     private readonly configurationService: ConfigurationService,
     private readonly impersonationService: ImpersonationService,
     private readonly jwtService: JwtService,
     private readonly prismaService: PrismaService,
     private readonly propertyService: PropertyService,
+    private readonly redisCacheService: RedisCacheService,
     @Inject(REQUEST) private readonly request: RequestWithUser,
     private readonly userService: UserService
   ) {}
@@ -129,6 +134,18 @@ export class UserController {
 
   @Post()
   public async signupUser(): Promise<UserItem> {
+    const signupRateLimit = await this.consumeSignupRateLimit();
+
+    if (!signupRateLimit.allowed) {
+      UserController.logger.warn(
+        `Signup throttled (ip=${signupRateLimit.ip}, source=${signupRateLimit.ipSource}, count=${signupRateLimit.count}, limit=${signupRateLimit.limit}, retryAfterSeconds=${signupRateLimit.retryAfterSeconds})`
+      );
+      throw new HttpException(
+        `Too many signup attempts. Please try again in ${signupRateLimit.retryAfterSeconds} seconds.`,
+        StatusCodes.TOO_MANY_REQUESTS
+      );
+    }
+
     const isUserSignupEnabled =
       await this.propertyService.isUserSignupEnabled();
 
@@ -229,5 +246,66 @@ export class UserController {
     }
 
     return user;
+  }
+
+  private async consumeSignupRateLimit() {
+    const limit = this.configurationService.get('AI_SIGNUP_RATE_LIMIT_MAX');
+    const windowMs = this.configurationService.get(
+      'AI_SIGNUP_RATE_LIMIT_WINDOW_MS'
+    );
+    const { ip, source } = this.getClientIp();
+    const redisKey = `signup:throttle:${ip}`;
+    const nextCount = await this.redisCacheService.incrementCounter({
+      key: redisKey,
+      ttl: windowMs
+    });
+
+    if (nextCount > limit) {
+      return {
+        allowed: false,
+        count: nextCount,
+        ip,
+        ipSource: source,
+        limit,
+        retryAfterSeconds: Math.ceil(windowMs / 1000)
+      };
+    }
+
+    return {
+      allowed: true,
+      count: nextCount,
+      ip,
+      ipSource: source,
+      limit,
+      retryAfterSeconds: Math.ceil(windowMs / 1000)
+    };
+  }
+
+  private getClientIp() {
+    const forwardedFor = this.request?.headers?.['x-forwarded-for'];
+    const realIp = this.request?.headers?.['x-real-ip'];
+    const forwardedIp = Array.isArray(forwardedFor)
+      ? forwardedFor[0]
+      : forwardedFor;
+    const parsedForwardedIp = String(forwardedIp ?? '')
+      .split(',')
+      .map((ip) => ip.trim())
+      .find(Boolean);
+
+    if (parsedForwardedIp) {
+      return { ip: parsedForwardedIp, source: 'x-forwarded-for' as const };
+    }
+
+    if (typeof realIp === 'string' && realIp.trim().length > 0) {
+      return { ip: realIp.trim(), source: 'x-real-ip' as const };
+    }
+
+    const requestIp = this.request?.ip || this.request?.socket?.remoteAddress;
+
+    if (requestIp) {
+      return { ip: requestIp, source: 'request-ip' as const };
+    }
+
+    return { ip: 'unknown', source: 'fallback' as const };
   }
 }

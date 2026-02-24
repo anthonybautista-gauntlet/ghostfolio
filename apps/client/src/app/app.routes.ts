@@ -23,6 +23,16 @@ export const routes: Routes = [
       import('./pages/accounts/accounts-page.routes').then((m) => m.routes)
   },
   {
+    path: 'agentforge',
+    redirectTo: internalRoutes.agentforge.path,
+    pathMatch: 'full'
+  },
+  {
+    path: internalRoutes.agentforge.path,
+    loadChildren: () =>
+      import('./pages/agentforge/agentforge-page.routes').then((m) => m.routes)
+  },
+  {
     path: internalRoutes.adminControl.path,
     loadChildren: () =>
       import('./pages/admin/admin-page.routes').then((m) => m.routes)

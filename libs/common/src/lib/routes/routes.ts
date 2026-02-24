@@ -68,6 +68,11 @@ export const internalRoutes: Record<string, InternalRoute> = {
     routerLink: ['/accounts'],
     title: $localize`Accounts`
   },
+  agentforge: {
+    path: 'ghost-agent',
+    routerLink: ['/ghost-agent'],
+    title: 'Ghost Agent'
+  },
   api: {
     excludeFromAssistant: true,
     path: 'api',

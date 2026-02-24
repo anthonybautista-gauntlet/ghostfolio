@@ -1,0 +1,182 @@
+{
+  "accounts": [
+    {
+      "balance": 0,
+      "currency": "USD",
+      "id": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "isExcluded": false,
+      "name": "My Account",
+      "platformId": null
+    }
+  ],
+  "activities": [
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-01-08T00:00:00.000Z",
+      "fee": 2.5,
+      "quantity": 0.35,
+      "symbol": "BTCUSD",
+      "type": "BUY",
+      "unitPrice": 42850,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-01-22T00:00:00.000Z",
+      "fee": 1.8,
+      "quantity": 4.2,
+      "symbol": "ETHUSD",
+      "type": "BUY",
+      "unitPrice": 2380,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-02-11T00:00:00.000Z",
+      "fee": 1.2,
+      "quantity": 85,
+      "symbol": "SOLUSD",
+      "type": "BUY",
+      "unitPrice": 109.5,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-02-28T00:00:00.000Z",
+      "fee": 0.9,
+      "quantity": 2200,
+      "symbol": "ADAUSD",
+      "type": "BUY",
+      "unitPrice": 0.62,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-03-15T00:00:00.000Z",
+      "fee": 0.7,
+      "quantity": 1400,
+      "symbol": "LINKUSD",
+      "type": "BUY",
+      "unitPrice": 16.8,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-04-04T00:00:00.000Z",
+      "fee": 1.1,
+      "quantity": 55,
+      "symbol": "AVAXUSD",
+      "type": "BUY",
+      "unitPrice": 34.2,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-05-10T00:00:00.000Z",
+      "fee": 1,
+      "quantity": 0.08,
+      "symbol": "BTCUSD",
+      "type": "BUY",
+      "unitPrice": 49200,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-06-18T00:00:00.000Z",
+      "fee": 1.6,
+      "quantity": 1.1,
+      "symbol": "ETHUSD",
+      "type": "SELL",
+      "unitPrice": 2745,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-07-09T00:00:00.000Z",
+      "fee": 0.8,
+      "quantity": 25,
+      "symbol": "SOLUSD",
+      "type": "SELL",
+      "unitPrice": 132.4,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-08-02T00:00:00.000Z",
+      "fee": 0.9,
+      "quantity": 0.12,
+      "symbol": "BTCUSD",
+      "type": "BUY",
+      "unitPrice": 51850,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-09-14T00:00:00.000Z",
+      "fee": 1.4,
+      "quantity": 650,
+      "symbol": "LINKUSD",
+      "type": "SELL",
+      "unitPrice": 19.2,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-10-06T00:00:00.000Z",
+      "fee": 0.6,
+      "quantity": 900,
+      "symbol": "ADAUSD",
+      "type": "SELL",
+      "unitPrice": 0.79,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-11-21T00:00:00.000Z",
+      "fee": 0.7,
+      "quantity": 18,
+      "symbol": "AVAXUSD",
+      "type": "SELL",
+      "unitPrice": 41.3,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-12-12T00:00:00.000Z",
+      "fee": 1,
+      "quantity": 1.3,
+      "symbol": "ETHUSD",
+      "type": "BUY",
+      "unitPrice": 2860,
+      "updateAccountBalance": true
+    }
+  ]
+}

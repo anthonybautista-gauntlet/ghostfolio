@@ -135,4 +135,45 @@ export class RedisCacheService {
       ttl ?? this.configurationService.get('CACHE_TTL')
     );
   }
+
+  public async incrementCounter({
+    key,
+    ttl
+  }: {
+    key: string;
+    ttl: number;
+  }): Promise<number> {
+    const keyvStore = this.client.store as unknown as {
+      client?: {
+        expire?: (aKey: string, seconds: number) => Promise<number>;
+        incr?: (aKey: string) => Promise<number>;
+      };
+      expire?: (aKey: string, seconds: number) => Promise<number>;
+      incr?: (aKey: string) => Promise<number>;
+    };
+    const ttlSeconds = Math.max(1, Math.ceil(ttl / 1000));
+    const incr =
+      keyvStore?.incr?.bind(keyvStore) ??
+      keyvStore?.client?.incr?.bind(keyvStore.client);
+    const expire =
+      keyvStore?.expire?.bind(keyvStore) ??
+      keyvStore?.client?.expire?.bind(keyvStore.client);
+
+    if (incr) {
+      const count = await incr(key);
+
+      if (count === 1 && expire) {
+        await expire(key, ttlSeconds);
+      }
+
+      return count;
+    }
+
+    const currentRaw = await this.get(key);
+    const current = Number.parseInt(String(currentRaw ?? '0'), 10) || 0;
+    const next = current + 1;
+    await this.set(key, String(next), ttl);
+
+    return next;
+  }
 }

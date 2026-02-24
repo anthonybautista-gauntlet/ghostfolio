@@ -1,0 +1,242 @@
+{
+  "accounts": [
+    {
+      "balance": 0,
+      "currency": "USD",
+      "id": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "isExcluded": false,
+      "name": "My Account",
+      "platformId": null
+    }
+  ],
+  "activities": [
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-01-10T00:00:00.000Z",
+      "fee": 1,
+      "quantity": 120,
+      "symbol": "VTI",
+      "type": "BUY",
+      "unitPrice": 242.15,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-01-17T00:00:00.000Z",
+      "fee": 1,
+      "quantity": 80,
+      "symbol": "QQQ",
+      "type": "BUY",
+      "unitPrice": 415.2,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-02-07T00:00:00.000Z",
+      "fee": 1,
+      "quantity": 150,
+      "symbol": "AAPL",
+      "type": "BUY",
+      "unitPrice": 186.75,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-02-21T00:00:00.000Z",
+      "fee": 1,
+      "quantity": 90,
+      "symbol": "MSFT",
+      "type": "BUY",
+      "unitPrice": 410.1,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-03-05T00:00:00.000Z",
+      "fee": 1,
+      "quantity": 100,
+      "symbol": "TSLA",
+      "type": "BUY",
+      "unitPrice": 208.4,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-03-21T00:00:00.000Z",
+      "fee": 0,
+      "quantity": 120,
+      "symbol": "VTI",
+      "type": "DIVIDEND",
+      "unitPrice": 0.9,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-03-28T00:00:00.000Z",
+      "fee": 1,
+      "quantity": 110,
+      "symbol": "SCHD",
+      "type": "BUY",
+      "unitPrice": 78.3,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-04-18T00:00:00.000Z",
+      "fee": 0,
+      "quantity": 150,
+      "symbol": "AAPL",
+      "type": "DIVIDEND",
+      "unitPrice": 0.25,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-04-25T00:00:00.000Z",
+      "fee": 0,
+      "quantity": 90,
+      "symbol": "MSFT",
+      "type": "DIVIDEND",
+      "unitPrice": 0.75,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-05-16T00:00:00.000Z",
+      "fee": 1,
+      "quantity": 130,
+      "symbol": "IWM",
+      "type": "BUY",
+      "unitPrice": 201.65,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-06-14T00:00:00.000Z",
+      "fee": 1,
+      "quantity": 40,
+      "symbol": "TSLA",
+      "type": "SELL",
+      "unitPrice": 233.5,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-06-21T00:00:00.000Z",
+      "fee": 0,
+      "quantity": 120,
+      "symbol": "VTI",
+      "type": "DIVIDEND",
+      "unitPrice": 0.95,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-06-28T00:00:00.000Z",
+      "fee": 0,
+      "quantity": 110,
+      "symbol": "SCHD",
+      "type": "DIVIDEND",
+      "unitPrice": 0.82,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-07-19T00:00:00.000Z",
+      "fee": 0,
+      "quantity": 150,
+      "symbol": "AAPL",
+      "type": "DIVIDEND",
+      "unitPrice": 0.25,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-08-23T00:00:00.000Z",
+      "fee": 1,
+      "quantity": 20,
+      "symbol": "QQQ",
+      "type": "BUY",
+      "unitPrice": 428.1,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-09-21T00:00:00.000Z",
+      "fee": 0,
+      "quantity": 120,
+      "symbol": "VTI",
+      "type": "DIVIDEND",
+      "unitPrice": 0.97,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-10-18T00:00:00.000Z",
+      "fee": 0,
+      "quantity": 150,
+      "symbol": "AAPL",
+      "type": "DIVIDEND",
+      "unitPrice": 0.25,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-11-30T00:00:00.000Z",
+      "fee": 1,
+      "quantity": 30,
+      "symbol": "MSFT",
+      "type": "BUY",
+      "unitPrice": 432.6,
+      "updateAccountBalance": true
+    },
+    {
+      "accountId": "ac1d4a79-7e20-4a8b-9f3c-5d6e7f8a9b0c",
+      "currency": "USD",
+      "dataSource": "YAHOO",
+      "date": "2025-12-20T00:00:00.000Z",
+      "fee": 0,
+      "quantity": 110,
+      "symbol": "SCHD",
+      "type": "DIVIDEND",
+      "unitPrice": 0.86,
+      "updateAccountBalance": true
+    }
+  ]
+}

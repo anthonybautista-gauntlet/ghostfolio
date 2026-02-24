@@ -38,6 +38,7 @@ npm-debug.log
 /libpeerconnection.log
 testem.log
 /typings
+.cursorignore
 
 # System Files
 .DS_Store

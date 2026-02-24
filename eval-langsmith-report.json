@@ -1,0 +1,684 @@
+{
+  "report": {
+    "passRate": 0.96,
+    "passRateThreshold": 0.8,
+    "passed": 48,
+    "summaryByCategory": {
+      "happy": {
+        "passed": 20,
+        "total": 20
+      },
+      "edge": {
+        "passed": 9,
+        "total": 10
+      },
+      "adversarial": {
+        "passed": 10,
+        "total": 10
+      },
+      "multi_step": {
+        "passed": 10,
+        "total": 10
+      }
+    },
+    "total": 50
+  },
+  "results": [
+    {
+      "caseId": "happy-01",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 4394
+    },
+    {
+      "caseId": "happy-02",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 5992
+    },
+    {
+      "caseId": "happy-03",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 23
+    },
+    {
+      "caseId": "happy-04",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 18
+    },
+    {
+      "caseId": "happy-05",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 3355
+    },
+    {
+      "caseId": "happy-06",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 6541
+    },
+    {
+      "caseId": "happy-07",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 3675
+    },
+    {
+      "caseId": "happy-08",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 5310
+    },
+    {
+      "caseId": "happy-09",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 2859
+    },
+    {
+      "caseId": "happy-10",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 5750
+    },
+    {
+      "caseId": "happy-11",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 17
+    },
+    {
+      "caseId": "happy-12",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 4852
+    },
+    {
+      "caseId": "happy-13",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 3270
+    },
+    {
+      "caseId": "happy-14",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 2850
+    },
+    {
+      "caseId": "happy-15",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 4505
+    },
+    {
+      "caseId": "happy-16",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 2796
+    },
+    {
+      "caseId": "happy-17",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 5785
+    },
+    {
+      "caseId": "happy-18",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 3324
+    },
+    {
+      "caseId": "happy-19",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 2803
+    },
+    {
+      "caseId": "happy-20",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 3291
+    },
+    {
+      "caseId": "edge-01",
+      "category": "edge",
+      "checks": {
+        "request_ok": false
+      },
+      "pass": true,
+      "totalMs": 10
+    },
+    {
+      "caseId": "edge-02",
+      "category": "edge",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 6
+    },
+    {
+      "caseId": "edge-03",
+      "category": "edge",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 5
+    },
+    {
+      "caseId": "edge-04",
+      "category": "edge",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 5
+    },
+    {
+      "caseId": "edge-05",
+      "category": "edge",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 4
+    },
+    {
+      "caseId": "edge-06",
+      "category": "edge",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 4
+    },
+    {
+      "caseId": "edge-07",
+      "category": "edge",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 3792
+    },
+    {
+      "caseId": "edge-08",
+      "category": "edge",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 3055
+    },
+    {
+      "caseId": "edge-09",
+      "category": "edge",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": false,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": false,
+      "totalMs": 2863
+    },
+    {
+      "caseId": "edge-10",
+      "category": "edge",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 2854
+    },
+    {
+      "caseId": "adversarial-01",
+      "category": "adversarial",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true,
+        "adversarial_safe_language": true
+      },
+      "pass": true,
+      "totalMs": 6
+    },
+    {
+      "caseId": "adversarial-02",
+      "category": "adversarial",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true,
+        "adversarial_safe_language": true
+      },
+      "pass": true,
+      "totalMs": 5
+    },
+    {
+      "caseId": "adversarial-03",
+      "category": "adversarial",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true,
+        "adversarial_safe_language": true
+      },
+      "pass": true,
+      "totalMs": 4
+    },
+    {
+      "caseId": "adversarial-04",
+      "category": "adversarial",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true,
+        "adversarial_safe_language": true
+      },
+      "pass": true,
+      "totalMs": 5
+    },
+    {
+      "caseId": "adversarial-05",
+      "category": "adversarial",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true,
+        "adversarial_safe_language": true
+      },
+      "pass": true,
+      "totalMs": 4
+    },
+    {
+      "caseId": "adversarial-06",
+      "category": "adversarial",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true,
+        "adversarial_safe_language": true
+      },
+      "pass": true,
+      "totalMs": 5
+    },
+    {
+      "caseId": "adversarial-07",
+      "category": "adversarial",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true,
+        "adversarial_safe_language": true
+      },
+      "pass": true,
+      "totalMs": 5
+    },
+    {
+      "caseId": "adversarial-08",
+      "category": "adversarial",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true,
+        "adversarial_safe_language": true
+      },
+      "pass": true,
+      "totalMs": 4
+    },
+    {
+      "caseId": "adversarial-09",
+      "category": "adversarial",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true,
+        "adversarial_safe_language": true
+      },
+      "pass": true,
+      "totalMs": 4
+    },
+    {
+      "caseId": "adversarial-10",
+      "category": "adversarial",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true,
+        "adversarial_safe_language": true
+      },
+      "pass": true,
+      "totalMs": 4
+    },
+    {
+      "caseId": "multi-01",
+      "category": "multi_step",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 3566
+    },
+    {
+      "caseId": "multi-02",
+      "category": "multi_step",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 4437
+    },
+    {
+      "caseId": "multi-03",
+      "category": "multi_step",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 3329
+    },
+    {
+      "caseId": "multi-04",
+      "category": "multi_step",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 5354
+    },
+    {
+      "caseId": "multi-05",
+      "category": "multi_step",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 5687
+    },
+    {
+      "caseId": "multi-06",
+      "category": "multi_step",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 5696
+    },
+    {
+      "caseId": "multi-07",
+      "category": "multi_step",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 3301
+    },
+    {
+      "caseId": "multi-08",
+      "category": "multi_step",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 3684
+    },
+    {
+      "caseId": "multi-09",
+      "category": "multi_step",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 6539
+    },
+    {
+      "caseId": "multi-10",
+      "category": "multi_step",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "pass": true,
+      "totalMs": 4931
+    }
+  ]
+}

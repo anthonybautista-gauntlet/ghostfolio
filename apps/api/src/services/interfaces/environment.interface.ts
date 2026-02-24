@@ -19,6 +19,7 @@ export interface Environment extends CleanedEnvAccessors {
   ENABLE_FEATURE_AUTH_GOOGLE: boolean;
   ENABLE_FEATURE_AUTH_OIDC: boolean;
   ENABLE_FEATURE_AUTH_TOKEN: boolean;
+  ENABLE_FEATURE_AGENTFORGE: boolean;
   ENABLE_FEATURE_FEAR_AND_GREED_INDEX: boolean;
   ENABLE_FEATURE_GATHER_NEW_EXCHANGE_RATES: boolean;
   ENABLE_FEATURE_READ_ONLY_MODE: boolean;
@@ -31,6 +32,11 @@ export interface Environment extends CleanedEnvAccessors {
   GOOGLE_SHEETS_ID: string;
   GOOGLE_SHEETS_PRIVATE_KEY: string;
   JWT_SECRET_KEY: string;
+  LANGSMITH_API_KEY: string;
+  LANGSMITH_ENDPOINT: string;
+  LANGSMITH_PROJECT: string;
+  LANGSMITH_TRACING: boolean;
+  LANGSMITH_WORKSPACE_ID: string;
   MAX_ACTIVITIES_TO_IMPORT: number;
   MAX_CHART_ITEMS: number;
   OIDC_AUTHORIZATION_URL: string;
@@ -50,6 +56,13 @@ export interface Environment extends CleanedEnvAccessors {
   REDIS_HOST: string;
   REDIS_PASSWORD: string;
   REDIS_PORT: number;
+  AI_REQUEST_TIMEOUT: number;
+  AI_DAILY_MESSAGE_LIMIT: number;
+  AI_SIGNUP_RATE_LIMIT_MAX: number;
+  AI_SIGNUP_RATE_LIMIT_WINDOW_MS: number;
+  AI_TOOL_TIMEOUT: number;
+  AI_MAX_TOOL_STEPS: number;
+  AI_MAX_PROMPT_CHARS: number;
   REQUEST_TIMEOUT: number;
   ROOT_URL: string;
   STRIPE_SECRET_KEY: string;
