@@ -951,88 +951,56 @@ export class AiService {
   }: {
     message: string;
   }): string | undefined {
-    const stopWords = new Set([
+    const loweredMessage = message.toLowerCase();
+    const scopedPatterns = [
+      /\b(?:price|quote)\s+(?:of|for)\s+([a-z0-9.-]{2,20})\b/i,
+      /\bcurrent\s+price\s+(?:of|for)?\s*([a-z0-9.-]{2,20})\b/i,
+      /\b([a-z0-9.-]{2,20})\s+(?:price|quote)\b/i,
+      /\b(?:dividend|dividends|payout|income).{0,40}?\b(?:from|for|of)\s+([a-z0-9.-]{2,20})\b/i,
+      /\b(?:transaction|transactions|activity|activities|trade|trades).{0,60}?\b(?:for|of|in)\s+([a-z0-9.-]{2,20})\b/i,
+      /\bhistory\s+(?:for|of)\s+([a-z0-9.-]{2,20})\b/i,
+      /\b(?:holding|holdings|position|positions).{0,40}?\b(?:for|of|in)\s+([a-z0-9.-]{2,20})\b/i,
+      /\bbalance\s+(?:for|of)\s+([a-z0-9.-]{2,20})\b/i,
+      /\b([a-z0-9.-]{2,20})\s+balance\b/i
+    ];
+    const disallowedTerms = new Set([
       'a',
-      'about',
       'all',
       'an',
       'and',
-      'any',
-      'are',
-      'at',
-      'buy',
-      'bought',
-      'can',
-      'check',
-      'count',
-      'detail',
-      'details',
-      'did',
-      'do',
+      'balance',
+      'biggest',
+      'current',
+      'dividend',
+      'dividends',
       'for',
       'from',
-      'get',
-      'give',
-      'had',
-      'has',
-      'have',
-      'history',
-      'how',
-      'i',
+      'holding',
+      'holdings',
       'in',
-      'is',
-      'it',
-      'last',
-      'list',
-      'made',
-      'make',
-      'many',
-      'me',
-      'month',
-      'most',
+      'income',
+      'largest',
       'my',
-      'number',
       'of',
-      'on',
-      'or',
-      'recent',
-      'regarding',
-      'sell',
-      'show',
-      'sold',
-      'tell',
-      'that',
-      'the',
-      'their',
-      'them',
-      'there',
+      'portfolio',
+      'position',
+      'positions',
+      'price',
+      'quote',
       'this',
-      'to',
-      'total',
-      'trade',
-      'trades',
-      'trading',
+      'top',
       'transaction',
-      'transactions',
-      'was',
-      'were',
-      'what',
-      'when',
-      'where',
-      'which',
-      'with',
-      'year',
-      'you'
+      'transactions'
     ]);
 
-    const words = message
-      .replace(/[?!.,;:'"]/g, '')
-      .split(/\s+/)
-      .filter((word) => word.length > 0);
+    for (const pattern of scopedPatterns) {
+      const match = pattern.exec(loweredMessage);
+      const candidate = match?.[1]
+        ?.trim()
+        .replace(/^[^a-z0-9]+|[^a-z0-9.-]+$/gi, '');
 
-    for (const word of words) {
-      if (!stopWords.has(word.toLowerCase())) {
-        return word;
+      if (candidate && !disallowedTerms.has(candidate)) {
+        return candidate;
       }
     }
 

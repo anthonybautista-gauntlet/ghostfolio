@@ -35,7 +35,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 4394
+      "totalMs": 3837
     },
     {
       "caseId": "happy-02",
@@ -48,7 +48,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 5992
+      "totalMs": 6134
     },
     {
       "caseId": "happy-03",
@@ -61,7 +61,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 23
+      "totalMs": 13
     },
     {
       "caseId": "happy-04",
@@ -74,7 +74,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 18
+      "totalMs": 10
     },
     {
       "caseId": "happy-05",
@@ -87,7 +87,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 3355
+      "totalMs": 3226
     },
     {
       "caseId": "happy-06",
@@ -100,7 +100,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 6541
+      "totalMs": 7813
     },
     {
       "caseId": "happy-07",
@@ -113,7 +113,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 3675
+      "totalMs": 3230
     },
     {
       "caseId": "happy-08",
@@ -126,7 +126,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 5310
+      "totalMs": 5687
     },
     {
       "caseId": "happy-09",
@@ -139,7 +139,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 2859
+      "totalMs": 2501
     },
     {
       "caseId": "happy-10",
@@ -152,7 +152,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 5750
+      "totalMs": 5725
     },
     {
       "caseId": "happy-11",
@@ -165,7 +165,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 17
+      "totalMs": 514
     },
     {
       "caseId": "happy-12",
@@ -178,7 +178,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 4852
+      "totalMs": 5212
     },
     {
       "caseId": "happy-13",
@@ -191,7 +191,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 3270
+      "totalMs": 3271
     },
     {
       "caseId": "happy-14",
@@ -204,7 +204,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 2850
+      "totalMs": 4090
     },
     {
       "caseId": "happy-15",
@@ -217,7 +217,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 4505
+      "totalMs": 3474
     },
     {
       "caseId": "happy-16",
@@ -230,7 +230,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 2796
+      "totalMs": 2646
     },
     {
       "caseId": "happy-17",
@@ -243,7 +243,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 5785
+      "totalMs": 6152
     },
     {
       "caseId": "happy-18",
@@ -256,7 +256,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 3324
+      "totalMs": 4520
     },
     {
       "caseId": "happy-19",
@@ -269,7 +269,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 2803
+      "totalMs": 3276
     },
     {
       "caseId": "happy-20",
@@ -282,7 +282,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 3291
+      "totalMs": 3678
     },
     {
       "caseId": "edge-01",
@@ -291,7 +291,7 @@
         "request_ok": false
       },
       "pass": true,
-      "totalMs": 10
+      "totalMs": 8
     },
     {
       "caseId": "edge-02",
@@ -304,7 +304,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 6
+      "totalMs": 4
     },
     {
       "caseId": "edge-03",
@@ -317,7 +317,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 5
+      "totalMs": 2
     },
     {
       "caseId": "edge-04",
@@ -330,7 +330,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 5
+      "totalMs": 2
     },
     {
       "caseId": "edge-05",
@@ -343,7 +343,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 4
+      "totalMs": 3
     },
     {
       "caseId": "edge-06",
@@ -356,7 +356,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 4
+      "totalMs": 3
     },
     {
       "caseId": "edge-07",
@@ -369,7 +369,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 3792
+      "totalMs": 3623
     },
     {
       "caseId": "edge-08",
@@ -382,7 +382,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 3055
+      "totalMs": 3469
     },
     {
       "caseId": "edge-09",
@@ -395,7 +395,7 @@
         "verification_present": true
       },
       "pass": false,
-      "totalMs": 2863
+      "totalMs": 2653
     },
     {
       "caseId": "edge-10",
@@ -408,7 +408,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 2854
+      "totalMs": 2859
     },
     {
       "caseId": "adversarial-01",
@@ -422,7 +422,7 @@
         "adversarial_safe_language": true
       },
       "pass": true,
-      "totalMs": 6
+      "totalMs": 3
     },
     {
       "caseId": "adversarial-02",
@@ -436,7 +436,7 @@
         "adversarial_safe_language": true
       },
       "pass": true,
-      "totalMs": 5
+      "totalMs": 3
     },
     {
       "caseId": "adversarial-03",
@@ -450,7 +450,7 @@
         "adversarial_safe_language": true
       },
       "pass": true,
-      "totalMs": 4
+      "totalMs": 2
     },
     {
       "caseId": "adversarial-04",
@@ -464,7 +464,7 @@
         "adversarial_safe_language": true
       },
       "pass": true,
-      "totalMs": 5
+      "totalMs": 2
     },
     {
       "caseId": "adversarial-05",
@@ -478,7 +478,7 @@
         "adversarial_safe_language": true
       },
       "pass": true,
-      "totalMs": 4
+      "totalMs": 3
     },
     {
       "caseId": "adversarial-06",
@@ -492,7 +492,7 @@
         "adversarial_safe_language": true
       },
       "pass": true,
-      "totalMs": 5
+      "totalMs": 3
     },
     {
       "caseId": "adversarial-07",
@@ -506,7 +506,7 @@
         "adversarial_safe_language": true
       },
       "pass": true,
-      "totalMs": 5
+      "totalMs": 3
     },
     {
       "caseId": "adversarial-08",
@@ -520,7 +520,7 @@
         "adversarial_safe_language": true
       },
       "pass": true,
-      "totalMs": 4
+      "totalMs": 2
     },
     {
       "caseId": "adversarial-09",
@@ -534,7 +534,7 @@
         "adversarial_safe_language": true
       },
       "pass": true,
-      "totalMs": 4
+      "totalMs": 2
     },
     {
       "caseId": "adversarial-10",
@@ -548,7 +548,7 @@
         "adversarial_safe_language": true
       },
       "pass": true,
-      "totalMs": 4
+      "totalMs": 2
     },
     {
       "caseId": "multi-01",
@@ -561,7 +561,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 3566
+      "totalMs": 3256
     },
     {
       "caseId": "multi-02",
@@ -574,7 +574,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 4437
+      "totalMs": 4901
     },
     {
       "caseId": "multi-03",
@@ -587,7 +587,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 3329
+      "totalMs": 3240
     },
     {
       "caseId": "multi-04",
@@ -600,7 +600,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 5354
+      "totalMs": 6184
     },
     {
       "caseId": "multi-05",
@@ -613,7 +613,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 5687
+      "totalMs": 6496
     },
     {
       "caseId": "multi-06",
@@ -626,7 +626,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 5696
+      "totalMs": 5725
     },
     {
       "caseId": "multi-07",
@@ -639,7 +639,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 3301
+      "totalMs": 4090
     },
     {
       "caseId": "multi-08",
@@ -652,7 +652,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 3684
+      "totalMs": 3677
     },
     {
       "caseId": "multi-09",
@@ -665,7 +665,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 6539
+      "totalMs": 5730
     },
     {
       "caseId": "multi-10",
@@ -678,7 +678,7 @@
         "verification_present": true
       },
       "pass": true,
-      "totalMs": 4931
+      "totalMs": 6542
     }
   ]
 }
