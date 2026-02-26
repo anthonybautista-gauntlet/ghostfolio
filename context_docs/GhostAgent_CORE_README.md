@@ -10,6 +10,11 @@
 - runtime contracts (tool/session/model-config adapters)
 - model catalog
 
+Integration helper:
+
+- Use `ghostagent:init` (see `context_docs/GhostAgent_INSTALL.md`) to scaffold
+  env + Prisma assets into a vanilla host.
+
 ## Test Expectations
 
 - fast deterministic unit tests only

@@ -23,3 +23,4 @@ Current UX features:
 - auth/session propagation to API calls
 - styling/theme alignment
 - expose AI model preference endpoints and chat endpoint with `selectedModel` support
+- follow scaffold/install flow in `context_docs/GhostAgent_INSTALL.md`

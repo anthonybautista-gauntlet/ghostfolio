@@ -33,6 +33,8 @@
     "format": "nx format:write",
     "format:check": "nx format:check",
     "format:write": "nx format:write",
+    "ghostagent:init": "node ./libs/ghostagent-core/bin/ghostagent-init.mjs",
+    "ghostagent:init:apply": "node ./libs/ghostagent-core/bin/ghostagent-init.mjs --apply",
     "help": "nx help",
     "lint": "nx run-many --target=lint --all",
     "ng": "nx",

@@ -32,6 +32,10 @@ All notable changes to the embedded Ghost Agent implementation are documented he
   - `PUT /api/v1/ai/model`
 - New `selectedModel` request plumbing for `POST /api/v1/ai/chat`.
 - New `ghostagent-ui` component tests (`thinking indicator`, `selectedModel` payload).
+- New scaffold commands for vanilla host integration:
+  - `npm run ghostagent:init` (dry-run)
+  - `npm run ghostagent:init:apply` (write env/prisma assets)
+- New install guide: `context_docs/GhostAgent_INSTALL.md`.
 
 ### Changed
 

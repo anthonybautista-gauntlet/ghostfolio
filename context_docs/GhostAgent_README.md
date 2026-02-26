@@ -4,6 +4,10 @@
 
 Ghost Agent is a domain-specific, read-only financial assistant currently embedded in Ghostfolio. This document captures the implementation contract and operational details needed to spin Ghost Agent into a standalone package without a full rewrite.
 
+Install path:
+
+- See `context_docs/GhostAgent_INSTALL.md` for `ghostagent:init` scaffold workflow.
+
 ## Current Runtime Integration
 
 - Backend host: NestJS API in Ghostfolio.

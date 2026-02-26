@@ -23,3 +23,7 @@
 Recommended command:
 
 - `npm run --silent eval:langsmith`
+
+Host install and scaffold flow:
+
+- See `context_docs/GhostAgent_INSTALL.md` for baseline host setup before running evals.

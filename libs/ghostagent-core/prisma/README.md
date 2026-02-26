@@ -18,6 +18,11 @@ in `@ghostagent/core` so host apps do not need a separate adapter package.
 4. Wire your host `PrismaSessionStore` implementation to `@ghostagent/core`
    `AgentSessionStore` contract.
 
+Scaffold shortcut:
+
+- Run `npm run ghostagent:init` (dry-run) and
+  `npm run ghostagent:init:apply` to scaffold these assets automatically.
+
 ## Why this lives in core
 
 `@ghostagent/core` remains runtime-agnostic, but ships official persistence assets
