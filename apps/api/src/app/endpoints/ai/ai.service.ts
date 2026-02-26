@@ -3,11 +3,14 @@ import { PortfolioService } from '@ghostfolio/api/app/portfolio/portfolio.servic
 import { RedisCacheService } from '@ghostfolio/api/app/redis-cache/redis-cache.service';
 import { SymbolService } from '@ghostfolio/api/app/symbol/symbol.service';
 import { ConfigurationService } from '@ghostfolio/api/services/configuration/configuration.service';
+import { PrismaService } from '@ghostfolio/api/services/prisma/prisma.service';
 import { DEFAULT_CURRENCY } from '@ghostfolio/common/config';
 import {
   AiChatResponse,
   AiCitedFigure,
-  Filter
+  AiModelPreferenceResponse,
+  Filter,
+  UserSettings
 } from '@ghostfolio/common/interfaces';
 import type { AiPromptMode, DateRange } from '@ghostfolio/common/types';
 import { buildAiFactRegistry } from '@ghostfolio/ghostagent/backend/ai-fact-registry';
@@ -17,6 +20,7 @@ import { GhostAgentVerificationService as VerificationService } from '@ghostfoli
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { ChatOpenAI } from '@langchain/openai';
 import { HttpException, Injectable, Logger } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { StatusCodes, getReasonPhrase } from 'http-status-codes';
 import { randomUUID } from 'node:crypto';
 import type { ColumnDescriptor } from 'tablemark';
@@ -67,6 +71,7 @@ export class AiService {
     private readonly configurationService: ConfigurationService,
     private readonly orderService: OrderService,
     private readonly portfolioService: PortfolioService,
+    private readonly prismaService: PrismaService,
     private readonly modelConfigAdapter: GhostfolioModelConfigAdapter,
     private readonly redisCacheService: RedisCacheService,
     private readonly sessionStore: PrismaSessionStoreService,
@@ -74,8 +79,14 @@ export class AiService {
     private readonly verificationService: VerificationService
   ) {}
 
-  private async createLangChainModel() {
-    const resolvedModelConfig = await this.modelConfigAdapter.getModelConfig();
+  private async createLangChainModel({
+    selectedModel
+  }: {
+    selectedModel?: string;
+  }) {
+    const resolvedModelConfig = await this.modelConfigAdapter.getModelConfig({
+      requestedModel: selectedModel
+    });
 
     const timeoutInMilliseconds =
       this.configurationService.get('AI_REQUEST_TIMEOUT');
@@ -205,6 +216,7 @@ export class AiService {
     filters,
     languageCode,
     message,
+    selectedModel,
     sessionId,
     userCurrency = DEFAULT_CURRENCY,
     userId
@@ -213,10 +225,16 @@ export class AiService {
     filters?: Filter[];
     languageCode: string;
     message: string;
+    selectedModel?: string;
     sessionId?: string;
     userCurrency: string;
     userId: string;
   }): Promise<AiChatResponse> {
+    const resolvedSelectedModel = await this.resolveSelectedModel({
+      selectedModel,
+      userId
+    });
+
     const requestStartedAt = Date.now();
 
     if (!this.configurationService.get('ENABLE_FEATURE_AGENTFORGE')) {
@@ -421,6 +439,7 @@ export class AiService {
         languageCode,
         message,
         requestId: conversationId,
+        selectedModel: resolvedSelectedModel,
         slimPrompt:
           selectedToolNames.length === 1 &&
           selectedToolNames[0] === 'market_data',
@@ -470,6 +489,77 @@ export class AiService {
       },
       toolInvocations,
       verification
+    };
+  }
+
+  public async getModelPreference({
+    userId
+  }: {
+    userId: string;
+  }): Promise<AiModelPreferenceResponse> {
+    const availableModels = this.modelConfigAdapter.getModelCatalog();
+    const persistedModel = await this.getPersistedModelPreference({
+      userId
+    });
+    const selectedModel = availableModels.includes(persistedModel ?? '')
+      ? persistedModel
+      : availableModels[0];
+
+    return {
+      availableModels,
+      selectedModel
+    };
+  }
+
+  public async updateModelPreference({
+    selectedModel,
+    userId
+  }: {
+    selectedModel: string;
+    userId: string;
+  }): Promise<AiModelPreferenceResponse> {
+    const availableModels = this.modelConfigAdapter.getModelCatalog();
+
+    if (!availableModels.includes(selectedModel)) {
+      throw new HttpException(
+        `Unsupported model "${selectedModel}".`,
+        StatusCodes.BAD_REQUEST
+      );
+    }
+
+    const existingSettings = await this.prismaService.settings.findUnique({
+      select: {
+        settings: true
+      },
+      where: {
+        userId
+      }
+    });
+    const mergedSettings: UserSettings = {
+      ...((existingSettings?.settings as UserSettings | undefined) ?? {}),
+      ghostAgentModel: selectedModel
+    };
+
+    await this.prismaService.settings.upsert({
+      create: {
+        settings: mergedSettings as unknown as Prisma.JsonObject,
+        user: {
+          connect: {
+            id: userId
+          }
+        }
+      },
+      update: {
+        settings: mergedSettings as unknown as Prisma.JsonObject
+      },
+      where: {
+        userId
+      }
+    });
+
+    return {
+      availableModels,
+      selectedModel
     };
   }
 
@@ -1301,6 +1391,7 @@ export class AiService {
     languageCode,
     message,
     requestId,
+    selectedModel,
     slimPrompt,
     toolResults
   }: {
@@ -1308,6 +1399,7 @@ export class AiService {
     languageCode: string;
     message: string;
     requestId: string;
+    selectedModel?: string;
     slimPrompt: boolean;
     toolResults: Record<string, unknown>;
   }) {
@@ -1362,7 +1454,9 @@ export class AiService {
     const systemPrompt = systemPromptParts.join('\n');
 
     try {
-      const model = await this.createLangChainModel();
+      const model = await this.createLangChainModel({
+        selectedModel
+      });
       const structuredResponseSchema = z.object({
         citedFigures: z
           .array(
@@ -1430,6 +1524,47 @@ export class AiService {
           'I am temporarily unable to generate an AI summary, but the tool data was retrieved successfully.'
       };
     }
+  }
+
+  private async getPersistedModelPreference({ userId }: { userId: string }) {
+    const settings = await this.prismaService.settings.findUnique({
+      select: {
+        settings: true
+      },
+      where: {
+        userId
+      }
+    });
+
+    return (settings?.settings as UserSettings | undefined)?.ghostAgentModel;
+  }
+
+  private async resolveSelectedModel({
+    selectedModel,
+    userId
+  }: {
+    selectedModel?: string;
+    userId: string;
+  }) {
+    const availableModels = this.modelConfigAdapter.getModelCatalog();
+
+    if (selectedModel) {
+      if (!availableModels.includes(selectedModel)) {
+        throw new HttpException(
+          `Unsupported model "${selectedModel}".`,
+          StatusCodes.BAD_REQUEST
+        );
+      }
+      return selectedModel;
+    }
+
+    const persistedModel = await this.getPersistedModelPreference({ userId });
+
+    if (persistedModel && availableModels.includes(persistedModel)) {
+      return persistedModel;
+    }
+
+    return undefined;
   }
 
   private getErrorDetails({ error }: { error: unknown }) {

@@ -2,6 +2,7 @@ import { HasPermission } from '@ghostfolio/api/decorators/has-permission.decorat
 import { HasPermissionGuard } from '@ghostfolio/api/guards/has-permission.guard';
 import { ApiService } from '@ghostfolio/api/services/api/api.service';
 import {
+  AiModelPreferenceResponse,
   AiChatSessionResponse,
   AiPromptResponse
 } from '@ghostfolio/common/interfaces';
@@ -15,6 +16,7 @@ import {
   Inject,
   Param,
   Post,
+  Put,
   Query,
   UseGuards
 } from '@nestjs/common';
@@ -24,6 +26,7 @@ import { Role } from '@prisma/client';
 
 import { AiService } from './ai.service';
 import { AiChatRequestDto } from './dtos/ai-chat-request.dto';
+import { UpdateAiModelPreferenceDto } from './dtos/update-ai-model-preference.dto';
 import { PrismaSessionStoreService } from './prisma-session-store.service';
 
 @Controller('ai')
@@ -69,12 +72,15 @@ export class AiController {
   @Post('chat')
   @HasPermission(permissions.accessAssistant)
   @UseGuards(AuthGuard('jwt'), HasPermissionGuard)
-  public async chat(@Body() { filters, message, sessionId }: AiChatRequestDto) {
+  public async chat(
+    @Body() { filters, message, selectedModel, sessionId }: AiChatRequestDto
+  ) {
     return this.aiService.chat({
       bypassDailyLimit: hasRole(this.request.user, Role.ADMIN),
       filters,
       languageCode: this.request.user.settings.settings.language,
       message,
+      selectedModel,
       sessionId,
       userCurrency: this.request.user.settings.settings.baseCurrency,
       userId: this.request.user.id
@@ -93,5 +99,26 @@ export class AiController {
       messages: mostRecentSession?.messages ?? [],
       sessionId: mostRecentSession?.sessionId
     };
+  }
+
+  @Get('model')
+  @HasPermission(permissions.accessAssistant)
+  @UseGuards(AuthGuard('jwt'), HasPermissionGuard)
+  public async getModelPreference(): Promise<AiModelPreferenceResponse> {
+    return this.aiService.getModelPreference({
+      userId: this.request.user.id
+    });
+  }
+
+  @Put('model')
+  @HasPermission(permissions.accessAssistant)
+  @UseGuards(AuthGuard('jwt'), HasPermissionGuard)
+  public async updateModelPreference(
+    @Body() { selectedModel }: UpdateAiModelPreferenceDto
+  ): Promise<AiModelPreferenceResponse> {
+    return this.aiService.updateModelPreference({
+      selectedModel,
+      userId: this.request.user.id
+    });
   }
 }

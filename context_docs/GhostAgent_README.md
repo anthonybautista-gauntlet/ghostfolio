@@ -20,8 +20,10 @@ Ghost Agent is a domain-specific, read-only financial assistant currently embedd
 - Inference provider path: OpenRouter via server-side key.
 - Current model decision: **Sonnet 4.5**.
 - Model resolution path (current host adapter):
-  - optional env override: `OPENROUTER_MODEL`, `OPENROUTER_API_KEY`
-  - DB property fallback: `PROPERTY_OPENROUTER_MODEL`, `PROPERTY_API_KEY_OPENROUTER`
+  - required env key: `OPENROUTER_API_KEY`
+  - default env model: `OPENROUTER_MODEL`
+  - per-request override: `selectedModel` in chat request
+  - persisted per-user preference: `settings.settings.ghostAgentModel`
   - default model catalog in core package with host-extensible entries (`AI_MODEL_CATALOG`)
 - Timeout guardrail: `AI_REQUEST_TIMEOUT`.
 - Observability:
@@ -59,7 +61,7 @@ Ghost Agent is a domain-specific, read-only financial assistant currently embedd
   - `LANGSMITH_API_KEY`
   - `LANGSMITH_PROJECT`
   - `LANGSMITH_ENDPOINT`
-- OpenRouter model remains configurable at runtime via property settings.
+- OpenRouter runtime is env-key based with model selected from catalog/default + per-user preference.
 
 LangSmith org-scoped key requirement:
 
@@ -177,6 +179,11 @@ This is applied in `runPortfolioAnalysis()` when calling `portfolioService.getPe
 - `sessionId` (optional when no session exists)
 - `messages` (`role`, `content`, `createdAt`)
 
+Model preference endpoints:
+
+- `GET /api/v1/ai/model` -> `{ availableModels, selectedModel }`
+- `PUT /api/v1/ai/model` with `{ selectedModel }` persists per-user selection server-side
+
 ## Configuration
 
 Key runtime/config dependencies:
@@ -195,7 +202,9 @@ Key runtime/config dependencies:
 - `LANGSMITH_ENDPOINT`
 - `LANGSMITH_WORKSPACE_ID` (required when using org-scoped LangSmith keys)
 - OpenRouter API key property (server-side stored setting)
-- OpenRouter model property (currently set to Sonnet 4.5)
+- `OPENROUTER_API_KEY` (required, env-only)
+- `OPENROUTER_MODEL` (default model fallback)
+- `AI_MODEL_CATALOG` (comma-separated extra models)
 
 Operational behavior:
 

@@ -27,6 +27,7 @@ import {
   ActivityResponse,
   AiChatResponse,
   AiChatSessionResponse,
+  AiModelPreferenceResponse,
   AiPromptResponse,
   ApiKeyResponse,
   AssetProfileIdentifier,
@@ -675,21 +676,34 @@ export class DataService {
   public postAiChat({
     filters,
     message,
+    selectedModel,
     sessionId
   }: {
     filters?: Filter[];
     message: string;
+    selectedModel?: string;
     sessionId?: string;
   }) {
     return this.http.post<AiChatResponse>('/api/v1/ai/chat', {
       filters,
       message,
+      selectedModel,
       sessionId
     });
   }
 
   public getAiChatSession() {
     return this.http.get<AiChatSessionResponse>('/api/v1/ai/chat/session');
+  }
+
+  public getAiModelPreference() {
+    return this.http.get<AiModelPreferenceResponse>('/api/v1/ai/model');
+  }
+
+  public updateAiModelPreference({ selectedModel }: { selectedModel: string }) {
+    return this.http.put<AiModelPreferenceResponse>('/api/v1/ai/model', {
+      selectedModel
+    });
   }
 
   public fetchPublicPortfolio(aAccessId: string) {

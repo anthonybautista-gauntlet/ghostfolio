@@ -21,5 +21,10 @@ export class AiChatRequestDto {
   @IsString()
   @IsOptional()
   @MaxLength(128)
+  public selectedModel?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(128)
   public sessionId?: string;
 }

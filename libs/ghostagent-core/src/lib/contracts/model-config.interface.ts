@@ -4,6 +4,13 @@ export interface GhostAgentResolvedModelConfig {
   model: string;
 }
 
+export interface GhostAgentModelConfigOptions {
+  requestedModel?: string;
+}
+
 export interface GhostAgentModelConfigAdapter {
-  getModelConfig(): Promise<GhostAgentResolvedModelConfig>;
+  getModelCatalog(): string[];
+  getModelConfig(
+    options?: GhostAgentModelConfigOptions
+  ): Promise<GhostAgentResolvedModelConfig>;
 }

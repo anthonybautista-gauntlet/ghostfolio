@@ -20,7 +20,7 @@
 
 - provide auth/user context
 - implement tool adapters against host services
-- implement model config adapter (env/config, optional DB fallback)
+- implement model config adapter (env/config, no DB credential fallback)
 - wire endpoint/controller integration in host framework
 
 ## Prisma Persistence Assets (Included)
@@ -32,3 +32,12 @@
 
 Host apps should apply these assets in their own migration workflow (the package
 does not auto-run migrations at runtime).
+
+## Model Selection Contract
+
+- Supported models come from core default catalog + host extension list.
+- Effective runtime model priority:
+  1. `selectedModel` passed in chat request
+  2. persisted per-user preference (`settings.settings.ghostAgentModel`)
+  3. `OPENROUTER_MODEL` env default
+  4. first entry in catalog

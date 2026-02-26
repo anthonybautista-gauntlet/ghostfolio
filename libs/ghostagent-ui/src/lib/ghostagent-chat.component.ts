@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -32,7 +33,8 @@ interface ChatMessage {
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
   ],
   selector: 'gf-ghostagent-chat',
   styleUrls: ['./ghostagent-chat.component.scss'],
@@ -42,9 +44,13 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
   private hasRestoredSession = false;
   private readonly maxRestoreAttempts = 5;
   private restoreAttempts = 0;
+  public availableModels: string[] = [];
   public isLoading = false;
+  public isModelPreferenceLoading = false;
+  public isModelPreferenceSaving = false;
   public messages: ChatMessage[] = [];
   public prompt = '';
+  public selectedModel: string | undefined;
   public sessionId: string | undefined;
   @ViewChild('messagesContainer')
   private messagesContainerRef?: ElementRef<HTMLDivElement>;
@@ -57,6 +63,8 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
   ) {}
 
   public ngOnInit() {
+    this.loadModelPreference();
+
     if (!this.hasRestoredSession) {
       this.restoreMostRecentSession();
     }
@@ -92,6 +100,7 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
     this.dataService
       .postAiChat({
         message,
+        selectedModel: this.selectedModel,
         sessionId: this.sessionId
       })
       .pipe(takeUntil(this.unsubscribeSubject))
@@ -131,6 +140,28 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
     this.changeDetectorRef.markForCheck();
   }
 
+  public onSelectedModelChange(selectedModel: string) {
+    this.selectedModel = selectedModel;
+    this.isModelPreferenceSaving = true;
+
+    this.dataService
+      .updateAiModelPreference({
+        selectedModel
+      })
+      .pipe(takeUntil(this.unsubscribeSubject))
+      .subscribe({
+        next: ({ selectedModel: persistedSelectedModel }) => {
+          this.selectedModel = persistedSelectedModel;
+          this.isModelPreferenceSaving = false;
+          this.changeDetectorRef.markForCheck();
+        },
+        error: () => {
+          this.isModelPreferenceSaving = false;
+          this.changeDetectorRef.markForCheck();
+        }
+      });
+  }
+
   private restoreMostRecentSession() {
     this.hasRestoredSession = true;
     this.restoreAttempts += 1;
@@ -165,6 +196,28 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
           this.restoreAttempts = 0;
           this.sessionId = undefined;
           this.messages = [];
+          this.changeDetectorRef.markForCheck();
+        }
+      });
+  }
+
+  private loadModelPreference() {
+    this.isModelPreferenceLoading = true;
+
+    this.dataService
+      .getAiModelPreference()
+      .pipe(takeUntil(this.unsubscribeSubject))
+      .subscribe({
+        next: ({ availableModels, selectedModel }) => {
+          this.availableModels = availableModels;
+          this.selectedModel = selectedModel ?? availableModels[0];
+          this.isModelPreferenceLoading = false;
+          this.changeDetectorRef.markForCheck();
+        },
+        error: () => {
+          this.availableModels = [];
+          this.selectedModel = undefined;
+          this.isModelPreferenceLoading = false;
           this.changeDetectorRef.markForCheck();
         }
       });

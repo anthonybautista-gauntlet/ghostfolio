@@ -22,6 +22,7 @@ export interface UserSettings {
   'filters.symbol'?: string;
   'filters.tags'?: string[];
   holdingsViewMode?: HoldingsViewMode;
+  ghostAgentModel?: string;
   isExperimentalFeatures?: boolean;
   isRestrictedView?: boolean;
   language?: string;

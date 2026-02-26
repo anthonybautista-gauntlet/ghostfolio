@@ -54,6 +54,7 @@ import type {
   AiChatSessionResponse,
   AiSessionMessage
 } from './responses/ai-chat-session-response.interface';
+import type { AiModelPreferenceResponse } from './responses/ai-model-preference-response.interface';
 import type { AiPromptResponse } from './responses/ai-prompt-response.interface';
 import type { ApiKeyResponse } from './responses/api-key-response.interface';
 import type { AssetResponse } from './responses/asset-response.interface';
@@ -128,6 +129,7 @@ export {
   AdminUserResponse,
   AdminUsersResponse,
   AiPromptResponse,
+  AiModelPreferenceResponse,
   AiChatResponse,
   AiChatSessionResponse,
   AiCitedFigure,

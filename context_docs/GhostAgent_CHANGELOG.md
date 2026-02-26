@@ -27,6 +27,11 @@ All notable changes to the embedded Ghost Agent implementation are documented he
   - `apps/api/src/app/endpoints/ai/evals/run-langsmith-evals.ts`
   - `apps/api/src/app/endpoints/ai/evals/scorers/agentforge-scorer.ts`
 - New npm script: `eval:langsmith`.
+- New AI model preference API endpoints:
+  - `GET /api/v1/ai/model`
+  - `PUT /api/v1/ai/model`
+- New `selectedModel` request plumbing for `POST /api/v1/ai/chat`.
+- New `ghostagent-ui` component tests (`thinking indicator`, `selectedModel` payload).
 
 ### Changed
 
@@ -36,6 +41,9 @@ All notable changes to the embedded Ghost Agent implementation are documented he
   - verification service from `libs/ghostagent-core`.
 - Host route integration now consumes UI library component for Ghost Agent page.
 - Eval command path now targets eval-layer runner in `libs/ghostagent-evals`.
+- OpenRouter credential path is now env-only (`OPENROUTER_API_KEY`), removing DB fallback for inference key/model.
+- Model selection is now per-user persistent (`settings.settings.ghostAgentModel`) and applied at chat runtime.
+- Ghost Agent UI now includes explicit thinking indicator and model selector.
 - Asset extraction logic hardened to scoped-intent patterns (prevents false filtering for generic holdings queries such as “largest holding”).
 - Session memory backend switched from in-memory cache to Postgres-backed JSON message storage.
 - Ghost Agent access policy now supports broad authenticated MVP access while keeping JWT + permission guard enforcement.

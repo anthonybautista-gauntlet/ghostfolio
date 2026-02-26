@@ -16,6 +16,26 @@
     </div>
   </mat-card-header>
   <mat-card-content>
+    <mat-form-field appearance="outline" class="w-100 mb-3">
+      <mat-label>Model</mat-label>
+      <mat-select
+        [disabled]="
+          isLoading || isModelPreferenceLoading || isModelPreferenceSaving
+        "
+        [ngModel]="selectedModel"
+        (ngModelChange)="onSelectedModelChange($event)"
+      >
+        @for (model of availableModels; track model) {
+          <mat-option [value]="model">{{ model }}</mat-option>
+        }
+      </mat-select>
+      @if (isModelPreferenceSaving) {
+        <mat-hint>Saving model preference...</mat-hint>
+      } @else {
+        <mat-hint>Model selection is saved per user.</mat-hint>
+      }
+    </mat-form-field>
+
     <div #messagesContainer class="messages-container mb-3">
       @if (messages.length === 0) {
         <div class="text-muted" i18n>
@@ -30,6 +50,16 @@
           @if (message.role === 'assistant' && message.disclaimer) {
             <div class="message-disclaimer">{{ message.disclaimer }}</div>
           }
+        </div>
+      }
+
+      @if (isLoading) {
+        <div
+          aria-live="polite"
+          class="message-item assistant thinking-indicator"
+        >
+          <strong>Ghost Agent</strong>
+          <div class="mt-1">Thinking...</div>
         </div>
       }
     </div>
@@ -49,10 +79,10 @@
       <button
         color="primary"
         mat-flat-button
-        [disabled]="isLoading || !prompt.trim()"
+        [disabled]="isLoading || !prompt.trim() || !selectedModel"
         (click)="onSend()"
       >
-        {{ isLoading ? 'Sending...' : 'Send' }}
+        {{ isLoading ? 'Waiting for response...' : 'Send' }}
       </button>
     </div>
   </mat-card-content>
