@@ -130,11 +130,11 @@
             mat-flat-button
             [ngClass]="{
               'font-weight-bold':
-                currentRoute === internalRoutes.agentforge.path,
+                currentRoute === internalRoutes.ghostagent.path,
               'text-decoration-underline':
-                currentRoute === internalRoutes.agentforge.path
+                currentRoute === internalRoutes.ghostagent.path
             }"
-            [routerLink]="routerLinkAgentForge"
+            [routerLink]="routerLinkGhostAgent"
           >
             Ghost Agent
           </a>
@@ -310,9 +310,9 @@
               mat-menu-item
               [ngClass]="{
                 'font-weight-bold':
-                  currentRoute === internalRoutes.agentforge.path
+                  currentRoute === internalRoutes.ghostagent.path
               }"
-              [routerLink]="routerLinkAgentForge"
+              [routerLink]="routerLinkGhostAgent"
             >
               Ghost Agent
             </a>

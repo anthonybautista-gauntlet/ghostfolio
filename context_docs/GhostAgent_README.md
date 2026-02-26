@@ -19,7 +19,10 @@ Ghost Agent is a domain-specific, read-only financial assistant currently embedd
 
 - Inference provider path: OpenRouter via server-side key.
 - Current model decision: **Sonnet 4.5**.
-- Model selection source: persisted runtime setting (`PROPERTY_OPENROUTER_MODEL`), not hardcoded in code.
+- Model resolution path (current host adapter):
+  - optional env override: `OPENROUTER_MODEL`, `OPENROUTER_API_KEY`
+  - DB property fallback: `PROPERTY_OPENROUTER_MODEL`, `PROPERTY_API_KEY_OPENROUTER`
+  - default model catalog in core package with host-extensible entries (`AI_MODEL_CATALOG`)
 - Timeout guardrail: `AI_REQUEST_TIMEOUT`.
 - Observability:
   - correlation ID per chat request (`sessionId` currently used as request ID in logs),
@@ -65,11 +68,18 @@ LangSmith org-scoped key requirement:
 
 ### Eval Results / Regression Detection
 
-- Dataset source: `apps/api/src/app/endpoints/ai/evals/dataset/agentforge-eval-cases.json` (50 cases).
+- Dataset source: `libs/ghostagent-evals/src/lib/dataset/ghostagent-eval-cases.json` (50 cases).
 - Runner: `npm run eval:langsmith`
+- Recommended invocation to avoid npm banner noise in output capture: `npm run --silent eval:langsmith`
 - CI gate:
   - `AGENTFORGE_EVAL_PASS_THRESHOLD` (default `0.8`)
   - report artifact: `eval-langsmith-report.json`
+
+Eval prerequisites:
+
+- API server must be running and reachable at `AGENTFORGE_EVAL_API_URL`.
+- Auth token must be set in `AGENTFORGE_EVAL_API_TOKEN`.
+- Live evals are intentionally non-deterministic and validate real orchestration behavior with the active model/provider.
 
 ## Tooling Contract (Current)
 
@@ -115,7 +125,7 @@ For transaction queries, period phrases are mapped to explicit date ranges befor
 
 Asset-specific filtering uses Ghostfolio's existing `SEARCH_QUERY` filter at the DB level:
 
-- The agent extracts a likely asset reference from the user's message (stop-word removal).
+- The agent extracts asset references using scoped intent patterns (e.g. `price of X`, `transactions for X`, `dividends from X`, `X balance`) and avoids generic non-asset terms.
 - The extracted term is passed as a `SEARCH_QUERY` filter to `OrderService.getOrders()`.
 - The DB matches the term against symbol profile fields (symbol, name, ISIN) using case-insensitive `startsWith`.
 - This requires zero custom symbol mappings and scales to any asset in the user's portfolio.
@@ -192,15 +202,21 @@ Operational behavior:
 - When daily quota is exceeded, Ghost Agent returns HTTP `429` with reset timing.
 - When signup throttle is exceeded, signup returns HTTP `429` with retry timing.
 
+## Script Ownership and Host Setup
+
+- `package.json` scripts in this repo are host-level developer conveniences; they are **not** automatically inherited by downstream consumers installing future `@ghostagent/*` packages.
+- A host app integrating `@ghostagent/core`, `@ghostagent/ui`, and `@ghostagent/evals` should define its own scripts (or CI commands) for:
+  - deterministic tests (`ghostagent/core`),
+  - host integration tests,
+  - live evals (`ghostagent/evals`).
+
 ## Package Spin-Out Target
 
 Planned package boundaries:
 
-- Core orchestrator (routing, prompt building, verification)
-- Tool interface and adapters
-- Session memory adapter interface
-- Provider adapter interface (OpenRouter, future direct providers)
-- Shared schema/types for requests/responses and tool IO
+- `ghostagent/core`: orchestrator, routing, verification, contracts, model catalog
+- `ghostagent/ui`: reusable chat UI module/components
+- `ghostagent/evals`: dataset + scorer + eval runner
 
 Minimal host responsibilities after extraction:
 

@@ -73,6 +73,11 @@ export const internalRoutes: Record<string, InternalRoute> = {
     routerLink: ['/ghost-agent'],
     title: 'Ghost Agent'
   },
+  ghostagent: {
+    path: 'ghost-agent',
+    routerLink: ['/ghost-agent'],
+    title: 'Ghost Agent'
+  },
   api: {
     excludeFromAssistant: true,
     path: 'api',

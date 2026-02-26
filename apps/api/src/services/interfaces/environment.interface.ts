@@ -47,6 +47,8 @@ export interface Environment extends CleanedEnvAccessors {
   OIDC_SCOPE: string[];
   OIDC_TOKEN_URL: string;
   OIDC_USER_INFO_URL: string;
+  OPENROUTER_API_KEY: string;
+  OPENROUTER_MODEL: string;
   PORT: number;
   PROCESSOR_GATHER_ASSET_PROFILE_CONCURRENCY: number;
   PROCESSOR_GATHER_HISTORICAL_MARKET_DATA_CONCURRENCY: number;
@@ -63,6 +65,7 @@ export interface Environment extends CleanedEnvAccessors {
   AI_TOOL_TIMEOUT: number;
   AI_MAX_TOOL_STEPS: number;
   AI_MAX_PROMPT_CHARS: number;
+  AI_MODEL_CATALOG: string;
   REQUEST_TIMEOUT: number;
   ROOT_URL: string;
   STRIPE_SECRET_KEY: string;

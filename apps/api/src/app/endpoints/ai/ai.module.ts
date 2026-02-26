@@ -26,6 +26,7 @@ import { Module } from '@nestjs/common';
 
 import { AiController } from './ai.controller';
 import { AiService } from './ai.service';
+import { GhostfolioModelConfigAdapter } from './ghostfolio-model-config.adapter';
 import { PrismaSessionStoreService } from './prisma-session-store.service';
 import { VerificationService } from './verification.service';
 
@@ -54,6 +55,7 @@ import { VerificationService } from './verification.service';
     AccountService,
     AiService,
     CurrentRateService,
+    GhostfolioModelConfigAdapter,
     MarketDataService,
     PortfolioCalculatorFactory,
     PortfolioService,

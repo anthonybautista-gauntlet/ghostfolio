@@ -6,6 +6,17 @@ All notable changes to the embedded Ghost Agent implementation are documented he
 
 ### Added
 
+- Package-ready extraction boundaries in repo:
+  - `libs/ghostagent-core` (routing, fact registry, verification, contracts, model catalog),
+  - `libs/ghostagent-ui` (reusable Ghost Agent chat component),
+  - `libs/ghostagent-evals` (dataset, scorer, eval runner).
+- New host model config adapter: `GhostfolioModelConfigAdapter` for env-first resolution with DB fallback.
+- New model catalog support:
+  - default general model list in core package,
+  - host-extensible entries via `AI_MODEL_CATALOG`.
+- New project Cursor skill:
+  - `.cursor/skills/ghostfolio-post-change-validation/SKILL.md`
+  - auto post-edit format/lint workflow with OOM-safe lint profile.
 - New persistent session store implementation: `PrismaSessionStoreService`.
 - New `ChatSession` Prisma model with user relation and `(userId, updatedAt)` index.
 - New API endpoint: `GET /api/v1/ai/chat/session` returning the most recent session for the authenticated user.
@@ -19,6 +30,13 @@ All notable changes to the embedded Ghost Agent implementation are documented he
 
 ### Changed
 
+- `AiService` now consumes extracted core modules:
+  - routing from `libs/ghostagent-core`,
+  - fact registry from `libs/ghostagent-core`,
+  - verification service from `libs/ghostagent-core`.
+- Host route integration now consumes UI library component for Ghost Agent page.
+- Eval command path now targets eval-layer runner in `libs/ghostagent-evals`.
+- Asset extraction logic hardened to scoped-intent patterns (prevents false filtering for generic holdings queries such as “largest holding”).
 - Session memory backend switched from in-memory cache to Postgres-backed JSON message storage.
 - Ghost Agent access policy now supports broad authenticated MVP access while keeping JWT + permission guard enforcement.
 - Added Redis-backed per-user daily Ghost Agent quota (default `100` messages/day) with HTTP `429` on limit exceed.

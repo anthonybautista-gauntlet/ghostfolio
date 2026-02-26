@@ -87,6 +87,8 @@ export class ConfigurationService {
       OIDC_SCOPE: json({ default: ['openid'] }),
       OIDC_TOKEN_URL: str({ default: '' }),
       OIDC_USER_INFO_URL: str({ default: '' }),
+      OPENROUTER_API_KEY: str({ default: '' }),
+      OPENROUTER_MODEL: str({ default: '' }),
       PORT: port({ default: DEFAULT_PORT }),
       PROCESSOR_GATHER_ASSET_PROFILE_CONCURRENCY: num({
         default: DEFAULT_PROCESSOR_GATHER_ASSET_PROFILE_CONCURRENCY
@@ -111,6 +113,7 @@ export class ConfigurationService {
       AI_TOOL_TIMEOUT: num({ default: ms('30 seconds') }),
       AI_MAX_TOOL_STEPS: num({ default: 10 }),
       AI_MAX_PROMPT_CHARS: num({ default: 20000 }),
+      AI_MODEL_CATALOG: str({ default: '' }),
       REQUEST_TIMEOUT: num({ default: ms('3 seconds') }),
       ROOT_URL: url({
         default: environment.rootUrl

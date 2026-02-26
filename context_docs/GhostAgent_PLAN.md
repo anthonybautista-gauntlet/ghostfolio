@@ -56,24 +56,28 @@ Not yet implemented:
 
 Target package modules:
 
-1. `orchestrator`
+1. `core`
    - intent detection
    - ambiguity policy
    - tool routing
    - prompt builder modes
-2. `verification`
+2. `ui`
+   - reusable chat component/module and route helper
+3. `evals`
+   - dataset + scorer + runner (companion layer, non-runtime dependency)
+4. `verification`
    - fact registry builder
    - citation matching and tolerance checks
-3. `tool-contracts`
+5. `tool-contracts`
    - strongly typed read-only tool interfaces
    - normalized tool result envelopes
-4. `memory-adapters`
+6. `memory-adapters`
    - in-memory adapter (dev)
    - persistent adapter interface (prod)
-5. `provider-adapters`
+7. `provider-adapters`
    - OpenRouter adapter
    - optional future direct provider adapters
-6. `schemas`
+8. `schemas`
    - DTO/response contracts and validation schemas
 
 ## Near-Term Implementation Steps
@@ -81,7 +85,7 @@ Target package modules:
 ### Step A: Transaction Accuracy (Done)
 
 - Transaction queries now use Ghostfolio's `SEARCH_QUERY` DB filter for asset-specific filtering.
-- Asset search term is extracted from user message via stop-word removal (no hardcoded symbol maps).
+- Asset search term extraction uses scoped intent patterns (e.g. `price of X`, `transactions for X`, `dividends from X`, `X balance`) to avoid false filters.
 - Date ranges (`last year`, `this month`, etc.) are resolved to explicit `startDate`/`endDate` before query.
 - DB returns only matching transactions — small result set, fast LLM prompt.
 
@@ -102,6 +106,10 @@ Target package modules:
 ### Step D: Package Extraction Readiness
 
 - Move Ghost Agent code behind package interfaces while keeping host adapters in Ghostfolio.
+- Mirror final standalone repo structure in-repo now:
+  - `ghostagent/core` -> `libs/ghostagent-core`
+  - `ghostagent/ui` -> `libs/ghostagent-ui`
+  - `ghostagent/evals` -> `libs/ghostagent-evals`
 - Add migration guide for host projects (env, auth context, tool adapter wiring).
 - Finalize OSS documentation and example integration.
 

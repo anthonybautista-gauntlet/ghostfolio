@@ -1,0 +1,19 @@
+{
+  "name": "ghostagent-ui",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/ghostagent-ui/src",
+  "prefix": "gf",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/ghostagent-ui/src/**/*.ts",
+          "libs/ghostagent-ui/src/**/*.html"
+        ]
+      }
+    }
+  }
+}

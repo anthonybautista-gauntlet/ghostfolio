@@ -1,0 +1,22 @@
+{
+  "name": "ghostagent-core",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ghostagent-core/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["libs/ghostagent-core/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/ghostagent-core"],
+      "options": {
+        "jestConfig": "libs/ghostagent-core/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

@@ -20,6 +20,9 @@
       "@ghostfolio/api/*": ["apps/api/src/*"],
       "@ghostfolio/client/*": ["apps/client/src/app/*"],
       "@ghostfolio/common/*": ["libs/common/src/lib/*"],
+      "@ghostfolio/ghostagent/*": ["libs/ghostagent-core/src/lib/*"],
+      "@ghostfolio/ghostagent-evals/*": ["libs/ghostagent-evals/src/lib/*"],
+      "@ghostfolio/ghostagent-ui/*": ["libs/ghostagent-ui/src/lib/*"],
       "@ghostfolio/ui/*": ["libs/ui/src/lib/*"]
     },
     "noFallthroughCasesInSwitch": true,

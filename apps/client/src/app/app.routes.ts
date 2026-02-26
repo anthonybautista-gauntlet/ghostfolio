@@ -24,11 +24,11 @@ export const routes: Routes = [
   },
   {
     path: 'agentforge',
-    redirectTo: internalRoutes.agentforge.path,
+    redirectTo: internalRoutes.ghostagent.path,
     pathMatch: 'full'
   },
   {
-    path: internalRoutes.agentforge.path,
+    path: internalRoutes.ghostagent.path,
     loadChildren: () =>
       import('./pages/agentforge/agentforge-page.routes').then((m) => m.routes)
   },

@@ -3,18 +3,16 @@ import { PortfolioService } from '@ghostfolio/api/app/portfolio/portfolio.servic
 import { RedisCacheService } from '@ghostfolio/api/app/redis-cache/redis-cache.service';
 import { SymbolService } from '@ghostfolio/api/app/symbol/symbol.service';
 import { ConfigurationService } from '@ghostfolio/api/services/configuration/configuration.service';
-import { PropertyService } from '@ghostfolio/api/services/property/property.service';
-import {
-  DEFAULT_CURRENCY,
-  PROPERTY_API_KEY_OPENROUTER,
-  PROPERTY_OPENROUTER_MODEL
-} from '@ghostfolio/common/config';
+import { DEFAULT_CURRENCY } from '@ghostfolio/common/config';
 import {
   AiChatResponse,
   AiCitedFigure,
   Filter
 } from '@ghostfolio/common/interfaces';
 import type { AiPromptMode, DateRange } from '@ghostfolio/common/types';
+import { buildAiFactRegistry } from '@ghostfolio/ghostagent/backend/ai-fact-registry';
+import { routeMessageToTools } from '@ghostfolio/ghostagent/backend/ai-tool-selection';
+import { GhostAgentVerificationService as VerificationService } from '@ghostfolio/ghostagent/backend/verification.service';
 
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { ChatOpenAI } from '@langchain/openai';
@@ -24,10 +22,8 @@ import { randomUUID } from 'node:crypto';
 import type { ColumnDescriptor } from 'tablemark';
 import { z } from 'zod';
 
-import { buildAiFactRegistry } from './ai-fact-registry';
-import { routeMessageToTools } from './ai-tool-selection';
+import { GhostfolioModelConfigAdapter } from './ghostfolio-model-config.adapter';
 import { PrismaSessionStoreService } from './prisma-session-store.service';
-import { VerificationService } from './verification.service';
 
 type RoutingDecision = ReturnType<typeof routeMessageToTools>;
 type SymbolQuote = Awaited<ReturnType<SymbolService['get']>>;
@@ -71,7 +67,7 @@ export class AiService {
     private readonly configurationService: ConfigurationService,
     private readonly orderService: OrderService,
     private readonly portfolioService: PortfolioService,
-    private readonly propertyService: PropertyService,
+    private readonly modelConfigAdapter: GhostfolioModelConfigAdapter,
     private readonly redisCacheService: RedisCacheService,
     private readonly sessionStore: PrismaSessionStoreService,
     private readonly symbolService: SymbolService,
@@ -79,24 +75,18 @@ export class AiService {
   ) {}
 
   private async createLangChainModel() {
-    const openRouterApiKey = await this.propertyService.getByKey<string>(
-      PROPERTY_API_KEY_OPENROUTER
-    );
-
-    const openRouterModel = await this.propertyService.getByKey<string>(
-      PROPERTY_OPENROUTER_MODEL
-    );
+    const resolvedModelConfig = await this.modelConfigAdapter.getModelConfig();
 
     const timeoutInMilliseconds =
       this.configurationService.get('AI_REQUEST_TIMEOUT');
 
     return new ChatOpenAI({
       configuration: {
-        apiKey: openRouterApiKey,
-        baseURL: 'https://openrouter.ai/api/v1'
+        apiKey: resolvedModelConfig.apiKey,
+        baseURL: resolvedModelConfig.baseUrl
       },
       maxRetries: 1,
-      model: openRouterModel,
+      model: resolvedModelConfig.model,
       temperature: 0,
       timeout: timeoutInMilliseconds
     });
@@ -960,6 +950,8 @@ export class AiService {
       /\b(?:transaction|transactions|activity|activities|trade|trades).{0,60}?\b(?:for|of|in)\s+([a-z0-9.-]{2,20})\b/i,
       /\bhistory\s+(?:for|of)\s+([a-z0-9.-]{2,20})\b/i,
       /\b(?:holding|holdings|position|positions).{0,40}?\b(?:for|of|in)\s+([a-z0-9.-]{2,20})\b/i,
+      /\bhow\s+much\s+([a-z0-9.-]{2,20})\s+do\s+i\s+(?:own|have)\b/i,
+      /\bdo\s+i\s+own\s+(?:any\s+)?([a-z0-9.-]{2,20})\b/i,
       /\bbalance\s+(?:for|of)\s+([a-z0-9.-]{2,20})\b/i,
       /\b([a-z0-9.-]{2,20})\s+balance\b/i
     ];

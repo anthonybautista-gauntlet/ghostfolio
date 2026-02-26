@@ -3,7 +3,7 @@ import {
   selectToolsForMessage
 } from './ai-tool-selection';
 
-describe('ai-tool-selection MVP eval cases', () => {
+describe('ghostagent core tool selection', () => {
   it('routes generic portfolio question to portfolio tool', () => {
     const tools = selectToolsForMessage({
       message: 'How is my portfolio doing this month?'
@@ -62,5 +62,41 @@ describe('ai-tool-selection MVP eval cases', () => {
 
     expect(decision.hasExplicitIntent).toBe(false);
     expect(decision.tools).toEqual(['portfolio_analysis']);
+  });
+
+  it('routes asset-specific balance question to holdings tool', () => {
+    const decision = routeMessageToTools({
+      message: 'What is my bitcoin balance?'
+    });
+
+    expect(decision.intents.holdings).toBe(true);
+    expect(decision.tools).toEqual(['portfolio_holdings']);
+  });
+
+  it('routes portfolio-level balance question to portfolio analysis', () => {
+    const decision = routeMessageToTools({
+      message: 'What is my portfolio balance?'
+    });
+
+    expect(decision.intents.portfolio).toBe(true);
+    expect(decision.tools).toEqual(['portfolio_analysis']);
+  });
+
+  it('routes dividend intent to dividend tracker', () => {
+    const decision = routeMessageToTools({
+      message: 'Have I received dividends from QQQ?'
+    });
+
+    expect(decision.intents.dividend).toBe(true);
+    expect(decision.tools).toEqual(['dividend_tracker']);
+  });
+
+  it('routes ownership quantity question to holdings tool', () => {
+    const decision = routeMessageToTools({
+      message: 'How much cardano do I own?'
+    });
+
+    expect(decision.intents.holdings).toBe(true);
+    expect(decision.tools).toEqual(['portfolio_holdings']);
   });
 });
