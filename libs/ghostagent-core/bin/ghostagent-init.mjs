@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { existsSync } from 'node:fs';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -35,6 +35,7 @@ const migrationTemplatePath = path.join(
   '001_chat_session',
   'migration.sql'
 );
+const migrationsDir = path.join(workspaceRoot, 'prisma', 'migrations');
 
 const requiredEnvLines = [
   'OPENROUTER_API_KEY=',
@@ -108,6 +109,31 @@ function injectChatSessionModel({ schemaContent, chatSessionSnippet }) {
   return { changed: true, nextContent };
 }
 
+async function hasExistingChatSessionMigration() {
+  if (!existsSync(migrationsDir)) {
+    return false;
+  }
+
+  const entries = await readdir(migrationsDir, { withFileTypes: true });
+  const migrationSqlPaths = entries
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => path.join(migrationsDir, entry.name, 'migration.sql'))
+    .filter((sqlPath) => existsSync(sqlPath));
+
+  for (const sqlPath of migrationSqlPaths) {
+    if (sqlPath === migrationOutputPath) {
+      continue;
+    }
+
+    const sql = await readFile(sqlPath, 'utf8');
+    if (sql.includes('CREATE TABLE "ChatSession"')) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 async function main() {
   logHeader();
 
@@ -134,10 +160,12 @@ async function main() {
   });
   updatedSchema = modelPatch.nextContent;
   const migrationExists = existsSync(migrationOutputPath);
+  const chatSessionMigrationExists = await hasExistingChatSessionMigration();
+  const shouldCreateMigration = !migrationExists && !chatSessionMigrationExists;
 
   const summary = {
     actions: {
-      createMigration: !migrationExists,
+      createMigration: shouldCreateMigration,
       updateEnvExample: envPatch.changed,
       updatePrismaSchema: relationPatch.changed || modelPatch.changed
     },
@@ -164,7 +192,7 @@ async function main() {
     await writeFile(prismaSchemaPath, updatedSchema, 'utf8');
   }
 
-  if (!migrationExists) {
+  if (shouldCreateMigration) {
     await mkdir(path.dirname(migrationOutputPath), { recursive: true });
     await writeFile(migrationOutputPath, migrationTemplate, 'utf8');
   }
