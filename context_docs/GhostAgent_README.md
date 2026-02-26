@@ -218,6 +218,14 @@ Planned package boundaries:
 - `ghostagent/ui`: reusable chat UI module/components
 - `ghostagent/evals`: dataset + scorer + eval runner
 
+Persistence note:
+
+- No extra adapter package is required for DB-backed chat history.
+- `ghostagent/core` ships Prisma persistence assets for `ChatSession` under:
+  - `libs/ghostagent-core/prisma/schema.chat-session.prisma`
+  - `libs/ghostagent-core/prisma/migrations/001_chat_session/migration.sql`
+- Host apps apply these migration assets in their own DB lifecycle.
+
 Minimal host responsibilities after extraction:
 
 - Auth/user context injection

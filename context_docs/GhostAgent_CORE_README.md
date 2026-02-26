@@ -22,3 +22,13 @@
 - implement tool adapters against host services
 - implement model config adapter (env/config, optional DB fallback)
 - wire endpoint/controller integration in host framework
+
+## Prisma Persistence Assets (Included)
+
+`ghostagent/core` includes first-party Prisma assets for chat persistence:
+
+- `libs/ghostagent-core/prisma/schema.chat-session.prisma`
+- `libs/ghostagent-core/prisma/migrations/001_chat_session/migration.sql`
+
+Host apps should apply these assets in their own migration workflow (the package
+does not auto-run migrations at runtime).

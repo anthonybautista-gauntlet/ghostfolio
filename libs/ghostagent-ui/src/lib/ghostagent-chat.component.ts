@@ -1,6 +1,7 @@
 import { DataService } from '@ghostfolio/ui/services';
 
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectorRef,
   Component,
@@ -39,6 +40,8 @@ interface ChatMessage {
 })
 export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
   private hasRestoredSession = false;
+  private readonly maxRestoreAttempts = 5;
+  private restoreAttempts = 0;
   public isLoading = false;
   public messages: ChatMessage[] = [];
   public prompt = '';
@@ -130,6 +133,7 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
 
   private restoreMostRecentSession() {
     this.hasRestoredSession = true;
+    this.restoreAttempts += 1;
 
     this.dataService
       .getAiChatSession()
@@ -141,15 +145,47 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
             role
           }));
           this.sessionId = sessionId;
+          this.restoreAttempts = 0;
           this.scrollMessagesToBottom();
           this.changeDetectorRef.markForCheck();
         },
-        error: () => {
+        error: (error: unknown) => {
+          if (
+            this.shouldRetryRestore({
+              attempt: this.restoreAttempts,
+              error
+            })
+          ) {
+            setTimeout(() => {
+              this.restoreMostRecentSession();
+            }, 250 * this.restoreAttempts);
+            return;
+          }
+
+          this.restoreAttempts = 0;
           this.sessionId = undefined;
           this.messages = [];
           this.changeDetectorRef.markForCheck();
         }
       });
+  }
+
+  private shouldRetryRestore({
+    attempt,
+    error
+  }: {
+    attempt: number;
+    error: unknown;
+  }) {
+    if (attempt >= this.maxRestoreAttempts) {
+      return false;
+    }
+
+    if (error instanceof HttpErrorResponse) {
+      return [0, 401, 403].includes(error.status);
+    }
+
+    return false;
   }
 
   private scrollMessagesToBottom() {
