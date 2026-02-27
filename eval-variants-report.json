@@ -1,0 +1,84 @@
+{
+  "datasetPath": "/home/xrpant/Desktop/projects/ghostfolio/libs/ghostagent-evals/src/lib/staged/golden-cases.json",
+  "generatedAt": "2026-02-27T05:47:41.393Z",
+  "variants": {
+    "baseline": {
+      "description": "Current baseline behavior",
+      "model": "anthropic/claude-sonnet-4.5",
+      "notes": {
+        "systemPromptVariant": "v1",
+        "temperature": 0
+      },
+      "passRate": 1,
+      "performance": {
+        "avgMs": 3570.7,
+        "p50Ms": 3403,
+        "p95Ms": 8392
+      },
+      "tokenUsage": {
+        "averageInputTokens": 0,
+        "averageOutputTokens": 0,
+        "estimatedCostUsd": 0
+      },
+      "toolUsage": {
+        "portfolio_analysis": 3,
+        "market_data": 2,
+        "transaction_history": 3,
+        "portfolio_holdings": 1,
+        "dividend_tracker": 1
+      }
+    },
+    "prompt_compact": {
+      "description": "Shorter synthesis prompt",
+      "model": "anthropic/claude-sonnet-4.5",
+      "notes": {
+        "systemPromptVariant": "v2",
+        "temperature": 0
+      },
+      "passRate": 1,
+      "performance": {
+        "avgMs": 3312.4,
+        "p50Ms": 3367,
+        "p95Ms": 7654
+      },
+      "tokenUsage": {
+        "averageInputTokens": 0,
+        "averageOutputTokens": 0,
+        "estimatedCostUsd": 0
+      },
+      "toolUsage": {
+        "portfolio_analysis": 3,
+        "market_data": 2,
+        "transaction_history": 3,
+        "portfolio_holdings": 1,
+        "dividend_tracker": 1
+      }
+    },
+    "lower_cost_model": {
+      "description": "Model cost/perf comparison candidate",
+      "model": "minimax/minimax-m2.5",
+      "notes": {
+        "systemPromptVariant": "v1",
+        "temperature": 0
+      },
+      "passRate": 0.9,
+      "performance": {
+        "avgMs": 5644.1,
+        "p50Ms": 3442,
+        "p95Ms": 25770
+      },
+      "tokenUsage": {
+        "averageInputTokens": 0,
+        "averageOutputTokens": 0,
+        "estimatedCostUsd": 0
+      },
+      "toolUsage": {
+        "portfolio_analysis": 3,
+        "market_data": 2,
+        "transaction_history": 3,
+        "portfolio_holdings": 1,
+        "dividend_tracker": 1
+      }
+    }
+  }
+}

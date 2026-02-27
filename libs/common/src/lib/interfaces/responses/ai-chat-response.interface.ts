@@ -8,6 +8,7 @@ export interface AiCitedFigure {
 export interface AiToolInvocation {
   durationMs: number;
   error?: string;
+  metadata?: Record<string, unknown>;
   ok: boolean;
   tool: string;
 }

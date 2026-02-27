@@ -35,6 +35,20 @@ type SymbolLookupInput = Parameters<
   SymbolService['get']
 >[0]['dataGatheringItem'];
 type ToolHandler = () => Promise<unknown>;
+interface AiFeedbackRecord {
+  assistantReply: string;
+  comment: string | null;
+  createdAt: Date;
+  id: string;
+  model: string | null;
+  query: string;
+  rating: string;
+  sessionId: string;
+  toolInvocations: unknown;
+  updatedAt: Date;
+  userId: string;
+  verification: unknown;
+}
 
 @Injectable()
 export class AiService {
@@ -311,9 +325,12 @@ export class AiService {
       this.configurationService.get('AI_MAX_TOOL_STEPS')
     );
     const selectedToolNames = routingDecision.tools.slice(0, maxToolSteps);
-    AiService.logger.log(
-      `AI stage route_decision (requestId=${conversationId}, explicitIntent=${routingDecision.hasExplicitIntent}, tools=${selectedToolNames.join(',') || 'none'})`
-    );
+    this.logStructuredStage({
+      explicitIntent: routingDecision.hasExplicitIntent,
+      requestId: conversationId,
+      stage: 'route_decision',
+      tools: selectedToolNames
+    });
 
     if (
       this.shouldAskClarifyingQuestion({
@@ -371,9 +388,17 @@ export class AiService {
 
     for (const toolName of selectedToolNames) {
       const startTime = Date.now();
-      AiService.logger.log(
-        `AI stage tool_start (requestId=${conversationId}, tool=${toolName})`
-      );
+      const metadata = this.getToolInvocationMetadata({
+        message,
+        portfolioDateRange,
+        toolName,
+        transactionDateRange
+      });
+      this.logStructuredStage({
+        requestId: conversationId,
+        stage: 'tool_start',
+        tool: toolName
+      });
 
       try {
         const currentTool = langChainTools[toolName];
@@ -387,12 +412,17 @@ export class AiService {
 
         toolInvocations.push({
           durationMs: Date.now() - startTime,
+          metadata,
           ok: true,
           tool: toolName
         });
-        AiService.logger.log(
-          `AI stage tool_complete (requestId=${conversationId}, tool=${toolName}, durationMs=${Date.now() - startTime}, ok=true)`
-        );
+        this.logStructuredStage({
+          durationMs: Date.now() - startTime,
+          ok: true,
+          requestId: conversationId,
+          stage: 'tool_complete',
+          tool: toolName
+        });
       } catch (error: unknown) {
         const errorMessage =
           error instanceof Error
@@ -409,12 +439,17 @@ export class AiService {
         toolInvocations.push({
           durationMs: Date.now() - startTime,
           error: errorMessage,
+          metadata,
           ok: false,
           tool: toolName
         });
-        AiService.logger.log(
-          `AI stage tool_complete (requestId=${conversationId}, tool=${toolName}, durationMs=${Date.now() - startTime}, ok=false)`
-        );
+        this.logStructuredStage({
+          durationMs: Date.now() - startTime,
+          ok: false,
+          requestId: conversationId,
+          stage: 'tool_complete',
+          tool: toolName
+        });
       }
     }
 
@@ -448,9 +483,11 @@ export class AiService {
       llmResult = quoteFastPath;
       synthesisPath = 'quote_fast_path';
     } else {
-      AiService.logger.log(
-        `AI stage synthesis_start (requestId=${conversationId}, mode=llm)`
-      );
+      this.logStructuredStage({
+        mode: 'llm',
+        requestId: conversationId,
+        stage: 'synthesis_start'
+      });
       const llmStartedAt = Date.now();
       llmResult = await this.generateChatResponse({
         history: history.map(({ content, role }) => {
@@ -466,9 +503,16 @@ export class AiService {
         toolResults
       });
       llmMs = Date.now() - llmStartedAt;
-      AiService.logger.log(
-        `AI stage synthesis_complete (requestId=${conversationId}, mode=llm, llmMs=${llmMs}, inputTokens=${llmResult?.usage?.inputTokens ?? 'n/a'}, outputTokens=${llmResult?.usage?.outputTokens ?? 'n/a'}, totalTokens=${llmResult?.usage?.totalTokens ?? 'n/a'}, estimatedCostUsd=${llmResult?.usage?.estimatedCostUsd ?? 'n/a'})`
-      );
+      this.logStructuredStage({
+        estimatedCostUsd: llmResult?.usage?.estimatedCostUsd ?? null,
+        inputTokens: llmResult?.usage?.inputTokens ?? null,
+        llmMs,
+        mode: 'llm',
+        outputTokens: llmResult?.usage?.outputTokens ?? null,
+        requestId: conversationId,
+        stage: 'synthesis_complete',
+        totalTokens: llmResult?.usage?.totalTokens ?? null
+      });
     }
 
     const verification = this.verificationService.verify({
@@ -476,9 +520,12 @@ export class AiService {
       factRegistry,
       toolResults
     });
-    AiService.logger.log(
-      `AI stage verification (requestId=${conversationId}, passed=${verification.passed}, failedCitations=${verification.failedCitations.length})`
-    );
+    this.logStructuredStage({
+      failedCitations: verification.failedCitations.length,
+      passed: verification.passed,
+      requestId: conversationId,
+      stage: 'verification'
+    });
     const responseMessage = verification.passed
       ? (llmResult?.message ??
         'I could not generate a structured response for this query.')
@@ -587,6 +634,98 @@ export class AiService {
     return {
       availableModels,
       selectedModel
+    };
+  }
+
+  public async createFeedback({
+    assistantReply,
+    comment,
+    model,
+    query,
+    rating,
+    sessionId,
+    toolInvocations,
+    userId,
+    verification
+  }: {
+    assistantReply: string;
+    comment?: string;
+    model?: string;
+    query: string;
+    rating: 'down' | 'up';
+    sessionId: string;
+    toolInvocations?: unknown[];
+    userId: string;
+    verification?: unknown;
+  }) {
+    const aiFeedbackDelegate = this.getAiFeedbackDelegate();
+    const createdRecord = (await aiFeedbackDelegate.create({
+      data: {
+        assistantReply,
+        comment: comment?.trim() ? comment.trim() : undefined,
+        model,
+        query,
+        rating,
+        sessionId,
+        toolInvocations: toolInvocations as unknown as
+          | Prisma.InputJsonValue
+          | undefined,
+        userId,
+        verification: verification as unknown as
+          | Prisma.InputJsonValue
+          | undefined
+      }
+    })) as AiFeedbackRecord;
+
+    return {
+      createdAt: createdRecord.createdAt.toISOString(),
+      id: createdRecord.id
+    };
+  }
+
+  public async getFeedbackForAdmin({
+    rating,
+    skip = 0,
+    take = 50
+  }: {
+    rating?: 'down' | 'up';
+    skip?: number;
+    take?: number;
+  }) {
+    const aiFeedbackDelegate = this.getAiFeedbackDelegate();
+    const where = rating
+      ? ({
+          rating
+        } as const)
+      : undefined;
+    const [count, feedback] = (await Promise.all([
+      aiFeedbackDelegate.count({ where }),
+      aiFeedbackDelegate.findMany({
+        orderBy: {
+          createdAt: 'desc'
+        },
+        skip,
+        take,
+        where
+      })
+    ])) as [number, AiFeedbackRecord[]];
+
+    return {
+      count,
+      feedback: feedback.map((item) => ({
+        assistantReply: item.assistantReply,
+        comment: item.comment ?? undefined,
+        createdAt: item.createdAt.toISOString(),
+        id: item.id,
+        model: item.model ?? undefined,
+        query: item.query,
+        rating: item.rating,
+        sessionId: item.sessionId,
+        toolInvocations: item.toolInvocations,
+        updatedAt: item.updatedAt.toISOString(),
+        userId: item.userId,
+        verification: item.verification
+      }))
     };
   }
 
@@ -1230,6 +1369,50 @@ export class AiService {
     return 'max';
   }
 
+  private getToolInvocationMetadata({
+    message,
+    portfolioDateRange,
+    toolName,
+    transactionDateRange
+  }: {
+    message: string;
+    portfolioDateRange: DateRange;
+    toolName: string;
+    transactionDateRange?: {
+      endDate: Date;
+      startDate: Date;
+    };
+  }) {
+    const searchTerm = this.extractAssetSearchTerm({ message });
+
+    if (toolName === 'transaction_history') {
+      return {
+        dateRange:
+          transactionDateRange?.startDate && transactionDateRange?.endDate
+            ? {
+                endDate: transactionDateRange.endDate.toISOString(),
+                startDate: transactionDateRange.startDate.toISOString()
+              }
+            : null,
+        searchTerm: searchTerm ?? null
+      };
+    }
+
+    if (toolName === 'portfolio_analysis') {
+      return {
+        dateRange: portfolioDateRange
+      };
+    }
+
+    if (toolName === 'market_data') {
+      return {
+        searchTerm: searchTerm ?? null
+      };
+    }
+
+    return {};
+  }
+
   private shouldAskClarifyingQuestion({
     hasExplicitIntent,
     history,
@@ -1706,6 +1889,34 @@ export class AiService {
       (outputTokens / 1000) * outputTokenPricePer1K;
 
     return Number(estimatedCost.toFixed(6));
+  }
+
+  private getAiFeedbackDelegate() {
+    return (
+      this.prismaService as unknown as {
+        aiFeedback: {
+          count: (args?: unknown) => Promise<number>;
+          create: (args: unknown) => Promise<unknown>;
+          findMany: (args: unknown) => Promise<unknown[]>;
+        };
+      }
+    ).aiFeedback;
+  }
+
+  private logStructuredStage({
+    stage,
+    ...payload
+  }: {
+    stage: string;
+    [key: string]: unknown;
+  }) {
+    AiService.logger.log(
+      JSON.stringify({
+        ...payload,
+        stage,
+        subsystem: 'ai'
+      })
+    );
   }
 
   private async executeWithTimeout<T>({

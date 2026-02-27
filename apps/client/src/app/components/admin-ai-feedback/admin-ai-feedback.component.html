@@ -1,0 +1,83 @@
+<div class="container">
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Rating</mat-label>
+        <mat-select
+          [(ngModel)]="ratingFilter"
+          (ngModelChange)="onRatingFilterChange()"
+        >
+          <mat-option value="">All</mat-option>
+          <mat-option value="up">Up</mat-option>
+          <mat-option value="down">Down</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="gf-table" mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="createdAt">
+        <th *matHeaderCellDef mat-header-cell>Created</th>
+        <td *matCellDef="let element" mat-cell>
+          {{ element.createdAt | date: 'short' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="rating">
+        <th *matHeaderCellDef mat-header-cell>Rating</th>
+        <td *matCellDef="let element" mat-cell>{{ element.rating }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="query">
+        <th *matHeaderCellDef mat-header-cell>Query</th>
+        <td
+          *matCellDef="let element"
+          class="text-truncate max-width-cell"
+          mat-cell
+        >
+          {{ element.query }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="assistantReply">
+        <th *matHeaderCellDef mat-header-cell>Assistant Reply</th>
+        <td
+          *matCellDef="let element"
+          class="text-truncate max-width-cell"
+          mat-cell
+        >
+          {{ element.assistantReply }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="comment">
+        <th *matHeaderCellDef mat-header-cell>Comment</th>
+        <td
+          *matCellDef="let element"
+          class="text-truncate max-width-cell"
+          mat-cell
+        >
+          {{ element.comment || '-' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="userId">
+        <th *matHeaderCellDef mat-header-cell>User</th>
+        <td *matCellDef="let element" class="text-monospace" mat-cell>
+          {{ element.userId }}
+        </td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
+    </table>
+  </div>
+
+  <mat-paginator
+    [length]="totalItems"
+    [pageSize]="50"
+    [showFirstLastButtons]="true"
+    (page)="onChangePage($event)"
+  />
+</div>

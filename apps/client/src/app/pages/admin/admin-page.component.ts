@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
+  chatboxEllipsesOutline,
   flashOutline,
   peopleOutline,
   readerOutline,
@@ -28,6 +29,7 @@ export class AdminPageComponent implements OnInit {
 
   public constructor(private deviceService: DeviceDetectorService) {
     addIcons({
+      chatboxEllipsesOutline,
       flashOutline,
       peopleOutline,
       readerOutline,
@@ -44,6 +46,11 @@ export class AdminPageComponent implements OnInit {
         iconName: 'reader-outline',
         label: $localize`Overview`,
         routerLink: internalRoutes.adminControl.routerLink
+      },
+      {
+        iconName: 'chatbox-ellipses-outline',
+        label: internalRoutes.adminControl.subRoutes.feedback.title,
+        routerLink: internalRoutes.adminControl.subRoutes.feedback.routerLink
       },
       {
         iconName: 'settings-outline',

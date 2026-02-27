@@ -185,6 +185,27 @@ model ChatSession {
   @@index([userId, updatedAt])
 }
 
+model AiFeedback {
+  id             String   @id @default(uuid())
+  assistantReply String
+  comment        String?
+  createdAt      DateTime @default(now())
+  model          String?
+  query          String
+  rating         String
+  sessionId      String
+  toolInvocations Json?
+  updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], onDelete: Cascade, references: [id])
+  userId         String
+  verification   Json?
+
+  @@index([createdAt])
+  @@index([rating])
+  @@index([sessionId])
+  @@index([userId, createdAt])
+}
+
 model Settings {
   settings  Json?
   updatedAt DateTime @updatedAt
@@ -279,6 +300,7 @@ model User {
   authChallenge String?
   authDevices   AuthDevice[]
   chatSessions  ChatSession[]
+  aiFeedback    AiFeedback[]
   createdAt     DateTime        @default(now())
   id            String          @id @default(uuid())
   provider      Provider        @default(ANONYMOUS)

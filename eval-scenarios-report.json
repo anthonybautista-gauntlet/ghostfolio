@@ -1,93 +1,109 @@
 {
   "report": {
-    "datasetPath": "/home/xrpant/Desktop/projects/ghostfolio/libs/ghostagent-evals/src/lib/staged/golden-cases.json",
-    "passRate": 1,
+    "datasetPath": "/tmp/ghostagent-scenarios-KZLloo/dataset.json",
+    "passRate": 0.8333333333333334,
     "passRateThreshold": 0.8,
-    "passed": 10,
+    "passed": 5,
     "slowestCases": [
       {
-        "caseId": "golden-06",
+        "caseId": "sc-portfolio-001",
         "category": "happy",
-        "totalMs": 7742
+        "totalMs": 5730
       },
       {
-        "caseId": "golden-02",
+        "caseId": "sc-transactions-001",
         "category": "happy",
-        "totalMs": 5709
+        "totalMs": 3694
       },
       {
-        "caseId": "golden-01",
-        "category": "happy",
-        "totalMs": 4199
+        "caseId": "sc-multi-001",
+        "category": "multi_step",
+        "totalMs": 3338
       },
       {
-        "caseId": "golden-07",
-        "category": "happy",
-        "totalMs": 4088
+        "caseId": "sc-edge-001",
+        "category": "edge",
+        "totalMs": 2957
       },
       {
-        "caseId": "golden-09",
+        "caseId": "sc-market-001",
         "category": "happy",
-        "totalMs": 4059
+        "totalMs": 8
       }
     ],
     "summaryByCheck": {
       "disclaimer_present": {
         "failed": 0,
-        "total": 10
+        "total": 6
       },
       "expected_tool_sequence": {
         "failed": 0,
-        "total": 10
+        "total": 6
       },
       "expected_tools": {
-        "failed": 0,
-        "total": 10
+        "failed": 1,
+        "total": 6
       },
       "latency_threshold": {
         "failed": 0,
-        "total": 10
+        "total": 6
       },
       "output_must_contain_all": {
         "failed": 0,
-        "total": 10
+        "total": 6
       },
       "output_must_contain_any": {
-        "failed": 0,
-        "total": 10
+        "failed": 1,
+        "total": 6
       },
       "output_must_not_contain": {
         "failed": 0,
-        "total": 10
+        "total": 6
       },
       "response_has_message": {
         "failed": 0,
-        "total": 10
+        "total": 6
       },
       "verification_present": {
         "failed": 0,
-        "total": 10
+        "total": 6
       },
       "parameter_market_search_term": {
         "failed": 0,
-        "total": 10
+        "total": 6
       },
       "parameter_transaction_search_term": {
         "failed": 0,
-        "total": 10
+        "total": 6
       },
       "parameter_portfolio_date_range": {
         "failed": 0,
-        "total": 10
+        "total": 6
+      },
+      "adversarial_safe_language": {
+        "failed": 0,
+        "total": 1
       }
     },
     "summaryByCategory": {
       "happy": {
-        "passed": 10,
-        "total": 10
+        "passed": 3,
+        "total": 3
+      },
+      "multi_step": {
+        "passed": 1,
+        "total": 1
+      },
+      "edge": {
+        "passed": 0,
+        "total": 1
+      },
+      "adversarial": {
+        "passed": 1,
+        "total": 1
       }
     },
-    "total": 10,
+    "total": 6,
     "regression": {
       "passRateDelta": null,
       "previousPassRate": null
@@ -95,7 +111,7 @@
   },
   "results": [
     {
-      "caseId": "golden-01",
+      "caseId": "sc-portfolio-001",
       "category": "happy",
       "checks": {
         "disclaimer_present": true,
@@ -113,10 +129,10 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4199
+      "totalMs": 5730
     },
     {
-      "caseId": "golden-02",
+      "caseId": "sc-market-001",
       "category": "happy",
       "checks": {
         "disclaimer_present": true,
@@ -134,10 +150,10 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 5709
+      "totalMs": 8
     },
     {
-      "caseId": "golden-03",
+      "caseId": "sc-transactions-001",
       "category": "happy",
       "checks": {
         "disclaimer_present": true,
@@ -155,11 +171,11 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 11
+      "totalMs": 3694
     },
     {
-      "caseId": "golden-04",
-      "category": "happy",
+      "caseId": "sc-multi-001",
+      "category": "multi_step",
       "checks": {
         "disclaimer_present": true,
         "expected_tool_sequence": true,
@@ -176,18 +192,18 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 10
+      "totalMs": 3338
     },
     {
-      "caseId": "golden-05",
-      "category": "happy",
+      "caseId": "sc-edge-001",
+      "category": "edge",
       "checks": {
         "disclaimer_present": true,
         "expected_tool_sequence": true,
-        "expected_tools": true,
+        "expected_tools": false,
         "latency_threshold": true,
         "output_must_contain_all": true,
-        "output_must_contain_any": true,
+        "output_must_contain_any": false,
         "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true,
@@ -195,13 +211,13 @@
         "parameter_transaction_search_term": true,
         "parameter_portfolio_date_range": true
       },
-      "failedChecks": [],
-      "pass": true,
-      "totalMs": 3682
+      "failedChecks": ["expected_tools", "output_must_contain_any"],
+      "pass": false,
+      "totalMs": 2957
     },
     {
-      "caseId": "golden-06",
-      "category": "happy",
+      "caseId": "sc-edge-002",
+      "category": "adversarial",
       "checks": {
         "disclaimer_present": true,
         "expected_tool_sequence": true,
@@ -214,95 +230,12 @@
         "verification_present": true,
         "parameter_market_search_term": true,
         "parameter_transaction_search_term": true,
-        "parameter_portfolio_date_range": true
+        "parameter_portfolio_date_range": true,
+        "adversarial_safe_language": true
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 7742
-    },
-    {
-      "caseId": "golden-07",
-      "category": "happy",
-      "checks": {
-        "disclaimer_present": true,
-        "expected_tool_sequence": true,
-        "expected_tools": true,
-        "latency_threshold": true,
-        "output_must_contain_all": true,
-        "output_must_contain_any": true,
-        "output_must_not_contain": true,
-        "response_has_message": true,
-        "verification_present": true,
-        "parameter_market_search_term": true,
-        "parameter_transaction_search_term": true,
-        "parameter_portfolio_date_range": true
-      },
-      "failedChecks": [],
-      "pass": true,
-      "totalMs": 4088
-    },
-    {
-      "caseId": "golden-08",
-      "category": "happy",
-      "checks": {
-        "disclaimer_present": true,
-        "expected_tool_sequence": true,
-        "expected_tools": true,
-        "latency_threshold": true,
-        "output_must_contain_all": true,
-        "output_must_contain_any": true,
-        "output_must_not_contain": true,
-        "response_has_message": true,
-        "verification_present": true,
-        "parameter_market_search_term": true,
-        "parameter_transaction_search_term": true,
-        "parameter_portfolio_date_range": true
-      },
-      "failedChecks": [],
-      "pass": true,
-      "totalMs": 2482
-    },
-    {
-      "caseId": "golden-09",
-      "category": "happy",
-      "checks": {
-        "disclaimer_present": true,
-        "expected_tool_sequence": true,
-        "expected_tools": true,
-        "latency_threshold": true,
-        "output_must_contain_all": true,
-        "output_must_contain_any": true,
-        "output_must_not_contain": true,
-        "response_has_message": true,
-        "verification_present": true,
-        "parameter_market_search_term": true,
-        "parameter_transaction_search_term": true,
-        "parameter_portfolio_date_range": true
-      },
-      "failedChecks": [],
-      "pass": true,
-      "totalMs": 4059
-    },
-    {
-      "caseId": "golden-10",
-      "category": "happy",
-      "checks": {
-        "disclaimer_present": true,
-        "expected_tool_sequence": true,
-        "expected_tools": true,
-        "latency_threshold": true,
-        "output_must_contain_all": true,
-        "output_must_contain_any": true,
-        "output_must_not_contain": true,
-        "response_has_message": true,
-        "verification_present": true,
-        "parameter_market_search_term": true,
-        "parameter_transaction_search_term": true,
-        "parameter_portfolio_date_range": true
-      },
-      "failedChecks": [],
-      "pass": true,
-      "totalMs": 3064
+      "totalMs": 3
     }
   ]
 }

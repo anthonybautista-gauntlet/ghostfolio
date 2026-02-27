@@ -706,6 +706,80 @@ export class DataService {
     });
   }
 
+  public postAiFeedback({
+    assistantReply,
+    comment,
+    model,
+    query,
+    rating,
+    sessionId,
+    toolInvocations,
+    verification
+  }: {
+    assistantReply: string;
+    comment?: string;
+    model?: string;
+    query: string;
+    rating: 'down' | 'up';
+    sessionId: string;
+    toolInvocations?: unknown[];
+    verification?: unknown;
+  }) {
+    return this.http.post<{ createdAt: string; id: string }>(
+      '/api/v1/ai/feedback',
+      {
+        assistantReply,
+        comment,
+        model,
+        query,
+        rating,
+        sessionId,
+        toolInvocations,
+        verification
+      }
+    );
+  }
+
+  public fetchAiAdminFeedback({
+    rating,
+    skip,
+    take
+  }: {
+    rating?: 'down' | 'up';
+    skip?: number;
+    take?: number;
+  }) {
+    let params = new HttpParams();
+
+    if (rating) {
+      params = params.append('rating', rating);
+    }
+    if (typeof skip === 'number') {
+      params = params.append('skip', skip);
+    }
+    if (typeof take === 'number') {
+      params = params.append('take', take);
+    }
+
+    return this.http.get<{
+      count: number;
+      feedback: {
+        assistantReply: string;
+        comment?: string;
+        createdAt: string;
+        id: string;
+        model?: string;
+        query: string;
+        rating: 'down' | 'up';
+        sessionId: string;
+        toolInvocations?: unknown[];
+        updatedAt: string;
+        userId: string;
+        verification?: unknown;
+      }[];
+    }>('/api/v1/ai/admin/feedback', { params });
+  }
+
   public fetchPublicPortfolio(aAccessId: string) {
     return this.http
       .get<PublicPortfolioResponse>(`/api/v1/public/${aAccessId}/portfolio`)

@@ -6,6 +6,10 @@
   padding: 0.75rem;
 }
 
+.model-selector {
+  margin-top: 0.5rem;
+}
+
 .message-item {
   border-radius: 0.375rem;
   margin-bottom: 0.75rem;
@@ -28,4 +32,19 @@
 
 .thinking-indicator {
   opacity: 0.85;
+}
+
+.feedback-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.feedback-error {
+  color: #c62828;
+  font-size: 0.75rem;
+}
+
+.feedback-status {
+  color: var(--ion-color-success, #2e7d32);
+  font-size: 0.75rem;
 }

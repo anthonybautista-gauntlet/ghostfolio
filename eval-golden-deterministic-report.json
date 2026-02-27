@@ -1,101 +1,14 @@
 {
   "report": {
-    "datasetPath": "/home/xrpant/Desktop/projects/ghostfolio/libs/ghostagent-evals/src/lib/staged/golden-cases.json",
+    "fixturePath": "/home/xrpant/Desktop/projects/ghostfolio/libs/ghostagent-evals/src/lib/staged/golden-deterministic-fixtures.json",
     "passRate": 1,
     "passRateThreshold": 0.8,
     "passed": 10,
-    "slowestCases": [
-      {
-        "caseId": "golden-06",
-        "category": "happy",
-        "totalMs": 7742
-      },
-      {
-        "caseId": "golden-02",
-        "category": "happy",
-        "totalMs": 5709
-      },
-      {
-        "caseId": "golden-01",
-        "category": "happy",
-        "totalMs": 4199
-      },
-      {
-        "caseId": "golden-07",
-        "category": "happy",
-        "totalMs": 4088
-      },
-      {
-        "caseId": "golden-09",
-        "category": "happy",
-        "totalMs": 4059
-      }
-    ],
-    "summaryByCheck": {
-      "disclaimer_present": {
-        "failed": 0,
-        "total": 10
-      },
-      "expected_tool_sequence": {
-        "failed": 0,
-        "total": 10
-      },
-      "expected_tools": {
-        "failed": 0,
-        "total": 10
-      },
-      "latency_threshold": {
-        "failed": 0,
-        "total": 10
-      },
-      "output_must_contain_all": {
-        "failed": 0,
-        "total": 10
-      },
-      "output_must_contain_any": {
-        "failed": 0,
-        "total": 10
-      },
-      "output_must_not_contain": {
-        "failed": 0,
-        "total": 10
-      },
-      "response_has_message": {
-        "failed": 0,
-        "total": 10
-      },
-      "verification_present": {
-        "failed": 0,
-        "total": 10
-      },
-      "parameter_market_search_term": {
-        "failed": 0,
-        "total": 10
-      },
-      "parameter_transaction_search_term": {
-        "failed": 0,
-        "total": 10
-      },
-      "parameter_portfolio_date_range": {
-        "failed": 0,
-        "total": 10
-      }
-    },
-    "summaryByCategory": {
-      "happy": {
-        "passed": 10,
-        "total": 10
-      }
-    },
-    "total": 10,
-    "regression": {
-      "passRateDelta": null,
-      "previousPassRate": null
-    }
+    "total": 10
   },
   "results": [
     {
-      "caseId": "golden-01",
+      "caseId": "golden-det-01",
       "category": "happy",
       "checks": {
         "disclaimer_present": true,
@@ -113,10 +26,10 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4199
+      "totalMs": 200
     },
     {
-      "caseId": "golden-02",
+      "caseId": "golden-det-02",
       "category": "happy",
       "checks": {
         "disclaimer_present": true,
@@ -134,10 +47,10 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 5709
+      "totalMs": 220
     },
     {
-      "caseId": "golden-03",
+      "caseId": "golden-det-03",
       "category": "happy",
       "checks": {
         "disclaimer_present": true,
@@ -155,10 +68,10 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 11
+      "totalMs": 140
     },
     {
-      "caseId": "golden-04",
+      "caseId": "golden-det-04",
       "category": "happy",
       "checks": {
         "disclaimer_present": true,
@@ -176,10 +89,10 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 10
+      "totalMs": 130
     },
     {
-      "caseId": "golden-05",
+      "caseId": "golden-det-05",
       "category": "happy",
       "checks": {
         "disclaimer_present": true,
@@ -197,10 +110,10 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3682
+      "totalMs": 180
     },
     {
-      "caseId": "golden-06",
+      "caseId": "golden-det-06",
       "category": "happy",
       "checks": {
         "disclaimer_present": true,
@@ -218,10 +131,10 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 7742
+      "totalMs": 185
     },
     {
-      "caseId": "golden-07",
+      "caseId": "golden-det-07",
       "category": "happy",
       "checks": {
         "disclaimer_present": true,
@@ -239,10 +152,10 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4088
+      "totalMs": 205
     },
     {
-      "caseId": "golden-08",
+      "caseId": "golden-det-08",
       "category": "happy",
       "checks": {
         "disclaimer_present": true,
@@ -260,10 +173,10 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2482
+      "totalMs": 175
     },
     {
-      "caseId": "golden-09",
+      "caseId": "golden-det-09",
       "category": "happy",
       "checks": {
         "disclaimer_present": true,
@@ -281,10 +194,10 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4059
+      "totalMs": 190
     },
     {
-      "caseId": "golden-10",
+      "caseId": "golden-det-10",
       "category": "happy",
       "checks": {
         "disclaimer_present": true,
@@ -302,7 +215,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3064
+      "totalMs": 160
     }
   ]
 }

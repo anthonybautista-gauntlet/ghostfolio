@@ -16,7 +16,7 @@
     </div>
   </mat-card-header>
   <mat-card-content>
-    <mat-form-field appearance="outline" class="w-100 mb-3">
+    <mat-form-field appearance="outline" class="model-selector w-100 mb-3">
       <mat-label>Model</mat-label>
       <mat-select
         [disabled]="
@@ -49,6 +49,77 @@
           <div class="mt-1 whitespace-pre-line">{{ message.content }}</div>
           @if (message.role === 'assistant' && message.disclaimer) {
             <div class="message-disclaimer">{{ message.disclaimer }}</div>
+          }
+          @if (message.role === 'assistant') {
+            <div class="feedback-controls mt-2">
+              <button
+                mat-stroked-button
+                type="button"
+                [disabled]="
+                  message.feedbackSubmitting || message.feedbackSubmitted
+                "
+                (click)="
+                  onSelectFeedback({
+                    index: $index,
+                    rating: 'up'
+                  })
+                "
+              >
+                👍 Helpful
+              </button>
+              <button
+                mat-stroked-button
+                type="button"
+                [disabled]="
+                  message.feedbackSubmitting || message.feedbackSubmitted
+                "
+                (click)="
+                  onSelectFeedback({
+                    index: $index,
+                    rating: 'down'
+                  })
+                "
+              >
+                👎 Needs work
+              </button>
+            </div>
+
+            @if (
+              message.feedbackRating === 'down' && !message.feedbackSubmitted
+            ) {
+              <mat-form-field appearance="outline" class="w-100 mt-2">
+                <mat-label>What should improve?</mat-label>
+                <textarea
+                  matInput
+                  rows="2"
+                  [(ngModel)]="message.feedbackComment"
+                ></textarea>
+              </mat-form-field>
+              <div class="d-flex justify-content-end">
+                <button
+                  color="primary"
+                  mat-flat-button
+                  type="button"
+                  [disabled]="message.feedbackSubmitting"
+                  (click)="submitFeedback({ index: $index })"
+                >
+                  {{
+                    message.feedbackSubmitting
+                      ? 'Submitting...'
+                      : 'Submit feedback'
+                  }}
+                </button>
+              </div>
+            }
+
+            @if (message.feedbackSubmitted) {
+              <div class="feedback-status mt-1">
+                Feedback submitted. Thank you.
+              </div>
+            }
+            @if (message.feedbackError) {
+              <div class="feedback-error mt-1">{{ message.feedbackError }}</div>
+            }
           }
         </div>
       }

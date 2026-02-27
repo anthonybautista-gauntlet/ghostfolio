@@ -9,12 +9,18 @@ in `@ghostagent/core` so host apps do not need a separate adapter package.
   - Prisma model snippet for `ChatSession`
 - `migrations/001_chat_session/migration.sql`
   - SQL migration that creates `ChatSession`, index, and foreign key
+- `schema.ai-feedback.prisma`
+  - Prisma model snippet for `AiFeedback`
+- `migrations/002_ai_feedback/migration.sql`
+  - SQL migration that creates `AiFeedback`, indexes, and foreign key
 
 ## Host integration steps
 
-1. Add the `ChatSession` model snippet to the host `schema.prisma`.
-2. Ensure `User` includes `chatSessions ChatSession[]`.
-3. Apply the SQL migration in your host migration pipeline.
+1. Add the `ChatSession` and `AiFeedback` model snippets to the host `schema.prisma`.
+2. Ensure `User` includes:
+   - `chatSessions ChatSession[]`
+   - `aiFeedback AiFeedback[]`
+3. Apply the SQL migrations in your host migration pipeline.
 4. Wire your host `PrismaSessionStore` implementation to `@ghostagent/core`
    `AgentSessionStore` contract.
 

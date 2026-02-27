@@ -2,6 +2,34 @@
 
 All notable changes to the embedded Ghost Agent implementation are documented here.
 
+## 2026-02-26
+
+### Added
+
+- Deterministic golden eval runner (offline, no LLM/server calls):
+  - `libs/ghostagent-evals/src/lib/run-ghostagent-golden-deterministic.ts`
+  - `libs/ghostagent-evals/src/lib/staged/golden-deterministic-fixtures.json` (10 fixture cases)
+- Grouped eval scripts:
+  - `eval:all:deterministic`
+  - `eval:all:live`
+- Deterministic golden commands:
+  - `eval:golden:deterministic`
+  - `eval:golden:deterministic:raw`
+- LangSmith analysis generator:
+  - `libs/ghostagent-evals/src/lib/generate-langsmith-failure-analysis.ts`
+  - wired to run after every `eval:langsmith`
+
+### Changed
+
+- Clarified eval split:
+  - live evals (`golden`, `langsmith`, `scenarios`, `rubric`, `variants`, `replay:record`)
+  - deterministic evals (`golden:deterministic`, `replay:run`)
+- Updated install/evals/compliance docs to reflect:
+  - deterministic golden baseline semantics,
+  - feedback persistence/init scaffolding coverage,
+  - grouped eval execution commands.
+- `ghostagent:init` now scaffolds LangSmith env keys into `.env.example`.
+
 ## 2026-02-24
 
 ### Added

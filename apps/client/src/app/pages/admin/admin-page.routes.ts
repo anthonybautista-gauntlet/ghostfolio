@@ -1,3 +1,4 @@
+import { GfAdminAiFeedbackComponent } from '@ghostfolio/client/components/admin-ai-feedback/admin-ai-feedback.component';
 import { GfAdminJobsComponent } from '@ghostfolio/client/components/admin-jobs/admin-jobs.component';
 import { GfAdminMarketDataComponent } from '@ghostfolio/client/components/admin-market-data/admin-market-data.component';
 import { GfAdminOverviewComponent } from '@ghostfolio/client/components/admin-overview/admin-overview.component';
@@ -18,6 +19,11 @@ export const routes: Routes = [
         path: '',
         component: GfAdminOverviewComponent,
         title: internalRoutes.adminControl.title
+      },
+      {
+        path: internalRoutes.adminControl.subRoutes.feedback.path,
+        component: GfAdminAiFeedbackComponent,
+        title: internalRoutes.adminControl.subRoutes.feedback.title
       },
       {
         path: internalRoutes.adminControl.subRoutes.jobs.path,

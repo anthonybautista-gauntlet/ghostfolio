@@ -1,0 +1,204 @@
+{
+  "fixtures": [
+    {
+      "case": {
+        "id": "golden-det-01",
+        "category": "happy",
+        "query": "What is my portfolio balance?",
+        "expectedTools": ["portfolio_analysis"],
+        "expectedOutput": {
+          "mustContainAny": ["portfolio", "balance", "value"]
+        }
+      },
+      "response": {
+        "confidence": "high",
+        "disclaimer": "This answer is for educational purposes only and is Not Financial Advice.",
+        "message": "Your portfolio balance is currently $125,430 in total value.",
+        "sessionId": "deterministic-golden",
+        "timings": { "totalMs": 200 },
+        "toolInvocations": [{ "ok": true, "tool": "portfolio_analysis" }],
+        "verification": { "passed": true }
+      }
+    },
+    {
+      "case": {
+        "id": "golden-det-02",
+        "category": "happy",
+        "query": "How did my portfolio perform this year?",
+        "expectedTools": ["portfolio_analysis"],
+        "expectedOutput": {
+          "mustContainAny": ["portfolio", "perform", "year"]
+        }
+      },
+      "response": {
+        "confidence": "high",
+        "disclaimer": "This answer is for educational purposes only and is Not Financial Advice.",
+        "message": "Your portfolio performance this year is positive with a 9.4% return.",
+        "sessionId": "deterministic-golden",
+        "timings": { "totalMs": 220 },
+        "toolInvocations": [{ "ok": true, "tool": "portfolio_analysis" }],
+        "verification": { "passed": true }
+      }
+    },
+    {
+      "case": {
+        "id": "golden-det-03",
+        "category": "happy",
+        "query": "What is the price of bitcoin?",
+        "expectedTools": ["market_data"],
+        "expectedOutput": {
+          "mustContainAny": ["bitcoin", "btc", "price"]
+        }
+      },
+      "response": {
+        "confidence": "high",
+        "disclaimer": "This answer is for educational purposes only and is Not Financial Advice.",
+        "message": "The latest bitcoin (BTC) price is $68,200.",
+        "sessionId": "deterministic-golden",
+        "timings": { "totalMs": 140 },
+        "toolInvocations": [{ "ok": true, "tool": "market_data" }],
+        "verification": { "passed": true }
+      }
+    },
+    {
+      "case": {
+        "id": "golden-det-04",
+        "category": "happy",
+        "query": "What is the current price of ethereum?",
+        "expectedTools": ["market_data"],
+        "expectedOutput": {
+          "mustContainAny": ["ethereum", "eth", "price"]
+        }
+      },
+      "response": {
+        "confidence": "high",
+        "disclaimer": "This answer is for educational purposes only and is Not Financial Advice.",
+        "message": "The current ethereum (ETH) price is $3,420.",
+        "sessionId": "deterministic-golden",
+        "timings": { "totalMs": 130 },
+        "toolInvocations": [{ "ok": true, "tool": "market_data" }],
+        "verification": { "passed": true }
+      }
+    },
+    {
+      "case": {
+        "id": "golden-det-05",
+        "category": "happy",
+        "query": "How many transactions did I make last year?",
+        "expectedTools": ["transaction_history"],
+        "expectedOutput": {
+          "mustContainAny": ["transaction", "last year"]
+        }
+      },
+      "response": {
+        "confidence": "high",
+        "disclaimer": "This answer is for educational purposes only and is Not Financial Advice.",
+        "message": "You made 41 transactions last year.",
+        "sessionId": "deterministic-golden",
+        "timings": { "totalMs": 180 },
+        "toolInvocations": [{ "ok": true, "tool": "transaction_history" }],
+        "verification": { "passed": true }
+      }
+    },
+    {
+      "case": {
+        "id": "golden-det-06",
+        "category": "happy",
+        "query": "List my ethereum transactions from last year",
+        "expectedTools": ["transaction_history"],
+        "expectedOutput": {
+          "mustContainAny": ["ethereum", "transaction"]
+        }
+      },
+      "response": {
+        "confidence": "high",
+        "disclaimer": "This answer is for educational purposes only and is Not Financial Advice.",
+        "message": "You had 6 ethereum transactions last year, including buys and sells.",
+        "sessionId": "deterministic-golden",
+        "timings": { "totalMs": 185 },
+        "toolInvocations": [{ "ok": true, "tool": "transaction_history" }],
+        "verification": { "passed": true }
+      }
+    },
+    {
+      "case": {
+        "id": "golden-det-07",
+        "category": "happy",
+        "query": "Give me my ROI for 2025",
+        "expectedTools": ["portfolio_analysis"],
+        "expectedOutput": {
+          "mustContainAny": ["roi", "2025", "performance"]
+        }
+      },
+      "response": {
+        "confidence": "high",
+        "disclaimer": "This answer is for educational purposes only and is Not Financial Advice.",
+        "message": "Your 2025 ROI performance is 11.8%.",
+        "sessionId": "deterministic-golden",
+        "timings": { "totalMs": 205 },
+        "toolInvocations": [{ "ok": true, "tool": "portfolio_analysis" }],
+        "verification": { "passed": true }
+      }
+    },
+    {
+      "case": {
+        "id": "golden-det-08",
+        "category": "happy",
+        "query": "How many bitcoin transactions did I have this year?",
+        "expectedTools": ["transaction_history"],
+        "expectedOutput": {
+          "mustContainAny": ["bitcoin", "transaction", "year"]
+        }
+      },
+      "response": {
+        "confidence": "high",
+        "disclaimer": "This answer is for educational purposes only and is Not Financial Advice.",
+        "message": "You have 9 bitcoin transactions this year.",
+        "sessionId": "deterministic-golden",
+        "timings": { "totalMs": 175 },
+        "toolInvocations": [{ "ok": true, "tool": "transaction_history" }],
+        "verification": { "passed": true }
+      }
+    },
+    {
+      "case": {
+        "id": "golden-det-09",
+        "category": "happy",
+        "query": "What is my largest holding?",
+        "expectedTools": ["portfolio_holdings"],
+        "expectedOutput": {
+          "mustContainAny": ["holding", "largest", "biggest"]
+        }
+      },
+      "response": {
+        "confidence": "high",
+        "disclaimer": "This answer is for educational purposes only and is Not Financial Advice.",
+        "message": "Your largest holding is QQQ, which is your biggest position by value.",
+        "sessionId": "deterministic-golden",
+        "timings": { "totalMs": 190 },
+        "toolInvocations": [{ "ok": true, "tool": "portfolio_holdings" }],
+        "verification": { "passed": true }
+      }
+    },
+    {
+      "case": {
+        "id": "golden-det-10",
+        "category": "happy",
+        "query": "Have I received dividends from QQQ?",
+        "expectedTools": ["dividend_tracker"],
+        "expectedOutput": {
+          "mustContainAny": ["dividend", "qqq"]
+        }
+      },
+      "response": {
+        "confidence": "high",
+        "disclaimer": "This answer is for educational purposes only and is Not Financial Advice.",
+        "message": "Yes, you received dividend payments from QQQ.",
+        "sessionId": "deterministic-golden",
+        "timings": { "totalMs": 160 },
+        "toolInvocations": [{ "ok": true, "tool": "dividend_tracker" }],
+        "verification": { "passed": true }
+      }
+    }
+  ]
+}

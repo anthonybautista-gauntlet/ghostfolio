@@ -34,18 +34,29 @@ Verify:
 - `GET /api/v1/ai/chat/session`
 - `GET /api/v1/ai/model`
 - `PUT /api/v1/ai/model`
+- `POST /api/v1/ai/feedback`
+- `GET /api/v1/ai/admin/feedback` (admin)
 
 ## What `ghostagent:init` does
 
 - Ensures `.env.example` includes:
+  - `ENABLE_FEATURE_AGENTFORGE`
   - `OPENROUTER_API_KEY`
   - `OPENROUTER_MODEL`
   - `AI_MODEL_CATALOG`
+  - `LANGSMITH_TRACING`
+  - `LANGSMITH_API_KEY`
+  - `LANGSMITH_PROJECT`
+  - `LANGSMITH_ENDPOINT`
+  - `LANGSMITH_WORKSPACE_ID`
 - Ensures `prisma/schema.prisma` includes:
   - `ChatSession` model
+  - `AiFeedback` model
   - `chatSessions ChatSession[]` relation on `User`
+  - `aiFeedback AiFeedback[]` relation on `User`
 - Adds migration SQL:
   - `prisma/migrations/ghostagent_001_chat_session/migration.sql`
+  - `prisma/migrations/ghostagent_002_ai_feedback/migration.sql`
 
 ## Notes
 

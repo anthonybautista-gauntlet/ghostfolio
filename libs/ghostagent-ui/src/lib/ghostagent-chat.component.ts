@@ -21,8 +21,17 @@ import { takeUntil } from 'rxjs/operators';
 
 interface ChatMessage {
   content: string;
+  feedbackComment?: string;
+  feedbackError?: string;
+  feedbackRating?: 'down' | 'up';
+  feedbackSubmitted?: boolean;
+  feedbackSubmitting?: boolean;
   disclaimer?: string;
+  model?: string;
+  query?: string;
   role: 'assistant' | 'user';
+  toolInvocations?: unknown[];
+  verification?: unknown;
 }
 
 @Component({
@@ -105,12 +114,22 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
       })
       .pipe(takeUntil(this.unsubscribeSubject))
       .subscribe({
-        next: ({ disclaimer, message: assistantMessage, sessionId }) => {
+        next: ({
+          disclaimer,
+          message: assistantMessage,
+          sessionId,
+          toolInvocations,
+          verification
+        }) => {
           this.sessionId = sessionId;
           this.messages.push({
             content: assistantMessage,
             disclaimer,
-            role: 'assistant'
+            model: this.selectedModel,
+            query: message,
+            role: 'assistant',
+            toolInvocations,
+            verification
           });
           this.isLoading = false;
           this.scrollMessagesToBottom();
@@ -157,6 +176,72 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
         },
         error: () => {
           this.isModelPreferenceSaving = false;
+          this.changeDetectorRef.markForCheck();
+        }
+      });
+  }
+
+  public onSelectFeedback({
+    index,
+    rating
+  }: {
+    index: number;
+    rating: 'down' | 'up';
+  }) {
+    const message = this.messages[index];
+
+    if (!message || message.role !== 'assistant' || message.feedbackSubmitted) {
+      return;
+    }
+
+    message.feedbackError = undefined;
+    message.feedbackRating = rating;
+    if (rating === 'up') {
+      message.feedbackComment = '';
+      this.submitFeedback({ index });
+    }
+
+    this.changeDetectorRef.markForCheck();
+  }
+
+  public submitFeedback({ index }: { index: number }) {
+    const message = this.messages[index];
+
+    if (
+      !message ||
+      message.role !== 'assistant' ||
+      !message.feedbackRating ||
+      message.feedbackSubmitted ||
+      !this.sessionId
+    ) {
+      return;
+    }
+
+    message.feedbackError = undefined;
+    message.feedbackSubmitting = true;
+
+    this.dataService
+      .postAiFeedback({
+        assistantReply: message.content,
+        comment: message.feedbackComment?.trim(),
+        model: message.model,
+        query: message.query ?? '',
+        rating: message.feedbackRating,
+        sessionId: this.sessionId,
+        toolInvocations: message.toolInvocations,
+        verification: message.verification
+      })
+      .pipe(takeUntil(this.unsubscribeSubject))
+      .subscribe({
+        next: () => {
+          message.feedbackSubmitted = true;
+          message.feedbackSubmitting = false;
+          this.changeDetectorRef.markForCheck();
+        },
+        error: () => {
+          message.feedbackError =
+            'Unable to submit feedback right now. Please try again.';
+          message.feedbackSubmitting = false;
           this.changeDetectorRef.markForCheck();
         }
       });

@@ -26,6 +26,8 @@ import { Role } from '@prisma/client';
 
 import { AiService } from './ai.service';
 import { AiChatRequestDto } from './dtos/ai-chat-request.dto';
+import { CreateAiFeedbackDto } from './dtos/create-ai-feedback.dto';
+import { GetAiFeedbackQueryDto } from './dtos/get-ai-feedback-query.dto';
 import { UpdateAiModelPreferenceDto } from './dtos/update-ai-model-preference.dto';
 import { PrismaSessionStoreService } from './prisma-session-store.service';
 
@@ -119,6 +121,48 @@ export class AiController {
     return this.aiService.updateModelPreference({
       selectedModel,
       userId: this.request.user.id
+    });
+  }
+
+  @Post('feedback')
+  @HasPermission(permissions.accessAssistant)
+  @UseGuards(AuthGuard('jwt'), HasPermissionGuard)
+  public async createFeedback(
+    @Body()
+    {
+      assistantReply,
+      comment,
+      model,
+      query,
+      rating,
+      sessionId,
+      toolInvocations,
+      verification
+    }: CreateAiFeedbackDto
+  ) {
+    return this.aiService.createFeedback({
+      assistantReply,
+      comment,
+      model,
+      query,
+      rating,
+      sessionId,
+      toolInvocations,
+      userId: this.request.user.id,
+      verification
+    });
+  }
+
+  @Get('admin/feedback')
+  @HasPermission(permissions.accessAdminControl)
+  @UseGuards(AuthGuard('jwt'), HasPermissionGuard)
+  public async getAdminFeedback(
+    @Query() { rating, skip, take }: GetAiFeedbackQueryDto
+  ) {
+    return this.aiService.getFeedbackForAdmin({
+      rating,
+      skip,
+      take
     });
   }
 }

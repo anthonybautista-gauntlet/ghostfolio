@@ -35,6 +35,8 @@ Integration helper:
 
 - `libs/ghostagent-core/prisma/schema.chat-session.prisma`
 - `libs/ghostagent-core/prisma/migrations/001_chat_session/migration.sql`
+- `libs/ghostagent-core/prisma/schema.ai-feedback.prisma`
+- `libs/ghostagent-core/prisma/migrations/002_ai_feedback/migration.sql`
 
 Host apps should apply these assets in their own migration workflow (the package
 does not auto-run migrations at runtime).

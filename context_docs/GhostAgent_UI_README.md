@@ -13,6 +13,10 @@ Current UX features:
 - explicit thinking indicator while assistant response is pending
 - model selector bound to server-provided model catalog
 - per-user model preference persistence via API (`GET/PUT /api/v1/ai/model`)
+- per-response feedback controls:
+  - thumbs up/down
+  - optional free-text comment
+  - persistence through `POST /api/v1/ai/feedback`
 
 ## Boundaries
 

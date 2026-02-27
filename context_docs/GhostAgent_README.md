@@ -83,6 +83,12 @@ LangSmith org-scoped key requirement:
 - Dataset source: `libs/ghostagent-evals/src/lib/dataset/ghostagent-eval-cases.json` (50 cases).
 - Runner: `npm run eval:langsmith`
 - Recommended invocation to avoid npm banner noise in output capture: `npm run --silent eval:langsmith`
+- `eval:langsmith` also regenerates `context_docs/AgentForge_Eval_Failure_Analysis.md` from the latest report.
+- Deterministic golden runner (offline/no server): `npm run eval:golden:deterministic`
+- Live golden runner (server required): `npm run eval:golden`
+- Grouped commands:
+  - deterministic eval suite: `npm run eval:all:deterministic`
+  - live eval suite: `npm run eval:all:live`
 - Eval schema supports per-case output assertions:
   - `expectedOutput.mustContainAll`
   - `expectedOutput.mustContainAny`
@@ -95,6 +101,7 @@ LangSmith org-scoped key requirement:
 - Eval history snapshots are written to `eval-history/*.json`.
 - CI gate:
   - `AGENTFORGE_EVAL_PASS_THRESHOLD` (default `0.8`)
+  - optional hard-fail toggle: `AGENTFORGE_EVAL_ENFORCE_THRESHOLD=true`
   - report artifact: `eval-langsmith-report.json`
 
 Eval prerequisites:
@@ -102,6 +109,11 @@ Eval prerequisites:
 - API server must be running and reachable at `AGENTFORGE_EVAL_API_URL`.
 - Auth token must be set in `AGENTFORGE_EVAL_API_TOKEN`.
 - Live evals are intentionally non-deterministic and validate real orchestration behavior with the active model/provider.
+
+Deterministic evals:
+
+- `eval:golden:deterministic` is fixture-based and performs binary checks without server or LLM calls.
+- `eval:replay:run` is fixture-based and performs deterministic consistency scoring.
 
 ## Tooling Contract (Current)
 
@@ -257,6 +269,9 @@ Early-submission PRD evidence docs:
 Persistence note:
 
 - No extra adapter package is required for DB-backed chat history.
+- `ghostagent/core` ships Prisma persistence assets for `AiFeedback` under:
+  - `libs/ghostagent-core/prisma/schema.ai-feedback.prisma`
+  - `libs/ghostagent-core/prisma/migrations/002_ai_feedback/migration.sql`
 - `ghostagent/core` ships Prisma persistence assets for `ChatSession` under:
   - `libs/ghostagent-core/prisma/schema.chat-session.prisma`
   - `libs/ghostagent-core/prisma/migrations/001_chat_session/migration.sql`
