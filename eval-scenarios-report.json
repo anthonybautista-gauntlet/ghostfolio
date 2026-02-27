@@ -1,6 +1,6 @@
 {
   "report": {
-    "datasetPath": "/tmp/ghostagent-scenarios-FIU2wA/dataset.json",
+    "datasetPath": "/tmp/ghostagent-scenarios-N1hUMi/dataset.json",
     "passRate": 0.8333333333333334,
     "passRateThreshold": 0.8,
     "passed": 5,
@@ -8,27 +8,27 @@
       {
         "caseId": "sc-portfolio-001",
         "category": "happy",
-        "totalMs": 4560
+        "totalMs": 4984
       },
       {
         "caseId": "sc-multi-001",
         "category": "multi_step",
-        "totalMs": 4239
+        "totalMs": 4783
       },
       {
         "caseId": "sc-market-001",
         "category": "happy",
-        "totalMs": 3674
-      },
-      {
-        "caseId": "sc-edge-001",
-        "category": "edge",
-        "totalMs": 2863
+        "totalMs": 3232
       },
       {
         "caseId": "sc-transactions-001",
         "category": "happy",
-        "totalMs": 2302
+        "totalMs": 2859
+      },
+      {
+        "caseId": "sc-edge-001",
+        "category": "edge",
+        "totalMs": 2808
       }
     ],
     "summaryByCheck": {
@@ -129,7 +129,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4560
+      "totalMs": 4984
     },
     {
       "caseId": "sc-market-001",
@@ -150,7 +150,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3674
+      "totalMs": 3232
     },
     {
       "caseId": "sc-transactions-001",
@@ -171,7 +171,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2302
+      "totalMs": 2859
     },
     {
       "caseId": "sc-multi-001",
@@ -192,7 +192,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4239
+      "totalMs": 4783
     },
     {
       "caseId": "sc-edge-001",
@@ -213,7 +213,7 @@
       },
       "failedChecks": ["expected_tools", "output_must_contain_any"],
       "pass": false,
-      "totalMs": 2863
+      "totalMs": 2808
     },
     {
       "caseId": "sc-edge-002",
@@ -235,7 +235,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 3
     }
   ]
 }

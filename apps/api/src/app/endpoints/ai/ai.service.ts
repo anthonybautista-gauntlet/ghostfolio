@@ -26,7 +26,7 @@ import { GhostAgentVerificationService as VerificationService } from '@ghostfoli
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { ChatOpenAI } from '@langchain/openai';
 import { HttpException, Injectable, Logger } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { DataSource, Prisma } from '@prisma/client';
 import { StatusCodes, getReasonPhrase } from 'http-status-codes';
 import { randomUUID } from 'node:crypto';
 import type { ColumnDescriptor } from 'tablemark';
@@ -333,7 +333,17 @@ export class AiService {
     }
 
     const routingDecision: RoutingDecision = quoteSelection
-      ? { hasExplicitIntent: true, tools: ['market_data'] }
+      ? {
+          hasExplicitIntent: true,
+          intents: {
+            dividend: false,
+            holdings: false,
+            market: true,
+            portfolio: false,
+            transaction: false
+          },
+          tools: ['market_data']
+        }
       : routeMessageToTools({ message: effectiveMessage });
     const maxToolSteps = Math.max(
       1,
@@ -1016,9 +1026,19 @@ export class AiService {
       ).values()
     );
 
+    const dataSourceValues = new Set<string>(Object.values(DataSource));
+    const typedItems = dedupedItems
+      .filter((candidate): candidate is SymbolLookupInput => {
+        return dataSourceValues.has(candidate.dataSource);
+      })
+      .map((candidate) => ({
+        dataSource: candidate.dataSource as DataSource,
+        symbol: candidate.symbol
+      }));
+
     const quotes: PromiseSettledResult<SymbolQuote>[] =
       await Promise.allSettled(
-        dedupedItems.map(({ dataSource, symbol }) => {
+        typedItems.map(({ dataSource, symbol }) => {
           return this.symbolService.get({
             dataGatheringItem: {
               dataSource,
@@ -2276,9 +2296,9 @@ export class AiService {
     items: {
       assetClass?: string;
       currency?: string;
+      dataSource: DataSource;
       name: string;
       symbol: string;
-      [key: string]: unknown;
     }[];
     quoteIntent: 'crypto' | 'generic' | 'stock';
     searchTerm: string;

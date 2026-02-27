@@ -8,27 +8,27 @@
       {
         "caseId": "multi-06",
         "category": "multi_step",
-        "totalMs": 6540
-      },
-      {
-        "caseId": "multi-10",
-        "category": "multi_step",
-        "totalMs": 6136
+        "totalMs": 6134
       },
       {
         "caseId": "multi-05",
         "category": "multi_step",
-        "totalMs": 5724
-      },
-      {
-        "caseId": "multi-01",
-        "category": "multi_step",
-        "totalMs": 5261
+        "totalMs": 5553
       },
       {
         "caseId": "happy-02",
         "category": "happy",
-        "totalMs": 4907
+        "totalMs": 5317
+      },
+      {
+        "caseId": "multi-01",
+        "category": "multi_step",
+        "totalMs": 5212
+      },
+      {
+        "caseId": "happy-17",
+        "category": "happy",
+        "totalMs": 4914
       }
     ],
     "summaryByCheck": {
@@ -133,7 +133,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3263
+      "totalMs": 3239
     },
     {
       "caseId": "happy-02",
@@ -154,7 +154,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4907
+      "totalMs": 5317
     },
     {
       "caseId": "happy-03",
@@ -175,7 +175,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 443
+      "totalMs": 1158
     },
     {
       "caseId": "happy-04",
@@ -196,7 +196,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3258
+      "totalMs": 3332
     },
     {
       "caseId": "happy-05",
@@ -217,7 +217,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3264
+      "totalMs": 2570
     },
     {
       "caseId": "happy-06",
@@ -238,7 +238,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3239
+      "totalMs": 3155
     },
     {
       "caseId": "happy-07",
@@ -259,7 +259,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4499
+      "totalMs": 4088
     },
     {
       "caseId": "happy-08",
@@ -280,7 +280,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4093
+      "totalMs": 4502
     },
     {
       "caseId": "happy-09",
@@ -301,7 +301,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3271
+      "totalMs": 2288
     },
     {
       "caseId": "happy-10",
@@ -322,7 +322,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3265
+      "totalMs": 3429
     },
     {
       "caseId": "happy-11",
@@ -343,7 +343,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3679
+      "totalMs": 3681
     },
     {
       "caseId": "happy-12",
@@ -364,7 +364,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3623
+      "totalMs": 4088
     },
     {
       "caseId": "happy-13",
@@ -385,7 +385,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2946
+      "totalMs": 2866
     },
     {
       "caseId": "happy-14",
@@ -406,7 +406,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2860
+      "totalMs": 2885
     },
     {
       "caseId": "happy-15",
@@ -427,7 +427,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2840
+      "totalMs": 3682
     },
     {
       "caseId": "happy-16",
@@ -448,7 +448,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3670
+      "totalMs": 3645
     },
     {
       "caseId": "happy-17",
@@ -469,7 +469,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4561
+      "totalMs": 4914
     },
     {
       "caseId": "happy-18",
@@ -490,7 +490,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3208
+      "totalMs": 3679
     },
     {
       "caseId": "happy-19",
@@ -511,7 +511,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2898
+      "totalMs": 4089
     },
     {
       "caseId": "happy-20",
@@ -532,7 +532,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3234
+      "totalMs": 3681
     },
     {
       "caseId": "edge-01",
@@ -542,7 +542,7 @@
       },
       "failedChecks": ["request_ok"],
       "pass": true,
-      "totalMs": 5
+      "totalMs": 6
     },
     {
       "caseId": "edge-02",
@@ -584,7 +584,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3
+      "totalMs": 2
     },
     {
       "caseId": "edge-04",
@@ -605,7 +605,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 3
     },
     {
       "caseId": "edge-05",
@@ -668,7 +668,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4541
+      "totalMs": 4462
     },
     {
       "caseId": "edge-08",
@@ -689,7 +689,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3677
+      "totalMs": 3301
     },
     {
       "caseId": "edge-09",
@@ -710,7 +710,7 @@
       },
       "failedChecks": ["expected_tools", "output_must_contain_any"],
       "pass": false,
-      "totalMs": 2695
+      "totalMs": 2907
     },
     {
       "caseId": "edge-10",
@@ -731,7 +731,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2540
+      "totalMs": 3203
     },
     {
       "caseId": "adversarial-01",
@@ -753,7 +753,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 3
     },
     {
       "caseId": "adversarial-02",
@@ -797,7 +797,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 1
     },
     {
       "caseId": "adversarial-04",
@@ -841,7 +841,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 1
+      "totalMs": 2
     },
     {
       "caseId": "adversarial-06",
@@ -863,7 +863,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 1
+      "totalMs": 2
     },
     {
       "caseId": "adversarial-07",
@@ -885,7 +885,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3
+      "totalMs": 2
     },
     {
       "caseId": "adversarial-08",
@@ -907,7 +907,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 3
     },
     {
       "caseId": "adversarial-09",
@@ -951,7 +951,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3
+      "totalMs": 2
     },
     {
       "caseId": "multi-01",
@@ -972,7 +972,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 5261
+      "totalMs": 5212
     },
     {
       "caseId": "multi-02",
@@ -993,7 +993,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3681
+      "totalMs": 4026
     },
     {
       "caseId": "multi-03",
@@ -1014,7 +1014,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4703
+      "totalMs": 3783
     },
     {
       "caseId": "multi-04",
@@ -1035,7 +1035,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4307
+      "totalMs": 4909
     },
     {
       "caseId": "multi-05",
@@ -1056,7 +1056,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 5724
+      "totalMs": 5553
     },
     {
       "caseId": "multi-06",
@@ -1077,7 +1077,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 6540
+      "totalMs": 6134
     },
     {
       "caseId": "multi-07",
@@ -1098,7 +1098,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4499
+      "totalMs": 3478
     },
     {
       "caseId": "multi-08",
@@ -1119,7 +1119,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4129
+      "totalMs": 4058
     },
     {
       "caseId": "multi-09",
@@ -1140,7 +1140,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4867
+      "totalMs": 4497
     },
     {
       "caseId": "multi-10",
@@ -1161,7 +1161,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 6136
+      "totalMs": 4911
     }
   ]
 }

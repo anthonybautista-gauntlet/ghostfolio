@@ -111,11 +111,20 @@ export class AiController {
       userId: this.request.user.id
     });
 
-    return resolveSessionRestoreResult({
+    const restoreResult = resolveSessionRestoreResult({
       mostRecent: mostRecentSession,
       requestedSessionId: sessionId,
       requestedSessionMessages
     });
+
+    return {
+      ...restoreResult,
+      messages: restoreResult.messages.map((message) => ({
+        content: message.content,
+        createdAt: message.createdAt ?? new Date(0).toISOString(),
+        role: message.role
+      }))
+    };
   }
 
   @Get('model')
