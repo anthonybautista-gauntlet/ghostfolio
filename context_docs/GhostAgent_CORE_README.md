@@ -7,13 +7,16 @@
 - tool routing
 - fact registry
 - verification
+- market-data candidate selection policy
+- feedback lifecycle policy helpers
+- session restore policy helpers
 - runtime contracts (tool/session/model-config adapters)
 - model catalog
 
 Integration helper:
 
 - Use `ghostagent:init` (see `context_docs/GhostAgent_INSTALL.md`) to scaffold
-  env + Prisma assets into a vanilla host.
+  env + Prisma + host integration scaffolds into a vanilla host.
 
 ## Test Expectations
 
@@ -28,6 +31,10 @@ Integration helper:
 - implement tool adapters against host services
 - implement model config adapter (env/config, no DB credential fallback)
 - wire endpoint/controller integration in host framework
+
+Boundary reference:
+
+- `context_docs/GhostAgent_EXTRACTION_MATRIX.md` defines which runtime pieces belong in package vs host scaffolding.
 
 ## Prisma Persistence Assets (Included)
 

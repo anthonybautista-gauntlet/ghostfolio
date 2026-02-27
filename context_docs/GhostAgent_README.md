@@ -7,6 +7,7 @@ Ghost Agent is a domain-specific, read-only financial assistant currently embedd
 Install path:
 
 - See `context_docs/GhostAgent_INSTALL.md` for `ghostagent:init` scaffold workflow.
+- Extraction boundary/source-of-truth matrix: `context_docs/GhostAgent_EXTRACTION_MATRIX.md`.
 
 ## Current Runtime Integration
 
@@ -20,6 +21,11 @@ Install path:
 - Runtime orchestration path: LangChain.js model + LangChain tools (routing/tool execution/verification spans).
 - Verification: server-side numeric citation verification against tool outputs using canonical fact IDs.
 - Access model: authenticated users with `accessAssistant` permission (MVP roles include this permission by default).
+
+Init guarantees vs host responsibilities:
+
+- `ghostagent:init` now guarantees env/prisma scaffolding and can scaffold missing Ghostfolio-style AI endpoint skeleton files.
+- Host projects still provide domain adapters (orders/holdings/symbol/provider wiring), auth guards, and UI route/navigation integration.
 
 ## Model and Inference
 
@@ -142,7 +148,8 @@ Routing is intent-based (not default-always-portfolio):
 - No explicit intent -> fallback to `portfolio_analysis`
 - Direct quote optimization:
   - `market_data` first tries to resolve quote targets from the user's own transactions via `SEARCH_QUERY` (faster, less payload).
-  - If no transaction-derived symbol is found, it falls back to top holdings quote lookup.
+  - If no transaction-derived symbol is found, it tries global symbol lookup by query term (not portfolio-scoped).
+  - If global lookup returns no candidates, it falls back to top holdings quote lookup.
   - For direct quote phrasing, the API can return a deterministic short response path to avoid an extra full LLM synthesis step.
 - Holdings intent phrase coverage includes ownership and hold variants (e.g., `How much XRP do I own?`, `How much XRP do I hold?`, `Do I hold any XRP?`).
 

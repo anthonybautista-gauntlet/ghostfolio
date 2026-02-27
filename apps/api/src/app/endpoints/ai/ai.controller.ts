@@ -8,6 +8,7 @@ import {
 } from '@ghostfolio/common/interfaces';
 import { hasRole, permissions } from '@ghostfolio/common/permissions';
 import type { AiPromptMode, RequestWithUser } from '@ghostfolio/common/types';
+import { resolveSessionRestoreResult } from '@ghostfolio/ghostagent/backend/session-restore-policy';
 
 import {
   Body,
@@ -95,28 +96,26 @@ export class AiController {
   public async getSession(
     @Query('sessionId') sessionId?: string
   ): Promise<AiChatSessionResponse> {
+    let requestedSessionMessages:
+      | { content: string; createdAt: string; role: 'assistant' | 'user' }[]
+      | undefined;
+
     if (sessionId) {
-      const messages = await this.sessionStore.getMessages({
+      requestedSessionMessages = await this.sessionStore.getMessages({
         sessionId,
         userId: this.request.user.id
       });
-
-      if (messages.length > 0) {
-        return {
-          messages,
-          sessionId
-        };
-      }
     }
 
     const mostRecentSession = await this.sessionStore.getMostRecentSession({
       userId: this.request.user.id
     });
 
-    return {
-      messages: mostRecentSession?.messages ?? [],
-      sessionId: mostRecentSession?.sessionId
-    };
+    return resolveSessionRestoreResult({
+      mostRecent: mostRecentSession,
+      requestedSessionId: sessionId,
+      requestedSessionMessages
+    });
   }
 
   @Get('model')

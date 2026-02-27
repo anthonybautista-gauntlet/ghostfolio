@@ -1,4 +1,7 @@
 export * from './backend/ai-fact-registry';
+export * from './backend/feedback-lifecycle';
+export * from './backend/market-data-candidate-selection';
+export * from './backend/session-restore-policy';
 export * from './backend/ai-tool-selection';
 export * from './backend/model-catalog';
 export * from './backend/verification.service';

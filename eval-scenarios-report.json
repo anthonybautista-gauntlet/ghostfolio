@@ -1,6 +1,6 @@
 {
   "report": {
-    "datasetPath": "/tmp/ghostagent-scenarios-OGAeDr/dataset.json",
+    "datasetPath": "/tmp/ghostagent-scenarios-FIU2wA/dataset.json",
     "passRate": 0.8333333333333334,
     "passRateThreshold": 0.8,
     "passed": 5,
@@ -8,27 +8,27 @@
       {
         "caseId": "sc-portfolio-001",
         "category": "happy",
-        "totalMs": 6148
-      },
-      {
-        "caseId": "sc-transactions-001",
-        "category": "happy",
-        "totalMs": 3662
+        "totalMs": 4560
       },
       {
         "caseId": "sc-multi-001",
         "category": "multi_step",
-        "totalMs": 3272
-      },
-      {
-        "caseId": "sc-edge-001",
-        "category": "edge",
-        "totalMs": 2857
+        "totalMs": 4239
       },
       {
         "caseId": "sc-market-001",
         "category": "happy",
-        "totalMs": 8
+        "totalMs": 3674
+      },
+      {
+        "caseId": "sc-edge-001",
+        "category": "edge",
+        "totalMs": 2863
+      },
+      {
+        "caseId": "sc-transactions-001",
+        "category": "happy",
+        "totalMs": 2302
       }
     ],
     "summaryByCheck": {
@@ -129,7 +129,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 6148
+      "totalMs": 4560
     },
     {
       "caseId": "sc-market-001",
@@ -150,7 +150,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 8
+      "totalMs": 3674
     },
     {
       "caseId": "sc-transactions-001",
@@ -171,7 +171,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3662
+      "totalMs": 2302
     },
     {
       "caseId": "sc-multi-001",
@@ -192,7 +192,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3272
+      "totalMs": 4239
     },
     {
       "caseId": "sc-edge-001",
@@ -213,7 +213,7 @@
       },
       "failedChecks": ["expected_tools", "output_must_contain_any"],
       "pass": false,
-      "totalMs": 2857
+      "totalMs": 2863
     },
     {
       "caseId": "sc-edge-002",
@@ -235,7 +235,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3
+      "totalMs": 2
     }
   ]
 }

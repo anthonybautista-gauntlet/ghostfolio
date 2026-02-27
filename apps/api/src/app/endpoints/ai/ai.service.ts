@@ -12,9 +12,15 @@ import {
   Filter,
   UserSettings
 } from '@ghostfolio/common/interfaces';
-import type { AiPromptMode, DateRange } from '@ghostfolio/common/types';
+import type {
+  AiPromptMode,
+  DateRange,
+  UserWithSettings
+} from '@ghostfolio/common/types';
 import { buildAiFactRegistry } from '@ghostfolio/ghostagent/backend/ai-fact-registry';
 import { routeMessageToTools } from '@ghostfolio/ghostagent/backend/ai-tool-selection';
+import { buildFeedbackDuplicateSelector } from '@ghostfolio/ghostagent/backend/feedback-lifecycle';
+import { resolveMarketDataCandidates } from '@ghostfolio/ghostagent/backend/market-data-candidate-selection';
 import { GhostAgentVerificationService as VerificationService } from '@ghostfolio/ghostagent/backend/verification.service';
 
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
@@ -280,6 +286,13 @@ export class AiService {
       sessionId: conversationId,
       userId
     });
+    const quoteSelection = this.extractQuoteSelectionFromHistory({
+      history,
+      message
+    });
+    const effectiveMessage = quoteSelection
+      ? `what is the price of ${quoteSelection}`
+      : message;
 
     await this.sessionStore.appendMessage({
       content: message,
@@ -319,7 +332,9 @@ export class AiService {
       };
     }
 
-    const routingDecision: RoutingDecision = routeMessageToTools({ message });
+    const routingDecision: RoutingDecision = quoteSelection
+      ? { hasExplicitIntent: true, tools: ['market_data'] }
+      : routeMessageToTools({ message: effectiveMessage });
     const maxToolSteps = Math.max(
       1,
       this.configurationService.get('AI_MAX_TOOL_STEPS')
@@ -336,7 +351,7 @@ export class AiService {
       this.shouldAskClarifyingQuestion({
         hasExplicitIntent: routingDecision.hasExplicitIntent,
         history,
-        message
+        message: effectiveMessage
       })
     ) {
       const clarificationMessage = AiService.CLARIFICATION_QUESTION;
@@ -369,10 +384,10 @@ export class AiService {
     }
 
     const transactionDateRange = this.getTransactionDateRangeForMessage({
-      message
+      message: effectiveMessage
     });
     const portfolioDateRange = this.getPortfolioDateRange({
-      message
+      message: effectiveMessage
     });
     const toolInvocations: AiChatResponse['toolInvocations'] = [];
     const toolResults: Record<string, unknown> = {};
@@ -380,7 +395,7 @@ export class AiService {
     const langChainTools = this.buildLangChainTools({
       dateRange: transactionDateRange,
       filters,
-      message,
+      message: effectiveMessage,
       portfolioDateRange,
       userCurrency,
       userId
@@ -389,7 +404,7 @@ export class AiService {
     for (const toolName of selectedToolNames) {
       const startTime = Date.now();
       const metadata = this.getToolInvocationMetadata({
-        message,
+        message: effectiveMessage,
         portfolioDateRange,
         toolName,
         transactionDateRange
@@ -456,12 +471,13 @@ export class AiService {
     const factRegistry = buildAiFactRegistry({ toolResults });
     const quoteFastPath = this.tryBuildQuoteFastPathResponse({
       factRegistry,
-      message,
-      toolResults
+      message: effectiveMessage,
+      toolResults,
+      userCurrency
     });
     const biggestHoldingFastPath = this.tryBuildBiggestHoldingFastPathResponse({
       factRegistry,
-      message,
+      message: effectiveMessage,
       toolResults
     });
     let llmResult:
@@ -494,7 +510,7 @@ export class AiService {
           return `${role.toUpperCase()}: ${content}`;
         }),
         languageCode,
-        message,
+        message: effectiveMessage,
         requestId: conversationId,
         selectedModel: resolvedSelectedModel,
         slimPrompt:
@@ -660,12 +676,12 @@ export class AiService {
   }) {
     const aiFeedbackDelegate = this.getAiFeedbackDelegate();
     const existingRecord = (await aiFeedbackDelegate.findFirst({
-      where: {
+      where: buildFeedbackDuplicateSelector({
         assistantReply,
         query,
         sessionId,
         userId
-      }
+      })
     })) as AiFeedbackRecord | null;
 
     if (existingRecord) {
@@ -957,70 +973,52 @@ export class AiService {
     const searchTerm =
       this.extractQuoteSearchTerm({ message }) ??
       this.extractAssetSearchTerm({ message });
-    const candidateItems: SymbolLookupInput[] = [];
-
-    if (searchTerm) {
-      try {
-        const { activities } = await this.orderService.getOrders({
-          filters: [{ id: searchTerm, type: 'SEARCH_QUERY' }],
-          includeDrafts: true,
-          sortColumn: 'date',
-          sortDirection: 'desc',
-          take: 3,
+    const quoteIntent = this.getQuoteIntent({ message });
+    const uniqueItems = await resolveMarketDataCandidates({
+      fromGlobalLookup: ({ searchTerm: currentSearchTerm }) =>
+        this.resolveSymbolsFromGlobalLookup({
+          quoteIntent,
+          searchTerm: currentSearchTerm,
           userCurrency,
-          userId,
-          withExcludedAccountsAndActivities: true
-        });
-
-        for (const activity of activities) {
-          if (
-            activity.SymbolProfile?.symbol &&
-            activity.SymbolProfile?.dataSource
-          ) {
-            candidateItems.push({
-              dataSource: activity.SymbolProfile.dataSource,
-              symbol: activity.SymbolProfile.symbol
-            });
-          }
-        }
-      } catch {
-        // Continue with holdings fallback if order lookup fails.
-      }
-    }
-
-    if (candidateItems.length === 0) {
-      try {
-        const holdings = await this.portfolioService.getHoldings({
-          dateRange: 'max',
-          filters,
-          impersonationId: undefined,
           userId
-        });
-
-        const topHoldings = holdings
-          .sort((a, b) => b.valueInBaseCurrency - a.valueInBaseCurrency)
-          .slice(0, 5);
-
-        for (const { dataSource, symbol } of topHoldings) {
-          candidateItems.push({ dataSource, symbol });
-        }
-      } catch {
-        // Return no quotes instead of failing the whole tool.
-      }
-    }
-
-    const uniqueItems = Array.from(
+        }),
+      fromHoldingsFallback: () =>
+        this.resolveSymbolsFromTopHoldings({
+          filters,
+          userId
+        }),
+      fromTransactionLookup: ({ searchTerm: currentSearchTerm }) =>
+        this.resolveSymbolsFromTransactions({
+          searchTerm: currentSearchTerm,
+          userCurrency,
+          userId
+        }),
+      searchTerm
+    });
+    const quoteAwareItems =
+      searchTerm && this.isLikelyDirectQuoteQuestion({ message })
+        ? [
+            ...uniqueItems,
+            ...(await this.resolveSymbolsFromGlobalLookup({
+              quoteIntent,
+              searchTerm,
+              userCurrency,
+              userId
+            }))
+          ]
+        : uniqueItems;
+    const dedupedItems = Array.from(
       new Map(
-        candidateItems.map((item) => [
-          `${item.dataSource}:${item.symbol}`,
-          item
+        quoteAwareItems.map((candidate) => [
+          `${candidate.dataSource}:${candidate.symbol}`,
+          candidate
         ])
       ).values()
     );
 
     const quotes: PromiseSettledResult<SymbolQuote>[] =
       await Promise.allSettled(
-        uniqueItems.map(({ dataSource, symbol }) => {
+        dedupedItems.map(({ dataSource, symbol }) => {
           return this.symbolService.get({
             dataGatheringItem: {
               dataSource,
@@ -1037,6 +1035,134 @@ export class AiService {
         })
         .map((quote) => quote.value)
     };
+  }
+
+  private async resolveSymbolsFromTransactions({
+    searchTerm,
+    userCurrency,
+    userId
+  }: {
+    searchTerm: string;
+    userCurrency: string;
+    userId: string;
+  }): Promise<SymbolLookupInput[]> {
+    try {
+      const { activities } = await this.orderService.getOrders({
+        filters: [{ id: searchTerm, type: 'SEARCH_QUERY' }],
+        includeDrafts: true,
+        sortColumn: 'date',
+        sortDirection: 'desc',
+        take: 3,
+        userCurrency,
+        userId,
+        withExcludedAccountsAndActivities: true
+      });
+
+      return activities.flatMap((activity) => {
+        if (
+          !activity.SymbolProfile?.symbol ||
+          !activity.SymbolProfile?.dataSource
+        ) {
+          return [];
+        }
+
+        return [
+          {
+            dataSource: activity.SymbolProfile.dataSource,
+            symbol: activity.SymbolProfile.symbol
+          }
+        ];
+      });
+    } catch {
+      return [];
+    }
+  }
+
+  private async resolveSymbolsFromGlobalLookup({
+    quoteIntent,
+    searchTerm,
+    userCurrency,
+    userId
+  }: {
+    quoteIntent: 'crypto' | 'generic' | 'stock';
+    searchTerm: string;
+    userCurrency: string;
+    userId: string;
+  }): Promise<SymbolLookupInput[]> {
+    try {
+      const user = await this.getUserWithSettingsForLookup({ userId });
+
+      if (!user) {
+        return [];
+      }
+
+      const lookupResult = await this.symbolService.lookup({
+        includeIndices: true,
+        query: searchTerm,
+        user
+      });
+
+      const rankedItems = this.rankLookupItemsForQuoteTerm({
+        items: lookupResult.items ?? [],
+        quoteIntent,
+        searchTerm,
+        userCurrency
+      });
+
+      return rankedItems.slice(0, 5).map((item) => ({
+        dataSource: item.dataSource,
+        symbol: item.symbol
+      }));
+    } catch {
+      return [];
+    }
+  }
+
+  private async resolveSymbolsFromTopHoldings({
+    filters,
+    userId
+  }: {
+    filters?: Filter[];
+    userId: string;
+  }): Promise<SymbolLookupInput[]> {
+    try {
+      const holdings = await this.portfolioService.getHoldings({
+        dateRange: 'max',
+        filters,
+        impersonationId: undefined,
+        userId
+      });
+
+      return holdings
+        .sort((a, b) => b.valueInBaseCurrency - a.valueInBaseCurrency)
+        .slice(0, 5)
+        .map(({ dataSource, symbol }) => ({ dataSource, symbol }));
+    } catch {
+      return [];
+    }
+  }
+
+  private async getUserWithSettingsForLookup({
+    userId
+  }: {
+    userId: string;
+  }): Promise<UserWithSettings | undefined> {
+    const user = await this.prismaService.user.findUnique({
+      include: {
+        accessesGet: true,
+        accounts: true,
+        settings: true
+      },
+      where: {
+        id: userId
+      }
+    });
+
+    if (!user || !user.settings) {
+      return undefined;
+    }
+
+    return user as unknown as UserWithSettings;
   }
 
   private async runPortfolioAnalysis({
@@ -1301,6 +1427,57 @@ export class AiService {
     return undefined;
   }
 
+  private extractQuoteSelectionFromHistory({
+    history,
+    message
+  }: {
+    history: { content: string; role: string }[];
+    message: string;
+  }): string | undefined {
+    const lastAssistantMessage = [...history]
+      .reverse()
+      .find(({ role }) => role === 'assistant')?.content;
+    const normalizedSelection = this.normalizeQuoteSelection({ message });
+
+    if (!lastAssistantMessage || !normalizedSelection) {
+      return undefined;
+    }
+
+    const match =
+      /^I found multiple matches for "([^"]+)". Which ticker do you want:\s*(.+)\?$/i.exec(
+        lastAssistantMessage.trim()
+      );
+
+    if (!match?.[2]) {
+      return undefined;
+    }
+
+    const allowedOptions = match[2]
+      .split(',')
+      .map((option) => this.normalizeQuoteSelection({ message: option }))
+      .filter((option): option is string => Boolean(option));
+    const selectedFromOptions = allowedOptions.find((option) => {
+      return option.toUpperCase() === normalizedSelection.toUpperCase();
+    });
+
+    if (selectedFromOptions) {
+      return selectedFromOptions;
+    }
+
+    return /^[a-z0-9.-]{1,30}$/i.test(normalizedSelection)
+      ? normalizedSelection
+      : undefined;
+  }
+
+  private normalizeQuoteSelection({ message }: { message: string }) {
+    return message
+      .trim()
+      .replace(/^["'`]|["'`]$/g, '')
+      .replace(/\s+\([^)]+\)\s*$/g, '')
+      .replace(/^[^a-z0-9.-]+|[^a-z0-9.-]+$/gi, '')
+      .trim();
+  }
+
   private extractQuoteSearchTerm({
     message
   }: {
@@ -1526,13 +1703,19 @@ export class AiService {
   private tryBuildQuoteFastPathResponse({
     factRegistry,
     message,
-    toolResults
+    toolResults,
+    userCurrency
   }: {
     factRegistry: Record<string, number>;
     message: string;
     toolResults: Record<string, unknown>;
+    userCurrency: string;
   }):
-    | { citedFigures: AiCitedFigure[]; confidence: 'high'; message: string }
+    | {
+        citedFigures: AiCitedFigure[];
+        confidence: 'high' | 'low';
+        message: string;
+      }
     | undefined {
     if (!this.isLikelyDirectQuoteQuestion({ message })) {
       return undefined;
@@ -1546,19 +1729,126 @@ export class AiService {
       return undefined;
     }
 
-    const quote = quotes.find((item) => {
-      const candidate = item as { marketPrice?: unknown; symbol?: unknown };
+    const validQuotes = quotes.filter((item) => {
+      const candidate = item as {
+        currency?: unknown;
+        dataSource?: unknown;
+        marketPrice?: unknown;
+        symbol?: unknown;
+      };
       return (
         typeof candidate?.symbol === 'string' &&
-        typeof candidate?.marketPrice === 'number'
+        typeof candidate?.marketPrice === 'number' &&
+        candidate.marketPrice > 0
       );
-    }) as { marketPrice: number; symbol: string } | undefined;
+    }) as {
+      currency?: string;
+      dataSource?: string;
+      marketPrice: number;
+      symbol: string;
+    }[];
 
-    if (!quote) {
+    const quote = validQuotes[0];
+
+    const requestedTerm = this.extractQuoteSearchTerm({ message });
+    const quoteIntent = this.getQuoteIntent({ message });
+    const requestedSymbols = requestedTerm
+      ? this.getQuoteTermAliases({ searchTerm: requestedTerm })
+      : [];
+    const rankedQuotes = [...validQuotes]
+      .map((candidate) => {
+        const symbolUpper = candidate.symbol.toUpperCase();
+        const normalizedTerm = requestedTerm?.trim().toUpperCase();
+        let score = 0;
+
+        if (requestedSymbols.includes(symbolUpper)) {
+          score += 120;
+        }
+        if (normalizedTerm && symbolUpper.startsWith(normalizedTerm)) {
+          score += 45;
+        }
+        if (
+          candidate.currency &&
+          candidate.currency.toUpperCase() === userCurrency.toUpperCase()
+        ) {
+          score += 40;
+        }
+        if (!candidate.symbol.includes('.')) {
+          score += 10;
+        }
+        if (quoteIntent === 'stock') {
+          const symbolLower = candidate.symbol.toLowerCase();
+          const hasTokenizedMarker =
+            symbolLower.includes('tokenized') ||
+            symbolLower.includes('-stock') ||
+            symbolLower.endsWith('usd');
+          const looksLikeTicker = /^[A-Z]{1,5}$/.test(symbolUpper);
+          if (looksLikeTicker) {
+            score += 120;
+          }
+          if (hasTokenizedMarker) {
+            score -= 180;
+          }
+        }
+        if (quoteIntent === 'crypto') {
+          if (candidate.dataSource === 'COINGECKO') {
+            score += 170;
+          }
+          if (candidate.dataSource === 'YAHOO') {
+            score += 20;
+          }
+          if (candidate.symbol.includes('.')) {
+            score -= 30;
+          }
+        }
+
+        return {
+          quote: candidate,
+          score
+        };
+      })
+      .sort((left, right) => right.score - left.score);
+
+    const selectedQuote = rankedQuotes[0]?.quote ?? quote;
+
+    if (requestedTerm) {
+      const top = rankedQuotes[0];
+      const second = rankedQuotes[1];
+
+      if (!top || top.score === 0) {
+        return {
+          citedFigures: [],
+          confidence: 'low',
+          message: `I found multiple possible symbols for "${requestedTerm}" but could not confidently select one. Please specify the ticker (for example: TSLA, BTC, XRP).`
+        };
+      }
+
+      const lowConfidenceSelection =
+        top.score < 120 && second && top.score - second.score <= 20;
+
+      if (lowConfidenceSelection) {
+        const options = rankedQuotes
+          .slice(0, 4)
+          .map(({ quote: candidate }) =>
+            candidate.currency
+              ? `${candidate.symbol} (${candidate.currency})`
+              : candidate.symbol
+          )
+          .join(', ');
+
+        return {
+          citedFigures: [],
+          confidence: 'low',
+          message: `I found multiple matches for "${requestedTerm}". Which ticker do you want: ${options}?`
+        };
+      }
+    }
+
+    if (!selectedQuote) {
       return undefined;
     }
 
-    const factId = `market.${quote.symbol}.price`;
+    const factId = `market.${selectedQuote.symbol}.price`;
     const factValue = factRegistry[factId];
 
     if (typeof factValue !== 'number') {
@@ -1568,12 +1858,12 @@ export class AiService {
     return {
       citedFigures: [{ factId, value: factValue }],
       confidence: 'high',
-      message: `The current price of ${quote.symbol} is ${factValue.toLocaleString(
+      message: `The current price of ${selectedQuote.symbol} is ${factValue.toLocaleString(
         undefined,
         {
           maximumFractionDigits: 6
         }
-      )}.`
+      )}${selectedQuote.currency ? ` ${selectedQuote.currency}` : ''}.`
     };
   }
 
@@ -1957,6 +2247,170 @@ export class AiService {
     }
 
     return delegate;
+  }
+
+  private getQuoteTermAliases({ searchTerm }: { searchTerm: string }) {
+    const normalizedTerm = searchTerm.trim().toLowerCase();
+    const aliasMap: Record<string, string[]> = {
+      bitcoin: ['BTC', 'XBT', 'BITCOIN'],
+      cardano: ['ADA'],
+      ethereum: ['ETH', 'ETHEREUM'],
+      ripple: ['XRP', 'RIPPLE'],
+      solana: ['SOL'],
+      tesla: ['TSLA'],
+      xrp: ['XRP', 'RIPPLE']
+    };
+
+    const aliases = aliasMap[normalizedTerm] ?? [];
+    return Array.from(
+      new Set([normalizedTerm.toUpperCase(), ...aliases.map((item) => item)])
+    );
+  }
+
+  private rankLookupItemsForQuoteTerm({
+    items,
+    quoteIntent,
+    searchTerm,
+    userCurrency
+  }: {
+    items: {
+      assetClass?: string;
+      currency?: string;
+      name: string;
+      symbol: string;
+      [key: string]: unknown;
+    }[];
+    quoteIntent: 'crypto' | 'generic' | 'stock';
+    searchTerm: string;
+    userCurrency: string;
+  }) {
+    const normalizedTerm = searchTerm.trim().toLowerCase();
+    const aliasSet = new Set(this.getQuoteTermAliases({ searchTerm }));
+
+    const score = (item: {
+      assetClass?: string;
+      currency?: string;
+      dataSource?: string;
+      name: string;
+      symbol: string;
+    }) => {
+      const symbolUpper = item.symbol.toUpperCase();
+      const symbolLower = item.symbol.toLowerCase();
+      const nameLower = item.name.toLowerCase();
+      const currencyUpper = item.currency?.toUpperCase();
+      const userCurrencyUpper = userCurrency.toUpperCase();
+      const looksLikeTicker = /^[A-Z]{1,5}$/.test(symbolUpper);
+      const hasTokenizedMarker =
+        symbolLower.includes('tokenized') ||
+        symbolLower.includes('-stock') ||
+        symbolLower.endsWith('usd') ||
+        nameLower.includes('tokenized') ||
+        nameLower.includes('wrapped') ||
+        nameLower.includes('synthetic');
+
+      let total = 0;
+
+      if (currencyUpper === userCurrencyUpper) {
+        total += 40;
+      }
+
+      if (!item.symbol.includes('.')) {
+        total += 10;
+      }
+
+      if (aliasSet.has(symbolUpper)) {
+        total += 100;
+      }
+      if (nameLower === normalizedTerm) {
+        total += 90;
+      }
+      if (symbolLower === normalizedTerm) {
+        total += 80;
+      }
+      if (nameLower.startsWith(normalizedTerm)) {
+        total += 60;
+      }
+      if (symbolLower.startsWith(normalizedTerm)) {
+        total += 50;
+      }
+      if (nameLower.includes(normalizedTerm)) {
+        total += 30;
+      }
+      if (symbolLower.includes(normalizedTerm)) {
+        total += 20;
+      }
+
+      if (quoteIntent === 'stock') {
+        if ((item as { assetClass?: string }).assetClass === 'EQUITY') {
+          total += 110;
+        }
+        if (looksLikeTicker) {
+          total += 120;
+        }
+        if (hasTokenizedMarker) {
+          total -= 180;
+        }
+      }
+      if (quoteIntent === 'crypto') {
+        if (item.assetClass === 'LIQUIDITY') {
+          total += 130;
+        }
+        if (item.dataSource === 'COINGECKO') {
+          total += 140;
+        }
+        if (item.assetClass === 'EQUITY') {
+          total -= 90;
+        }
+      }
+
+      return total;
+    };
+
+    return [...items].sort((left, right) => score(right) - score(left));
+  }
+
+  private getQuoteIntent({
+    message
+  }: {
+    message: string;
+  }): 'crypto' | 'generic' | 'stock' {
+    const lowered = message.toLowerCase();
+    const quoteTerm = this.extractQuoteSearchTerm({ message })?.toLowerCase();
+    const cryptoTerms = new Set([
+      'bitcoin',
+      'btc',
+      'ethereum',
+      'eth',
+      'cardano',
+      'ada',
+      'ripple',
+      'xrp',
+      'solana',
+      'sol',
+      'dogecoin',
+      'doge'
+    ]);
+
+    if (
+      lowered.includes(' stock') ||
+      lowered.includes(' stocks') ||
+      lowered.includes(' share') ||
+      lowered.includes(' shares') ||
+      lowered.includes(' equity')
+    ) {
+      return 'stock';
+    }
+
+    if (
+      lowered.includes(' crypto') ||
+      lowered.includes(' coin') ||
+      lowered.includes(' token') ||
+      (quoteTerm ? cryptoTerms.has(quoteTerm) : false)
+    ) {
+      return 'crypto';
+    }
+
+    return 'generic';
   }
 
   private logStructuredStage({

@@ -6,6 +6,13 @@ All notable changes to the embedded Ghost Agent implementation are documented he
 
 ### Changed
 
+- Extraction hardening for package readiness:
+  - moved reusable runtime policies into `ghostagent-core` (`market-data candidate selection`, `feedback lifecycle selector`, `session restore policy`),
+  - host AI runtime now consumes those package helpers instead of duplicating policy logic.
+- `ghostagent:init` expanded beyond env/prisma:
+  - scaffolds missing Ghostfolio-style AI endpoint skeleton files (`ai.module.ts`, `ai.controller.ts`, `ai.service.ts`, DTO stubs),
+  - applies marker-safe idempotent patches for existing host integration files (`app.module.ts`, `app.routes.ts`, `data.service.ts`),
+  - performs runtime integration checks for required host wiring markers (`feedback/session`, parameterized session restore, UI data-service hooks).
 - Session restore API now supports explicit session targeting:
   - `GET /api/v1/ai/chat/session?sessionId=<id>`
   - falls back to most recent session when `sessionId` is missing or not found.
@@ -17,6 +24,8 @@ All notable changes to the embedded Ghost Agent implementation are documented he
   - duplicate submits are rejected server-side (`409`),
   - session restore hydrates prior feedback so already-reviewed responses stay locked.
 - Holdings intent extraction now recognizes `hold` phrasing in addition to `own/have` (e.g., `How much XRP do I hold?`, `Do I hold any XRP?`).
+- Market quote resolution is no longer portfolio-only:
+  - after transaction-based symbol resolution, Ghost Agent now attempts global symbol lookup by query term before falling back to holdings.
 
 ## 2026-02-26
 

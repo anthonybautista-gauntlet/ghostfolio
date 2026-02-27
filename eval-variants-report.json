@@ -1,6 +1,6 @@
 {
   "datasetPath": "/home/xrpant/Desktop/projects/ghostfolio/libs/ghostagent-evals/src/lib/staged/golden-cases.json",
-  "generatedAt": "2026-02-27T16:13:10.876Z",
+  "generatedAt": "2026-02-27T22:19:07.005Z",
   "variants": {
     "baseline": {
       "description": "Current baseline behavior",
@@ -11,9 +11,9 @@
       },
       "passRate": 1,
       "performance": {
-        "avgMs": 3635.8,
-        "p50Ms": 3650,
-        "p95Ms": 8423
+        "avgMs": 3140.2,
+        "p50Ms": 2876,
+        "p95Ms": 5761
       },
       "tokenUsage": {
         "averageInputTokens": 0,
@@ -37,9 +37,9 @@
       },
       "passRate": 1,
       "performance": {
-        "avgMs": 3395.2,
-        "p50Ms": 3649,
-        "p95Ms": 7171
+        "avgMs": 3144.5,
+        "p50Ms": 3054,
+        "p95Ms": 5117
       },
       "tokenUsage": {
         "averageInputTokens": 0,
@@ -61,11 +61,11 @@
         "systemPromptVariant": "v1",
         "temperature": 0
       },
-      "passRate": 0.8,
+      "passRate": 1,
       "performance": {
-        "avgMs": 8577.6,
-        "p50Ms": 4125,
-        "p95Ms": 22122
+        "avgMs": 4663.4,
+        "p50Ms": 5115,
+        "p95Ms": 10263
       },
       "tokenUsage": {
         "averageInputTokens": 0,
