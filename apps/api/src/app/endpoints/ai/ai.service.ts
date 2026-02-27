@@ -311,6 +311,9 @@ export class AiService {
       this.configurationService.get('AI_MAX_TOOL_STEPS')
     );
     const selectedToolNames = routingDecision.tools.slice(0, maxToolSteps);
+    AiService.logger.log(
+      `AI stage route_decision (requestId=${conversationId}, explicitIntent=${routingDecision.hasExplicitIntent}, tools=${selectedToolNames.join(',') || 'none'})`
+    );
 
     if (
       this.shouldAskClarifyingQuestion({
@@ -368,6 +371,9 @@ export class AiService {
 
     for (const toolName of selectedToolNames) {
       const startTime = Date.now();
+      AiService.logger.log(
+        `AI stage tool_start (requestId=${conversationId}, tool=${toolName})`
+      );
 
       try {
         const currentTool = langChainTools[toolName];
@@ -384,6 +390,9 @@ export class AiService {
           ok: true,
           tool: toolName
         });
+        AiService.logger.log(
+          `AI stage tool_complete (requestId=${conversationId}, tool=${toolName}, durationMs=${Date.now() - startTime}, ok=true)`
+        );
       } catch (error: unknown) {
         const errorMessage =
           error instanceof Error
@@ -403,6 +412,9 @@ export class AiService {
           ok: false,
           tool: toolName
         });
+        AiService.logger.log(
+          `AI stage tool_complete (requestId=${conversationId}, tool=${toolName}, durationMs=${Date.now() - startTime}, ok=false)`
+        );
       }
     }
 
@@ -422,15 +434,23 @@ export class AiService {
           citedFigures: AiCitedFigure[];
           confidence: 'high' | 'low' | 'medium';
           message: string;
+          usage?: AiChatResponse['usage'];
         }
       | undefined;
     let llmMs = 0;
+    let synthesisPath: 'biggest_holding_fast_path' | 'llm' | 'quote_fast_path' =
+      'llm';
 
     if (biggestHoldingFastPath) {
       llmResult = biggestHoldingFastPath;
+      synthesisPath = 'biggest_holding_fast_path';
     } else if (quoteFastPath) {
       llmResult = quoteFastPath;
+      synthesisPath = 'quote_fast_path';
     } else {
+      AiService.logger.log(
+        `AI stage synthesis_start (requestId=${conversationId}, mode=llm)`
+      );
       const llmStartedAt = Date.now();
       llmResult = await this.generateChatResponse({
         history: history.map(({ content, role }) => {
@@ -446,6 +466,9 @@ export class AiService {
         toolResults
       });
       llmMs = Date.now() - llmStartedAt;
+      AiService.logger.log(
+        `AI stage synthesis_complete (requestId=${conversationId}, mode=llm, llmMs=${llmMs}, inputTokens=${llmResult?.usage?.inputTokens ?? 'n/a'}, outputTokens=${llmResult?.usage?.outputTokens ?? 'n/a'}, totalTokens=${llmResult?.usage?.totalTokens ?? 'n/a'}, estimatedCostUsd=${llmResult?.usage?.estimatedCostUsd ?? 'n/a'})`
+      );
     }
 
     const verification = this.verificationService.verify({
@@ -453,6 +476,9 @@ export class AiService {
       factRegistry,
       toolResults
     });
+    AiService.logger.log(
+      `AI stage verification (requestId=${conversationId}, passed=${verification.passed}, failedCitations=${verification.failedCitations.length})`
+    );
     const responseMessage = verification.passed
       ? (llmResult?.message ??
         'I could not generate a structured response for this query.')
@@ -471,7 +497,7 @@ export class AiService {
     }, 0);
     const totalMs = Date.now() - requestStartedAt;
     AiService.logger.log(
-      `AI request completed (userId=${userId}, requestId=${conversationId}, tools=${toolInvocations.length}, toolsMs=${toolsMs}, llmMs=${llmMs}, totalMs=${totalMs})`
+      `AI request completed (userId=${userId}, requestId=${conversationId}, tools=${toolInvocations.length}, toolsMs=${toolsMs}, llmMs=${llmMs}, totalMs=${totalMs}, synthesisPath=${synthesisPath}, totalTokens=${llmResult?.usage?.totalTokens ?? 'n/a'}, estimatedCostUsd=${llmResult?.usage?.estimatedCostUsd ?? 'n/a'})`
     );
 
     return {
@@ -488,6 +514,7 @@ export class AiService {
         totalMs
       },
       toolInvocations,
+      usage: llmResult?.usage,
       verification
     };
   }
@@ -1482,7 +1509,7 @@ export class AiService {
           };
         }
       ).withStructuredOutput(structuredResponseSchema);
-      const parsedResponse = (await structuredModel.invoke(
+      const rawModelResponse = await structuredModel.invoke(
         [
           new SystemMessage(systemPrompt),
           new HumanMessage(`User message: ${message}`)
@@ -1492,7 +1519,11 @@ export class AiService {
           metadata: { step: 'llm_generation' },
           runName: 'ai_response_generation'
         })
-      )) as StructuredLlmResponse;
+      );
+      const parsedResponse = rawModelResponse as StructuredLlmResponse;
+      const usage = this.extractTokenUsage({
+        response: rawModelResponse
+      });
 
       const normalizedCitedFigures: AiCitedFigure[] =
         parsedResponse.citedFigures?.map((citation) => ({
@@ -1507,7 +1538,8 @@ export class AiService {
         confidence: parsedResponse.confidence ?? 'medium',
         message:
           parsedResponse.message ??
-          'I could not generate a structured response for this query.'
+          'I could not generate a structured response for this query.',
+        usage
       };
     } catch (error: unknown) {
       const { message: errorMessage, statusCode } = this.getErrorDetails({
@@ -1521,7 +1553,8 @@ export class AiService {
         citedFigures: [],
         confidence: 'low' as const,
         message:
-          'I am temporarily unable to generate an AI summary, but the tool data was retrieved successfully.'
+          'I am temporarily unable to generate an AI summary, but the tool data was retrieved successfully.',
+        usage: undefined
       };
     }
   }
@@ -1589,6 +1622,90 @@ export class AiService {
       message,
       statusCode: String(statusCode)
     };
+  }
+
+  private extractTokenUsage({
+    response
+  }: {
+    response: unknown;
+  }): AiChatResponse['usage'] {
+    if (!response || typeof response !== 'object') {
+      return undefined;
+    }
+
+    const usageFromMetadata = (response as { usage_metadata?: unknown })
+      .usage_metadata as
+      | {
+          input_tokens?: number;
+          output_tokens?: number;
+          total_tokens?: number;
+        }
+      | undefined;
+    const usageFromResponseMetadata = (
+      response as {
+        response_metadata?: {
+          tokenUsage?: {
+            completionTokens?: number;
+            promptTokens?: number;
+            totalTokens?: number;
+          };
+        };
+      }
+    ).response_metadata?.tokenUsage;
+    const inputTokens =
+      usageFromMetadata?.input_tokens ??
+      usageFromResponseMetadata?.promptTokens;
+    const outputTokens =
+      usageFromMetadata?.output_tokens ??
+      usageFromResponseMetadata?.completionTokens;
+    const totalTokens =
+      usageFromMetadata?.total_tokens ?? usageFromResponseMetadata?.totalTokens;
+
+    if (
+      typeof inputTokens !== 'number' &&
+      typeof outputTokens !== 'number' &&
+      typeof totalTokens !== 'number'
+    ) {
+      return undefined;
+    }
+
+    return {
+      estimatedCostUsd: this.estimateCostFromTokens({
+        inputTokens,
+        outputTokens
+      }),
+      inputTokens,
+      outputTokens,
+      totalTokens
+    };
+  }
+
+  private estimateCostFromTokens({
+    inputTokens,
+    outputTokens
+  }: {
+    inputTokens?: number;
+    outputTokens?: number;
+  }) {
+    const inputTokenPricePer1K =
+      Number(process.env.AI_INPUT_COST_PER_1K_TOKENS) || undefined;
+    const outputTokenPricePer1K =
+      Number(process.env.AI_OUTPUT_COST_PER_1K_TOKENS) || undefined;
+
+    if (
+      typeof inputTokenPricePer1K !== 'number' ||
+      typeof outputTokenPricePer1K !== 'number' ||
+      typeof inputTokens !== 'number' ||
+      typeof outputTokens !== 'number'
+    ) {
+      return undefined;
+    }
+
+    const estimatedCost =
+      (inputTokens / 1000) * inputTokenPricePer1K +
+      (outputTokens / 1000) * outputTokenPricePer1K;
+
+    return Number(estimatedCost.toFixed(6));
   }
 
   private async executeWithTimeout<T>({

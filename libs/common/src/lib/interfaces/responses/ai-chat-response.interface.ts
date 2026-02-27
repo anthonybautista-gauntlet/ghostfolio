@@ -23,6 +23,13 @@ export interface AiTimings {
   totalMs: number;
 }
 
+export interface AiTokenUsage {
+  estimatedCostUsd?: number;
+  inputTokens?: number;
+  outputTokens?: number;
+  totalTokens?: number;
+}
+
 export interface AiChatResponse {
   confidence: 'high' | 'low' | 'medium';
   disclaimer: string;
@@ -31,5 +38,6 @@ export interface AiChatResponse {
   citedFigures: AiCitedFigure[];
   timings: AiTimings;
   toolInvocations: AiToolInvocation[];
+  usage?: AiTokenUsage;
   verification: AiVerificationResult;
 }

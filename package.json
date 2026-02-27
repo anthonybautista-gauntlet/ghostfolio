@@ -28,6 +28,8 @@
     "dep-graph": "nx dep-graph",
     "eval:langsmith": "npm run --silent eval:langsmith:raw > eval-langsmith-report.json",
     "eval:langsmith:raw": "ts-node --esm ./libs/ghostagent-evals/src/lib/run-ghostagent-evals.ts",
+    "eval:golden": "npm run --silent eval:golden:raw > eval-golden-report.json",
+    "eval:golden:raw": "AGENTFORGE_EVAL_DATASET_PATH=./libs/ghostagent-evals/src/lib/staged/golden-cases.json ts-node --esm ./libs/ghostagent-evals/src/lib/run-ghostagent-evals.ts",
     "eval:mvp": "npx nx run ghostagent-core:test",
     "extract-locales": "nx run client:extract-i18n --output-path ./apps/client/src/locales",
     "format": "nx format:write",

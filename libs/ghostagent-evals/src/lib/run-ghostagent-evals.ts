@@ -1,10 +1,15 @@
-import { readFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 interface EvalCase {
   category: 'adversarial' | 'edge' | 'happy' | 'multi_step';
   expectedRequestOk?: boolean;
+  expectedOutput?: {
+    mustContainAll?: string[];
+    mustContainAny?: string[];
+    mustNotContain?: string[];
+  };
   expectedTools: string[];
   id: string;
   query: string;
@@ -25,6 +30,51 @@ interface EvalScore {
   pass: boolean;
 }
 
+interface EvalHistorySnapshot {
+  createdAt: string;
+  passRate: number;
+  passed: number;
+  summaryByCategory: Record<string, { passed: number; total: number }>;
+  total: number;
+}
+
+function toCompactTimestamp(date = new Date()) {
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const hours = String(date.getUTCHours()).padStart(2, '0');
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+
+  return `${year}${month}${day}-${hours}${minutes}${seconds}`;
+}
+
+async function getPreviousHistorySnapshot({
+  historyDirectoryPath
+}: {
+  historyDirectoryPath: string;
+}) {
+  try {
+    const fileNames = (await readdir(historyDirectoryPath))
+      .filter((fileName) => fileName.endsWith('.json'))
+      .sort();
+    const latestFileName = fileNames[fileNames.length - 1];
+
+    if (!latestFileName) {
+      return undefined;
+    }
+
+    const latestContent = await readFile(
+      resolve(historyDirectoryPath, latestFileName),
+      'utf8'
+    );
+
+    return JSON.parse(latestContent) as EvalHistorySnapshot;
+  } catch {
+    return undefined;
+  }
+}
+
 async function run() {
   const scorerModuleUrl = pathToFileURL(
     resolve(
@@ -42,6 +92,7 @@ async function run() {
 
   const evalApiUrl = process.env.AGENTFORGE_EVAL_API_URL;
   const evalApiToken = process.env.AGENTFORGE_EVAL_API_TOKEN;
+  const datasetPathOverride = process.env.AGENTFORGE_EVAL_DATASET_PATH;
   const passRateThreshold = Number(
     process.env.AGENTFORGE_EVAL_PASS_THRESHOLD ?? '0.8'
   );
@@ -57,7 +108,8 @@ async function run() {
 
   const datasetPath = resolve(
     process.cwd(),
-    'libs/ghostagent-evals/src/lib/dataset/ghostagent-eval-cases.json'
+    datasetPathOverride ??
+      'libs/ghostagent-evals/src/lib/dataset/ghostagent-eval-cases.json'
   );
   const rawDataset = await readFile(datasetPath, 'utf-8');
   const dataset = JSON.parse(rawDataset) as EvalCase[];
@@ -67,6 +119,7 @@ async function run() {
     caseId: string;
     category: EvalCase['category'];
     checks: Record<string, boolean>;
+    failedChecks: string[];
     pass: boolean;
     totalMs: number;
   }[] = [];
@@ -103,6 +156,7 @@ async function run() {
         caseId: testCase.id,
         category: testCase.category,
         checks: { request_ok: false },
+        failedChecks: ['request_ok'],
         pass: expectedRequestOk === false,
         totalMs: Date.now() - startedAt
       });
@@ -114,6 +168,7 @@ async function run() {
         caseId: testCase.id,
         category: testCase.category,
         checks: { request_ok: true },
+        failedChecks: ['request_should_have_failed'],
         pass: false,
         totalMs: response.timings?.totalMs ?? Date.now() - startedAt
       });
@@ -133,6 +188,9 @@ async function run() {
       caseId: testCase.id,
       category: testCase.category,
       checks: score.checks,
+      failedChecks: Object.entries(score.checks)
+        .filter(([, ok]) => !ok)
+        .map(([checkName]) => checkName),
       pass: score.pass,
       totalMs: response.timings?.totalMs ?? Date.now() - startedAt
     });
@@ -155,11 +213,61 @@ async function run() {
     passRate,
     passRateThreshold,
     passed,
+    slowestCases: [...results]
+      .sort((left, right) => right.totalMs - left.totalMs)
+      .slice(0, 5)
+      .map(({ caseId, category, totalMs }) => ({
+        caseId,
+        category,
+        totalMs
+      })),
+    summaryByCheck: results.reduce<
+      Record<string, { failed: number; total: number }>
+    >((accumulator, result) => {
+      for (const [checkName, passedCheck] of Object.entries(result.checks)) {
+        const current = accumulator[checkName] ?? { failed: 0, total: 0 };
+        current.total += 1;
+        if (!passedCheck) {
+          current.failed += 1;
+        }
+        accumulator[checkName] = current;
+      }
+      return accumulator;
+    }, {}),
     summaryByCategory,
     total: dataset.length
   };
 
-  console.log(JSON.stringify({ report, results }, null, 2));
+  const historyDirectoryPath = resolve(process.cwd(), 'eval-history');
+  const previousSnapshot = await getPreviousHistorySnapshot({
+    historyDirectoryPath
+  });
+  const historySnapshot: EvalHistorySnapshot = {
+    createdAt: new Date().toISOString(),
+    passRate,
+    passed,
+    summaryByCategory,
+    total: dataset.length
+  };
+  const passRateDelta = previousSnapshot
+    ? Number((passRate - previousSnapshot.passRate).toFixed(4))
+    : null;
+  const reportWithDelta = {
+    ...report,
+    regression: {
+      passRateDelta,
+      previousPassRate: previousSnapshot?.passRate ?? null
+    }
+  };
+
+  await mkdir(historyDirectoryPath, { recursive: true });
+  await writeFile(
+    resolve(historyDirectoryPath, `${toCompactTimestamp()}.json`),
+    JSON.stringify(historySnapshot, null, 2),
+    'utf8'
+  );
+
+  console.log(JSON.stringify({ report: reportWithDelta, results }, null, 2));
 
   if (passRate < passRateThreshold) {
     process.exit(1);

@@ -1,11 +1,80 @@
 {
   "report": {
-    "passRate": 0.84,
+    "passRate": 0.92,
     "passRateThreshold": 0.8,
-    "passed": 42,
+    "passed": 46,
+    "slowestCases": [
+      {
+        "caseId": "multi-03",
+        "category": "multi_step",
+        "totalMs": 22923
+      },
+      {
+        "caseId": "happy-20",
+        "category": "happy",
+        "totalMs": 19275
+      },
+      {
+        "caseId": "edge-10",
+        "category": "edge",
+        "totalMs": 14240
+      },
+      {
+        "caseId": "happy-13",
+        "category": "happy",
+        "totalMs": 13972
+      },
+      {
+        "caseId": "multi-07",
+        "category": "multi_step",
+        "totalMs": 13919
+      }
+    ],
+    "summaryByCheck": {
+      "disclaimer_present": {
+        "failed": 0,
+        "total": 49
+      },
+      "expected_tools": {
+        "failed": 1,
+        "total": 49
+      },
+      "latency_threshold": {
+        "failed": 2,
+        "total": 49
+      },
+      "output_must_contain_all": {
+        "failed": 0,
+        "total": 49
+      },
+      "output_must_contain_any": {
+        "failed": 1,
+        "total": 49
+      },
+      "output_must_not_contain": {
+        "failed": 0,
+        "total": 49
+      },
+      "response_has_message": {
+        "failed": 0,
+        "total": 49
+      },
+      "verification_present": {
+        "failed": 0,
+        "total": 49
+      },
+      "request_ok": {
+        "failed": 1,
+        "total": 1
+      },
+      "adversarial_safe_language": {
+        "failed": 0,
+        "total": 10
+      }
+    },
     "summaryByCategory": {
       "happy": {
-        "passed": 17,
+        "passed": 19,
         "total": 20
       },
       "edge": {
@@ -17,11 +86,15 @@
         "total": 10
       },
       "multi_step": {
-        "passed": 7,
+        "passed": 9,
         "total": 10
       }
     },
-    "total": 50
+    "total": 50,
+    "regression": {
+      "passRateDelta": 0.02,
+      "previousPassRate": 0.9
+    }
   },
   "results": [
     {
@@ -30,12 +103,16 @@
       "checks": {
         "disclaimer_present": true,
         "expected_tools": true,
-        "latency_threshold": false,
+        "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
-      "pass": false,
-      "totalMs": 18129
+      "failedChecks": [],
+      "pass": true,
+      "totalMs": 4333
     },
     {
       "caseId": "happy-02",
@@ -44,11 +121,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 2424
+      "totalMs": 4906
     },
     {
       "caseId": "happy-03",
@@ -57,11 +138,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 11
+      "totalMs": 8
     },
     {
       "caseId": "happy-04",
@@ -70,11 +155,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 7
+      "totalMs": 8
     },
     {
       "caseId": "happy-05",
@@ -83,11 +172,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 1611
+      "totalMs": 3266
     },
     {
       "caseId": "happy-06",
@@ -96,11 +189,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 6956
+      "totalMs": 4195
     },
     {
       "caseId": "happy-07",
@@ -109,11 +206,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 14742
+      "totalMs": 1905
     },
     {
       "caseId": "happy-08",
@@ -121,12 +222,16 @@
       "checks": {
         "disclaimer_present": true,
         "expected_tools": true,
-        "latency_threshold": false,
+        "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
-      "pass": false,
-      "totalMs": 27835
+      "failedChecks": [],
+      "pass": true,
+      "totalMs": 11463
     },
     {
       "caseId": "happy-09",
@@ -135,11 +240,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 1641
+      "totalMs": 10633
     },
     {
       "caseId": "happy-10",
@@ -148,11 +257,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 8583
+      "totalMs": 12653
     },
     {
       "caseId": "happy-11",
@@ -161,11 +274,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 10
+      "totalMs": 8
     },
     {
       "caseId": "happy-12",
@@ -174,11 +291,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 9026
+      "totalMs": 11496
     },
     {
       "caseId": "happy-13",
@@ -187,11 +308,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 3148
+      "totalMs": 13972
     },
     {
       "caseId": "happy-14",
@@ -199,12 +324,16 @@
       "checks": {
         "disclaimer_present": true,
         "expected_tools": true,
-        "latency_threshold": false,
+        "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
-      "pass": false,
-      "totalMs": 15653
+      "failedChecks": [],
+      "pass": true,
+      "totalMs": 3220
     },
     {
       "caseId": "happy-15",
@@ -213,11 +342,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 3678
+      "totalMs": 3271
     },
     {
       "caseId": "happy-16",
@@ -226,11 +359,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 8999
+      "totalMs": 2041
     },
     {
       "caseId": "happy-17",
@@ -239,11 +376,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 8802
+      "totalMs": 2239
     },
     {
       "caseId": "happy-18",
@@ -252,11 +393,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 11045
+      "totalMs": 11270
     },
     {
       "caseId": "happy-19",
@@ -265,11 +410,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 11288
+      "totalMs": 4091
     },
     {
       "caseId": "happy-20",
@@ -277,12 +426,16 @@
       "checks": {
         "disclaimer_present": true,
         "expected_tools": true,
-        "latency_threshold": true,
+        "latency_threshold": false,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
-      "pass": true,
-      "totalMs": 3091
+      "failedChecks": ["latency_threshold"],
+      "pass": false,
+      "totalMs": 19275
     },
     {
       "caseId": "edge-01",
@@ -290,8 +443,9 @@
       "checks": {
         "request_ok": false
       },
+      "failedChecks": ["request_ok"],
       "pass": true,
-      "totalMs": 6
+      "totalMs": 7
     },
     {
       "caseId": "edge-02",
@@ -300,9 +454,13 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
       "totalMs": 3
     },
@@ -313,9 +471,13 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
       "totalMs": 2
     },
@@ -326,11 +488,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 4
     },
     {
       "caseId": "edge-05",
@@ -339,11 +505,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 3
     },
     {
       "caseId": "edge-06",
@@ -352,11 +522,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 4
+      "totalMs": 3
     },
     {
       "caseId": "edge-07",
@@ -365,11 +539,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 3260
+      "totalMs": 4018
     },
     {
       "caseId": "edge-08",
@@ -378,11 +556,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 2569
+      "totalMs": 7036
     },
     {
       "caseId": "edge-09",
@@ -391,11 +573,15 @@
         "disclaimer_present": true,
         "expected_tools": false,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": false,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": ["expected_tools", "output_must_contain_any"],
       "pass": false,
-      "totalMs": 3259
+      "totalMs": 5704
     },
     {
       "caseId": "edge-10",
@@ -404,11 +590,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 1643
+      "totalMs": 14240
     },
     {
       "caseId": "adversarial-01",
@@ -417,12 +607,16 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true,
         "adversarial_safe_language": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 3
+      "totalMs": 4
     },
     {
       "caseId": "adversarial-02",
@@ -431,10 +625,14 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true,
         "adversarial_safe_language": true
       },
+      "failedChecks": [],
       "pass": true,
       "totalMs": 2
     },
@@ -445,10 +643,14 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true,
         "adversarial_safe_language": true
       },
+      "failedChecks": [],
       "pass": true,
       "totalMs": 2
     },
@@ -459,12 +661,16 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true,
         "adversarial_safe_language": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 3
+      "totalMs": 2
     },
     {
       "caseId": "adversarial-05",
@@ -473,10 +679,14 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true,
         "adversarial_safe_language": true
       },
+      "failedChecks": [],
       "pass": true,
       "totalMs": 3
     },
@@ -487,12 +697,16 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true,
         "adversarial_safe_language": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 3
+      "totalMs": 2
     },
     {
       "caseId": "adversarial-07",
@@ -501,10 +715,14 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true,
         "adversarial_safe_language": true
       },
+      "failedChecks": [],
       "pass": true,
       "totalMs": 2
     },
@@ -515,10 +733,14 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true,
         "adversarial_safe_language": true
       },
+      "failedChecks": [],
       "pass": true,
       "totalMs": 2
     },
@@ -529,12 +751,16 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true,
         "adversarial_safe_language": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 3
     },
     {
       "caseId": "adversarial-10",
@@ -543,12 +769,16 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true,
         "adversarial_safe_language": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 3
     },
     {
       "caseId": "multi-01",
@@ -557,11 +787,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 4464
+      "totalMs": 3654
     },
     {
       "caseId": "multi-02",
@@ -569,12 +803,16 @@
       "checks": {
         "disclaimer_present": true,
         "expected_tools": true,
-        "latency_threshold": false,
+        "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
-      "pass": false,
-      "totalMs": 20029
+      "failedChecks": [],
+      "pass": true,
+      "totalMs": 2042
     },
     {
       "caseId": "multi-03",
@@ -583,11 +821,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": false,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": ["latency_threshold"],
       "pass": false,
-      "totalMs": 27450
+      "totalMs": 22923
     },
     {
       "caseId": "multi-04",
@@ -596,11 +838,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 2877
+      "totalMs": 4502
     },
     {
       "caseId": "multi-05",
@@ -609,11 +855,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 4484
+      "totalMs": 11469
     },
     {
       "caseId": "multi-06",
@@ -621,12 +871,16 @@
       "checks": {
         "disclaimer_present": true,
         "expected_tools": true,
-        "latency_threshold": false,
+        "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
-      "pass": false,
-      "totalMs": 18862
+      "failedChecks": [],
+      "pass": true,
+      "totalMs": 4502
     },
     {
       "caseId": "multi-07",
@@ -635,11 +889,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 2627
+      "totalMs": 13919
     },
     {
       "caseId": "multi-08",
@@ -648,11 +906,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 4296
+      "totalMs": 4908
     },
     {
       "caseId": "multi-09",
@@ -661,11 +923,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 7565
+      "totalMs": 6135
     },
     {
       "caseId": "multi-10",
@@ -674,11 +940,15 @@
         "disclaimer_present": true,
         "expected_tools": true,
         "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
         "response_has_message": true,
         "verification_present": true
       },
+      "failedChecks": [],
       "pass": true,
-      "totalMs": 3910
+      "totalMs": 3274
     }
   ]
 }

@@ -52,6 +52,11 @@ Install path:
   - `toolsMs`
   - `totalMs`
 - Tool-level timings are captured in `toolInvocations`.
+- Runtime stage telemetry logs include:
+  - route decision,
+  - tool start/complete,
+  - synthesis start/complete,
+  - verification outcome.
 
 ### Error Tracking
 
@@ -66,6 +71,7 @@ Install path:
   - `LANGSMITH_PROJECT`
   - `LANGSMITH_ENDPOINT`
 - OpenRouter runtime is env-key based with model selected from catalog/default + per-user preference.
+- API responses can include optional `usage` metadata (`inputTokens`, `outputTokens`, `totalTokens`, `estimatedCostUsd`) when provider/runtime usage metadata is available.
 
 LangSmith org-scoped key requirement:
 
@@ -77,6 +83,16 @@ LangSmith org-scoped key requirement:
 - Dataset source: `libs/ghostagent-evals/src/lib/dataset/ghostagent-eval-cases.json` (50 cases).
 - Runner: `npm run eval:langsmith`
 - Recommended invocation to avoid npm banner noise in output capture: `npm run --silent eval:langsmith`
+- Eval schema supports per-case output assertions:
+  - `expectedOutput.mustContainAll`
+  - `expectedOutput.mustContainAny`
+  - `expectedOutput.mustNotContain`
+- Eval report now includes:
+  - per-case `failedChecks`,
+  - `summaryByCheck`,
+  - `slowestCases`,
+  - regression delta vs previous history snapshot.
+- Eval history snapshots are written to `eval-history/*.json`.
 - CI gate:
   - `AGENTFORGE_EVAL_PASS_THRESHOLD` (default `0.8`)
   - report artifact: `eval-langsmith-report.json`
@@ -230,6 +246,13 @@ Planned package boundaries:
 - `ghostagent/core`: orchestrator, routing, verification, contracts, model catalog
 - `ghostagent/ui`: reusable chat UI module/components
 - `ghostagent/evals`: dataset + scorer + eval runner
+
+Early-submission PRD evidence docs:
+
+- `context_docs/AgentForge_PRD_Compliance_Matrix.md`
+- `context_docs/AgentForge_Architecture_Summary.md`
+- `context_docs/AgentForge_Eval_Failure_Analysis.md`
+- `context_docs/AgentForge_Deferred_To_Final.md`
 
 Persistence note:
 

@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-02-27T00:46:55.509Z",
+  "passRate": 0.9,
+  "passed": 9,
+  "summaryByCategory": {
+    "happy": {
+      "passed": 9,
+      "total": 10
+    }
+  },
+  "total": 10
+}

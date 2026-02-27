@@ -20,6 +20,7 @@ Integration helper:
 - fast deterministic unit tests only
 - no live provider calls
 - no host-specific DB/Redis dependencies
+- runtime emits stage telemetry hooks from host orchestration for routing/tool/verification observability
 
 ## Host Responsibilities
 

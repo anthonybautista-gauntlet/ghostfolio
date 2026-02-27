@@ -1,0 +1,251 @@
+{
+  "report": {
+    "passRate": 0.9,
+    "passRateThreshold": 0.8,
+    "passed": 9,
+    "slowestCases": [
+      {
+        "caseId": "golden-10",
+        "category": "happy",
+        "totalMs": 18428
+      },
+      {
+        "caseId": "golden-02",
+        "category": "happy",
+        "totalMs": 14726
+      },
+      {
+        "caseId": "golden-01",
+        "category": "happy",
+        "totalMs": 4691
+      },
+      {
+        "caseId": "golden-09",
+        "category": "happy",
+        "totalMs": 4090
+      },
+      {
+        "caseId": "golden-06",
+        "category": "happy",
+        "totalMs": 3673
+      }
+    ],
+    "summaryByCheck": {
+      "disclaimer_present": {
+        "failed": 0,
+        "total": 10
+      },
+      "expected_tools": {
+        "failed": 0,
+        "total": 10
+      },
+      "latency_threshold": {
+        "failed": 1,
+        "total": 10
+      },
+      "output_must_contain_all": {
+        "failed": 0,
+        "total": 10
+      },
+      "output_must_contain_any": {
+        "failed": 0,
+        "total": 10
+      },
+      "output_must_not_contain": {
+        "failed": 0,
+        "total": 10
+      },
+      "response_has_message": {
+        "failed": 0,
+        "total": 10
+      },
+      "verification_present": {
+        "failed": 0,
+        "total": 10
+      }
+    },
+    "summaryByCategory": {
+      "happy": {
+        "passed": 9,
+        "total": 10
+      }
+    },
+    "total": 10,
+    "regression": {
+      "passRateDelta": -0.02,
+      "previousPassRate": 0.92
+    }
+  },
+  "results": [
+    {
+      "caseId": "golden-01",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "failedChecks": [],
+      "pass": true,
+      "totalMs": 4691
+    },
+    {
+      "caseId": "golden-02",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "failedChecks": [],
+      "pass": true,
+      "totalMs": 14726
+    },
+    {
+      "caseId": "golden-03",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "failedChecks": [],
+      "pass": true,
+      "totalMs": 10
+    },
+    {
+      "caseId": "golden-04",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "failedChecks": [],
+      "pass": true,
+      "totalMs": 9
+    },
+    {
+      "caseId": "golden-05",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "failedChecks": [],
+      "pass": true,
+      "totalMs": 2416
+    },
+    {
+      "caseId": "golden-06",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "failedChecks": [],
+      "pass": true,
+      "totalMs": 3673
+    },
+    {
+      "caseId": "golden-07",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "failedChecks": [],
+      "pass": true,
+      "totalMs": 2860
+    },
+    {
+      "caseId": "golden-08",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "failedChecks": [],
+      "pass": true,
+      "totalMs": 1232
+    },
+    {
+      "caseId": "golden-09",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": true,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "failedChecks": [],
+      "pass": true,
+      "totalMs": 4090
+    },
+    {
+      "caseId": "golden-10",
+      "category": "happy",
+      "checks": {
+        "disclaimer_present": true,
+        "expected_tools": true,
+        "latency_threshold": false,
+        "output_must_contain_all": true,
+        "output_must_contain_any": true,
+        "output_must_not_contain": true,
+        "response_has_message": true,
+        "verification_present": true
+      },
+      "failedChecks": ["latency_threshold"],
+      "pass": false,
+      "totalMs": 18428
+    }
+  ]
+}

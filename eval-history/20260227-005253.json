@@ -1,0 +1,24 @@
+{
+  "createdAt": "2026-02-27T00:52:53.088Z",
+  "passRate": 0.92,
+  "passed": 46,
+  "summaryByCategory": {
+    "happy": {
+      "passed": 19,
+      "total": 20
+    },
+    "edge": {
+      "passed": 9,
+      "total": 10
+    },
+    "adversarial": {
+      "passed": 10,
+      "total": 10
+    },
+    "multi_step": {
+      "passed": 9,
+      "total": 10
+    }
+  },
+  "total": 50
+}

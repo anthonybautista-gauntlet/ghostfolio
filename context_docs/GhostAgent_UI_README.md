@@ -4,6 +4,10 @@
 
 `ghostagent/ui` contains reusable chat UI components and route helpers.
 
+Submission references:
+
+- PRD progress and eval evidence docs are tracked under `context_docs/AgentForge_*`.
+
 Current UX features:
 
 - explicit thinking indicator while assistant response is pending
