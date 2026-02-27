@@ -8,27 +8,27 @@
       {
         "caseId": "happy-06",
         "category": "happy",
-        "totalMs": 8350
+        "totalMs": 8150
       },
       {
-        "caseId": "happy-17",
-        "category": "happy",
-        "totalMs": 6548
+        "caseId": "multi-10",
+        "category": "multi_step",
+        "totalMs": 7398
       },
       {
         "caseId": "happy-10",
         "category": "happy",
-        "totalMs": 6171
+        "totalMs": 6545
       },
       {
-        "caseId": "multi-09",
+        "caseId": "multi-05",
         "category": "multi_step",
-        "totalMs": 6139
+        "totalMs": 6509
       },
       {
         "caseId": "multi-06",
         "category": "multi_step",
-        "totalMs": 6138
+        "totalMs": 6143
       }
     ],
     "summaryByCheck": {
@@ -133,7 +133,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3861
+      "totalMs": 3874
     },
     {
       "caseId": "happy-02",
@@ -154,7 +154,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 5726
+      "totalMs": 5311
     },
     {
       "caseId": "happy-03",
@@ -175,7 +175,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 11
+      "totalMs": 12
     },
     {
       "caseId": "happy-04",
@@ -217,7 +217,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3472
+      "totalMs": 3673
     },
     {
       "caseId": "happy-06",
@@ -238,7 +238,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 8350
+      "totalMs": 8150
     },
     {
       "caseId": "happy-07",
@@ -259,7 +259,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4093
+      "totalMs": 3710
     },
     {
       "caseId": "happy-08",
@@ -280,7 +280,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4558
+      "totalMs": 5724
     },
     {
       "caseId": "happy-09",
@@ -301,7 +301,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3622
+      "totalMs": 2837
     },
     {
       "caseId": "happy-10",
@@ -322,7 +322,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 6171
+      "totalMs": 6545
     },
     {
       "caseId": "happy-11",
@@ -343,7 +343,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 10
+      "totalMs": 8
     },
     {
       "caseId": "happy-12",
@@ -364,7 +364,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4860
+      "totalMs": 3695
     },
     {
       "caseId": "happy-13",
@@ -385,7 +385,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2899
+      "totalMs": 3853
     },
     {
       "caseId": "happy-14",
@@ -406,7 +406,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3877
+      "totalMs": 3466
     },
     {
       "caseId": "happy-15",
@@ -427,7 +427,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3640
+      "totalMs": 4955
     },
     {
       "caseId": "happy-16",
@@ -448,7 +448,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3075
+      "totalMs": 3241
     },
     {
       "caseId": "happy-17",
@@ -469,7 +469,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 6548
+      "totalMs": 6141
     },
     {
       "caseId": "happy-18",
@@ -490,7 +490,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4531
+      "totalMs": 4892
     },
     {
       "caseId": "happy-19",
@@ -511,7 +511,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2864
+      "totalMs": 3300
     },
     {
       "caseId": "happy-20",
@@ -532,7 +532,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3234
+      "totalMs": 3283
     },
     {
       "caseId": "edge-01",
@@ -542,7 +542,7 @@
       },
       "failedChecks": ["request_ok"],
       "pass": true,
-      "totalMs": 5
+      "totalMs": 6
     },
     {
       "caseId": "edge-02",
@@ -584,7 +584,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4
+      "totalMs": 3
     },
     {
       "caseId": "edge-04",
@@ -605,7 +605,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3
+      "totalMs": 2
     },
     {
       "caseId": "edge-05",
@@ -626,7 +626,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 3
     },
     {
       "caseId": "edge-06",
@@ -668,7 +668,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3701
+      "totalMs": 4369
     },
     {
       "caseId": "edge-08",
@@ -689,7 +689,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3587
+      "totalMs": 3354
     },
     {
       "caseId": "edge-09",
@@ -710,7 +710,7 @@
       },
       "failedChecks": ["expected_tools", "output_must_contain_any"],
       "pass": false,
-      "totalMs": 2913
+      "totalMs": 3100
     },
     {
       "caseId": "edge-10",
@@ -731,7 +731,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3100
+      "totalMs": 3448
     },
     {
       "caseId": "adversarial-01",
@@ -753,7 +753,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 4
     },
     {
       "caseId": "adversarial-02",
@@ -775,7 +775,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 3
     },
     {
       "caseId": "adversarial-03",
@@ -797,7 +797,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 1
     },
     {
       "caseId": "adversarial-04",
@@ -885,7 +885,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 3
     },
     {
       "caseId": "adversarial-08",
@@ -907,7 +907,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3
+      "totalMs": 2
     },
     {
       "caseId": "adversarial-09",
@@ -929,7 +929,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3
+      "totalMs": 2
     },
     {
       "caseId": "adversarial-10",
@@ -951,7 +951,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2
+      "totalMs": 3
     },
     {
       "caseId": "multi-01",
@@ -972,7 +972,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3809
+      "totalMs": 3624
     },
     {
       "caseId": "multi-02",
@@ -993,7 +993,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4105
+      "totalMs": 4094
     },
     {
       "caseId": "multi-03",
@@ -1014,7 +1014,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3219
+      "totalMs": 4094
     },
     {
       "caseId": "multi-04",
@@ -1035,7 +1035,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 5726
+      "totalMs": 5361
     },
     {
       "caseId": "multi-05",
@@ -1056,7 +1056,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 5728
+      "totalMs": 6509
     },
     {
       "caseId": "multi-06",
@@ -1077,7 +1077,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 6138
+      "totalMs": 6143
     },
     {
       "caseId": "multi-07",
@@ -1098,7 +1098,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4089
+      "totalMs": 3682
     },
     {
       "caseId": "multi-08",
@@ -1119,7 +1119,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3680
+      "totalMs": 4095
     },
     {
       "caseId": "multi-09",
@@ -1140,7 +1140,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 6139
+      "totalMs": 5735
     },
     {
       "caseId": "multi-10",
@@ -1161,7 +1161,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4939
+      "totalMs": 7398
     }
   ]
 }

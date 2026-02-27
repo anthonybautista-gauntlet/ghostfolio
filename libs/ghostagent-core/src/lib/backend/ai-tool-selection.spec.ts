@@ -99,4 +99,13 @@ describe('ghostagent core tool selection', () => {
     expect(decision.intents.holdings).toBe(true);
     expect(decision.tools).toEqual(['portfolio_holdings']);
   });
+
+  it('routes hold phrasing quantity question to holdings tool', () => {
+    const decision = routeMessageToTools({
+      message: 'How much xrp do I hold?'
+    });
+
+    expect(decision.intents.holdings).toBe(true);
+    expect(decision.tools).toEqual(['portfolio_holdings']);
+  });
 });

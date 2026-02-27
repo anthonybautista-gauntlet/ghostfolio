@@ -34,6 +34,14 @@ interface ChatMessage {
   verification?: unknown;
 }
 
+interface PersistedFeedback {
+  assistantReply: string;
+  comment?: string;
+  id: string;
+  query: string;
+  rating: 'down' | 'up';
+}
+
 @Component({
   host: { class: 'page' },
   imports: [
@@ -50,6 +58,7 @@ interface ChatMessage {
   templateUrl: './ghostagent-chat.component.html'
 })
 export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
+  private static readonly SESSION_STORAGE_KEY = 'ghostagent.sessionId';
   private hasRestoredSession = false;
   private readonly maxRestoreAttempts = 5;
   private restoreAttempts = 0;
@@ -122,6 +131,7 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
           verification
         }) => {
           this.sessionId = sessionId;
+          this.persistSessionId({ sessionId });
           this.messages.push({
             content: assistantMessage,
             disclaimer,
@@ -156,6 +166,7 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
     this.messages = [];
     this.prompt = '';
     this.sessionId = undefined;
+    this.persistSessionId({ sessionId: undefined });
     this.changeDetectorRef.markForCheck();
   }
 
@@ -238,7 +249,15 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
           message.feedbackSubmitting = false;
           this.changeDetectorRef.markForCheck();
         },
-        error: () => {
+        error: (error: unknown) => {
+          if (error instanceof HttpErrorResponse && error.status === 409) {
+            message.feedbackSubmitted = true;
+            message.feedbackSubmitting = false;
+            message.feedbackError = undefined;
+            this.changeDetectorRef.markForCheck();
+            return;
+          }
+
           message.feedbackError =
             'Unable to submit feedback right now. Please try again.';
           message.feedbackSubmitting = false;
@@ -247,12 +266,26 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
       });
   }
 
+  public onFeedbackKeydown({
+    event,
+    index
+  }: {
+    event: KeyboardEvent;
+    index: number;
+  }) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.submitFeedback({ index });
+    }
+  }
+
   private restoreMostRecentSession() {
     this.hasRestoredSession = true;
     this.restoreAttempts += 1;
+    const persistedSessionId = this.getPersistedSessionId();
 
     this.dataService
-      .getAiChatSession()
+      .getAiChatSession({ sessionId: persistedSessionId })
       .pipe(takeUntil(this.unsubscribeSubject))
       .subscribe({
         next: ({ messages, sessionId }) => {
@@ -261,7 +294,11 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
             role
           }));
           this.sessionId = sessionId;
+          this.persistSessionId({ sessionId });
           this.restoreAttempts = 0;
+          if (sessionId) {
+            this.hydrateFeedbackForSession({ sessionId });
+          }
           this.scrollMessagesToBottom();
           this.changeDetectorRef.markForCheck();
         },
@@ -280,6 +317,7 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
 
           this.restoreAttempts = 0;
           this.sessionId = undefined;
+          this.persistSessionId({ sessionId: undefined });
           this.messages = [];
           this.changeDetectorRef.markForCheck();
         }
@@ -334,5 +372,82 @@ export class GfGhostAgentChatComponent implements OnDestroy, OnInit {
         container.scrollTop = container.scrollHeight;
       }
     }, 0);
+  }
+
+  private getPersistedSessionId() {
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+
+    return (
+      window.localStorage.getItem(
+        GfGhostAgentChatComponent.SESSION_STORAGE_KEY
+      ) ?? undefined
+    );
+  }
+
+  private persistSessionId({ sessionId }: { sessionId: string | undefined }) {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    if (sessionId) {
+      window.localStorage.setItem(
+        GfGhostAgentChatComponent.SESSION_STORAGE_KEY,
+        sessionId
+      );
+      return;
+    }
+
+    window.localStorage.removeItem(
+      GfGhostAgentChatComponent.SESSION_STORAGE_KEY
+    );
+  }
+
+  private hydrateFeedbackForSession({ sessionId }: { sessionId: string }) {
+    this.dataService
+      .getAiSessionFeedback({ sessionId })
+      .pipe(takeUntil(this.unsubscribeSubject))
+      .subscribe({
+        next: ({ feedback }) => {
+          this.applySubmittedFeedbackMarkers({ feedback });
+          this.changeDetectorRef.markForCheck();
+        },
+        error: () => {
+          this.changeDetectorRef.markForCheck();
+        }
+      });
+  }
+
+  private applySubmittedFeedbackMarkers({
+    feedback
+  }: {
+    feedback: PersistedFeedback[];
+  }) {
+    const feedbackByAssistantReply = new Map<string, PersistedFeedback[]>();
+
+    for (const item of feedback) {
+      const bucket = feedbackByAssistantReply.get(item.assistantReply) ?? [];
+      bucket.push(item);
+      feedbackByAssistantReply.set(item.assistantReply, bucket);
+    }
+
+    for (const message of this.messages) {
+      if (message.role !== 'assistant') {
+        continue;
+      }
+
+      const bucket = feedbackByAssistantReply.get(message.content);
+      const matchedFeedback = bucket?.shift();
+      if (!matchedFeedback) {
+        continue;
+      }
+
+      message.feedbackSubmitted = true;
+      message.feedbackRating = matchedFeedback.rating;
+      message.feedbackComment = matchedFeedback.comment;
+      message.feedbackError = undefined;
+      message.feedbackSubmitting = false;
+    }
   }
 }

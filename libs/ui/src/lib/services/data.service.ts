@@ -692,8 +692,16 @@ export class DataService {
     });
   }
 
-  public getAiChatSession() {
-    return this.http.get<AiChatSessionResponse>('/api/v1/ai/chat/session');
+  public getAiChatSession({ sessionId }: { sessionId?: string } = {}) {
+    let params = new HttpParams();
+
+    if (sessionId) {
+      params = params.append('sessionId', sessionId);
+    }
+
+    return this.http.get<AiChatSessionResponse>('/api/v1/ai/chat/session', {
+      params
+    });
   }
 
   public getAiModelPreference() {
@@ -738,6 +746,20 @@ export class DataService {
         verification
       }
     );
+  }
+
+  public getAiSessionFeedback({ sessionId }: { sessionId: string }) {
+    const params = new HttpParams().append('sessionId', sessionId);
+
+    return this.http.get<{
+      feedback: {
+        assistantReply: string;
+        comment?: string;
+        id: string;
+        query: string;
+        rating: 'down' | 'up';
+      }[];
+    }>('/api/v1/ai/feedback/session', { params });
   }
 
   public fetchAiAdminFeedback({

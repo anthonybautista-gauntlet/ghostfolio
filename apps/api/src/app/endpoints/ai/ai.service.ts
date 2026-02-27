@@ -659,6 +659,22 @@ export class AiService {
     verification?: unknown;
   }) {
     const aiFeedbackDelegate = this.getAiFeedbackDelegate();
+    const existingRecord = (await aiFeedbackDelegate.findFirst({
+      where: {
+        assistantReply,
+        query,
+        sessionId,
+        userId
+      }
+    })) as AiFeedbackRecord | null;
+
+    if (existingRecord) {
+      throw new HttpException(
+        'Feedback has already been submitted for this response.',
+        StatusCodes.CONFLICT
+      );
+    }
+
     const createdRecord = (await aiFeedbackDelegate.create({
       data: {
         assistantReply,
@@ -680,6 +696,35 @@ export class AiService {
     return {
       createdAt: createdRecord.createdAt.toISOString(),
       id: createdRecord.id
+    };
+  }
+
+  public async getFeedbackForSession({
+    sessionId,
+    userId
+  }: {
+    sessionId: string;
+    userId: string;
+  }) {
+    const aiFeedbackDelegate = this.getAiFeedbackDelegate();
+    const feedback = (await aiFeedbackDelegate.findMany({
+      orderBy: {
+        createdAt: 'asc'
+      },
+      where: {
+        sessionId,
+        userId
+      }
+    })) as AiFeedbackRecord[];
+
+    return {
+      feedback: feedback.map((item) => ({
+        assistantReply: item.assistantReply,
+        comment: item.comment ?? undefined,
+        id: item.id,
+        query: item.query,
+        rating: item.rating as 'down' | 'up'
+      }))
     };
   }
 
@@ -1207,7 +1252,8 @@ export class AiService {
       /\bhistory\s+(?:for|of)\s+([a-z0-9.-]{2,20})\b/i,
       /\b(?:holding|holdings|position|positions).{0,40}?\b(?:for|of|in)\s+([a-z0-9.-]{2,20})\b/i,
       /\bhow\s+much\s+([a-z0-9.-]{2,20})\s+do\s+i\s+(?:own|have)\b/i,
-      /\bdo\s+i\s+own\s+(?:any\s+)?([a-z0-9.-]{2,20})\b/i,
+      /\bhow\s+much\s+([a-z0-9.-]{2,20})\s+do\s+i\s+hold\b/i,
+      /\bdo\s+i\s+(?:own|hold)\s+(?:any\s+)?([a-z0-9.-]{2,20})\b/i,
       /\bbalance\s+(?:for|of)\s+([a-z0-9.-]{2,20})\b/i,
       /\b([a-z0-9.-]{2,20})\s+balance\b/i
     ];
@@ -1892,15 +1938,25 @@ export class AiService {
   }
 
   private getAiFeedbackDelegate() {
-    return (
+    const delegate = (
       this.prismaService as unknown as {
-        aiFeedback: {
+        aiFeedback?: {
           count: (args?: unknown) => Promise<number>;
           create: (args: unknown) => Promise<unknown>;
+          findFirst: (args: unknown) => Promise<unknown>;
           findMany: (args: unknown) => Promise<unknown[]>;
         };
       }
     ).aiFeedback;
+
+    if (!delegate) {
+      const message =
+        'AI feedback persistence is not available. Run `npm run database:generate-typings` and restart the API service.';
+      AiService.logger.error(message);
+      throw new HttpException(message, StatusCodes.SERVICE_UNAVAILABLE);
+    }
+
+    return delegate;
   }
 
   private logStructuredStage({

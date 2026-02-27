@@ -92,7 +92,23 @@ export class AiController {
   @Get('chat/session')
   @HasPermission(permissions.accessAssistant)
   @UseGuards(AuthGuard('jwt'), HasPermissionGuard)
-  public async getSession(): Promise<AiChatSessionResponse> {
+  public async getSession(
+    @Query('sessionId') sessionId?: string
+  ): Promise<AiChatSessionResponse> {
+    if (sessionId) {
+      const messages = await this.sessionStore.getMessages({
+        sessionId,
+        userId: this.request.user.id
+      });
+
+      if (messages.length > 0) {
+        return {
+          messages,
+          sessionId
+        };
+      }
+    }
+
     const mostRecentSession = await this.sessionStore.getMostRecentSession({
       userId: this.request.user.id
     });
@@ -150,6 +166,22 @@ export class AiController {
       toolInvocations,
       userId: this.request.user.id,
       verification
+    });
+  }
+
+  @Get('feedback/session')
+  @HasPermission(permissions.accessAssistant)
+  @UseGuards(AuthGuard('jwt'), HasPermissionGuard)
+  public async getSessionFeedback(@Query('sessionId') sessionId?: string) {
+    if (!sessionId) {
+      return {
+        feedback: []
+      };
+    }
+
+    return this.aiService.getFeedbackForSession({
+      sessionId,
+      userId: this.request.user.id
     });
   }
 

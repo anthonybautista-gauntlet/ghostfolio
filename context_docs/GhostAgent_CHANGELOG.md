@@ -2,6 +2,22 @@
 
 All notable changes to the embedded Ghost Agent implementation are documented here.
 
+## 2026-02-23 (follow-up)
+
+### Changed
+
+- Session restore API now supports explicit session targeting:
+  - `GET /api/v1/ai/chat/session?sessionId=<id>`
+  - falls back to most recent session when `sessionId` is missing or not found.
+- Ghost Agent UI now persists current `sessionId` in browser storage and uses it during restore to prevent loading an unrelated older thread after local server restarts.
+- Feedback UX now supports keyboard submit in the downvote comment box:
+  - `Enter` submits
+  - `Shift+Enter` inserts newline
+- Feedback is now single-submit per response:
+  - duplicate submits are rejected server-side (`409`),
+  - session restore hydrates prior feedback so already-reviewed responses stay locked.
+- Holdings intent extraction now recognizes `hold` phrasing in addition to `own/have` (e.g., `How much XRP do I hold?`, `Do I hold any XRP?`).
+
 ## 2026-02-26
 
 ### Added

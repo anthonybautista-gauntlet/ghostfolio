@@ -8,27 +8,27 @@
       {
         "caseId": "golden-06",
         "category": "happy",
-        "totalMs": 7742
+        "totalMs": 8626
       },
       {
         "caseId": "golden-02",
         "category": "happy",
-        "totalMs": 5709
-      },
-      {
-        "caseId": "golden-01",
-        "category": "happy",
-        "totalMs": 4199
-      },
-      {
-        "caseId": "golden-07",
-        "category": "happy",
-        "totalMs": 4088
+        "totalMs": 4535
       },
       {
         "caseId": "golden-09",
         "category": "happy",
-        "totalMs": 4059
+        "totalMs": 4497
+      },
+      {
+        "caseId": "golden-01",
+        "category": "happy",
+        "totalMs": 4297
+      },
+      {
+        "caseId": "golden-07",
+        "category": "happy",
+        "totalMs": 4058
       }
     ],
     "summaryByCheck": {
@@ -113,7 +113,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4199
+      "totalMs": 4297
     },
     {
       "caseId": "golden-02",
@@ -134,7 +134,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 5709
+      "totalMs": 4535
     },
     {
       "caseId": "golden-03",
@@ -155,7 +155,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 11
+      "totalMs": 12
     },
     {
       "caseId": "golden-04",
@@ -197,7 +197,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3682
+      "totalMs": 3187
     },
     {
       "caseId": "golden-06",
@@ -218,7 +218,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 7742
+      "totalMs": 8626
     },
     {
       "caseId": "golden-07",
@@ -239,7 +239,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4088
+      "totalMs": 4058
     },
     {
       "caseId": "golden-08",
@@ -260,7 +260,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 2482
+      "totalMs": 2855
     },
     {
       "caseId": "golden-09",
@@ -281,7 +281,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 4059
+      "totalMs": 4497
     },
     {
       "caseId": "golden-10",

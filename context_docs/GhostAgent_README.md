@@ -12,7 +12,9 @@ Install path:
 
 - Backend host: NestJS API in Ghostfolio.
 - API entrypoint: `POST /api/v1/ai/chat`.
-- Session restore endpoint: `GET /api/v1/ai/chat/session` (most recent session for authenticated user).
+- Session restore endpoint: `GET /api/v1/ai/chat/session`.
+  - Optional query param: `sessionId` to restore a specific session when the client has a persisted session pointer.
+  - Fallback behavior (no `sessionId` or not found): returns most recent session for authenticated user.
 - UI host: Ghost Agent page in Ghostfolio client (`/ghost-agent`, with redirect from `/agentforge`).
 - Session memory: Postgres-backed (`PrismaSessionStoreService`) with rolling 20-message cap per session.
 - Runtime orchestration path: LangChain.js model + LangChain tools (routing/tool execution/verification spans).
@@ -142,6 +144,7 @@ Routing is intent-based (not default-always-portfolio):
   - `market_data` first tries to resolve quote targets from the user's own transactions via `SEARCH_QUERY` (faster, less payload).
   - If no transaction-derived symbol is found, it falls back to top holdings quote lookup.
   - For direct quote phrasing, the API can return a deterministic short response path to avoid an extra full LLM synthesis step.
+- Holdings intent phrase coverage includes ownership and hold variants (e.g., `How much XRP do I own?`, `How much XRP do I hold?`, `Do I hold any XRP?`).
 
 Ambiguity behavior:
 
@@ -210,6 +213,18 @@ This is applied in `runPortfolioAnalysis()` when calling `portfolioService.getPe
 
 - `sessionId` (optional when no session exists)
 - `messages` (`role`, `content`, `createdAt`)
+
+Feedback UX:
+
+- feedback controls render per assistant response.
+- thumbs-up auto-submits.
+- for thumbs-down, `Enter` submits and `Shift+Enter` inserts newline in the comment box.
+- feedback is one-time per response (duplicate submission is blocked server-side and previously submitted feedback is rehydrated on session restore).
+
+Feedback API:
+
+- `POST /api/v1/ai/feedback` returns `409` if feedback already exists for the same user/session/query/assistant response.
+- `GET /api/v1/ai/feedback/session?sessionId=<id>` returns existing feedback for session-level UI hydration.
 
 Model preference endpoints:
 

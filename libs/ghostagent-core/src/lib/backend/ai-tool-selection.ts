@@ -84,7 +84,11 @@ function hasPortfolioHoldingsIntent({
   const asksForOwnershipQuantity =
     /\bhow\s+much\s+[a-z0-9.-]{2,20}\s+do\s+i\s+(?:own|have)\b/i.test(
       loweredMessage
-    ) || /\bdo\s+i\s+own\s+(?:any\s+)?[a-z0-9.-]{2,20}\b/i.test(loweredMessage);
+    ) ||
+    /\bhow\s+much\s+[a-z0-9.-]{2,20}\s+do\s+i\s+hold\b/i.test(loweredMessage) ||
+    /\bdo\s+i\s+(?:own|hold)\s+(?:any\s+)?[a-z0-9.-]{2,20}\b/i.test(
+      loweredMessage
+    );
   const asksForAssetBalance = isAssetSpecificBalanceQuestion({
     loweredMessage
   });

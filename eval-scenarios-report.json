@@ -1,6 +1,6 @@
 {
   "report": {
-    "datasetPath": "/tmp/ghostagent-scenarios-KZLloo/dataset.json",
+    "datasetPath": "/tmp/ghostagent-scenarios-OGAeDr/dataset.json",
     "passRate": 0.8333333333333334,
     "passRateThreshold": 0.8,
     "passed": 5,
@@ -8,22 +8,22 @@
       {
         "caseId": "sc-portfolio-001",
         "category": "happy",
-        "totalMs": 5730
+        "totalMs": 6148
       },
       {
         "caseId": "sc-transactions-001",
         "category": "happy",
-        "totalMs": 3694
+        "totalMs": 3662
       },
       {
         "caseId": "sc-multi-001",
         "category": "multi_step",
-        "totalMs": 3338
+        "totalMs": 3272
       },
       {
         "caseId": "sc-edge-001",
         "category": "edge",
-        "totalMs": 2957
+        "totalMs": 2857
       },
       {
         "caseId": "sc-market-001",
@@ -129,7 +129,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 5730
+      "totalMs": 6148
     },
     {
       "caseId": "sc-market-001",
@@ -171,7 +171,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3694
+      "totalMs": 3662
     },
     {
       "caseId": "sc-multi-001",
@@ -192,7 +192,7 @@
       },
       "failedChecks": [],
       "pass": true,
-      "totalMs": 3338
+      "totalMs": 3272
     },
     {
       "caseId": "sc-edge-001",
@@ -213,7 +213,7 @@
       },
       "failedChecks": ["expected_tools", "output_must_contain_any"],
       "pass": false,
-      "totalMs": 2957
+      "totalMs": 2857
     },
     {
       "caseId": "sc-edge-002",

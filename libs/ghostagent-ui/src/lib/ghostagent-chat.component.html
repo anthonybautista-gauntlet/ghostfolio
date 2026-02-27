@@ -93,6 +93,12 @@
                   matInput
                   rows="2"
                   [(ngModel)]="message.feedbackComment"
+                  (keydown)="
+                    onFeedbackKeydown({
+                      event: $event,
+                      index: $index
+                    })
+                  "
                 ></textarea>
               </mat-form-field>
               <div class="d-flex justify-content-end">
