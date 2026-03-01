@@ -485,6 +485,10 @@ export class AiService {
       toolResults,
       userCurrency
     });
+    const transactionCountFastPath = this.tryBuildTransactionCountFastPath({
+      message: effectiveMessage,
+      toolResults
+    });
     const biggestHoldingFastPath = this.tryBuildBiggestHoldingFastPathResponse({
       factRegistry,
       message: effectiveMessage,
@@ -499,12 +503,18 @@ export class AiService {
         }
       | undefined;
     let llmMs = 0;
-    let synthesisPath: 'biggest_holding_fast_path' | 'llm' | 'quote_fast_path' =
-      'llm';
+    let synthesisPath:
+      | 'biggest_holding_fast_path'
+      | 'llm'
+      | 'quote_fast_path'
+      | 'transaction_count_fast_path' = 'llm';
 
     if (biggestHoldingFastPath) {
       llmResult = biggestHoldingFastPath;
       synthesisPath = 'biggest_holding_fast_path';
+    } else if (transactionCountFastPath) {
+      llmResult = transactionCountFastPath;
+      synthesisPath = 'transaction_count_fast_path';
     } else if (quoteFastPath) {
       llmResult = quoteFastPath;
       synthesisPath = 'quote_fast_path';
@@ -1368,9 +1378,12 @@ export class AiService {
 
     return {
       count,
+      dataSource: dataSourceFilter ?? undefined,
       searchTerm: searchTerm ?? undefined,
+      transactionTypes: transactionTypes ?? undefined,
       items: activities.map((activity) => ({
         currency: activity.currency,
+        dataSource: activity.SymbolProfile.dataSource,
         date: activity.date,
         fee: activity.fee,
         quantity: activity.quantity,
@@ -1448,6 +1461,67 @@ export class AiService {
       if (candidate && !disallowedTerms.has(candidate)) {
         return candidate;
       }
+    }
+
+    return undefined;
+  }
+
+  private isTradeCountQuestion({ message }: { message: string }) {
+    const loweredMessage = message.toLowerCase();
+    return (
+      /\bhow\s+many\b/.test(loweredMessage) &&
+      /\btrade[s]?\b/.test(loweredMessage)
+    );
+  }
+
+  private tryBuildTransactionCountFastPath({
+    message,
+    toolResults
+  }: {
+    message: string;
+    toolResults: Record<string, unknown>;
+  }):
+    | { citedFigures: AiCitedFigure[]; confidence: 'high'; message: string }
+    | undefined {
+    if (!this.isTradeCountQuestion({ message })) {
+      return undefined;
+    }
+
+    const transactionHistory = toolResults.transaction_history as
+      | {
+          count?: unknown;
+          dataSource?: unknown;
+          transactionTypes?: unknown;
+        }
+      | undefined;
+
+    if (typeof transactionHistory?.count !== 'number') {
+      return undefined;
+    }
+
+    const count = transactionHistory.count;
+    const dataSource =
+      typeof transactionHistory.dataSource === 'string'
+        ? transactionHistory.dataSource
+        : undefined;
+    const isTradeScoped = Array.isArray(transactionHistory.transactionTypes);
+
+    if (dataSource && isTradeScoped) {
+      return {
+        citedFigures: [],
+        confidence: 'high',
+        message: `You have made ${count.toLocaleString()} ${
+          dataSource[0] + dataSource.slice(1).toLowerCase()
+        } trades.`
+      };
+    }
+
+    if (isTradeScoped) {
+      return {
+        citedFigures: [],
+        confidence: 'high',
+        message: `You have made ${count.toLocaleString()} trades.`
+      };
     }
 
     return undefined;
