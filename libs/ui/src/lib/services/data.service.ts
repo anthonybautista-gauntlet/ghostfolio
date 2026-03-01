@@ -293,6 +293,30 @@ export class DataService {
     );
   }
 
+  public postHyperliquidImport({
+    dryRun = false,
+    from,
+    includeLedger = true,
+    to,
+    walletAddress
+  }: {
+    dryRun?: boolean;
+    from?: string;
+    includeLedger?: boolean;
+    to?: string;
+    walletAddress: string;
+  }) {
+    return this.http.post<ImportResponse>(
+      `/api/v1/import/hyperliquid?dryRun=${dryRun}`,
+      {
+        from,
+        includeLedger,
+        to,
+        walletAddress
+      }
+    );
+  }
+
   public fetchExchangeRateForDate({
     date,
     symbol

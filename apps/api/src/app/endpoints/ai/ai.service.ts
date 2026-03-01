@@ -26,7 +26,7 @@ import { GhostAgentVerificationService as VerificationService } from '@ghostfoli
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { ChatOpenAI } from '@langchain/openai';
 import { HttpException, Injectable, Logger } from '@nestjs/common';
-import { DataSource, Prisma } from '@prisma/client';
+import { DataSource, Prisma, Type } from '@prisma/client';
 import { StatusCodes, getReasonPhrase } from 'http-status-codes';
 import { randomUUID } from 'node:crypto';
 import type { ColumnDescriptor } from 'tablemark';
@@ -1342,10 +1342,15 @@ export class AiService {
     userId: string;
   }) {
     const searchTerm = this.extractAssetSearchTerm({ message });
+    const dataSourceFilter = this.extractDataSourceFromMessage({ message });
+    const transactionTypes = this.getTransactionTypesForMessage({ message });
     const combinedFilters = [...(filters ?? [])];
 
     if (searchTerm) {
       combinedFilters.push({ id: searchTerm, type: 'SEARCH_QUERY' });
+    }
+    if (dataSourceFilter) {
+      combinedFilters.push({ id: dataSourceFilter, type: 'DATA_SOURCE' });
     }
 
     const { activities, count } = await this.orderService.getOrders({
@@ -1355,6 +1360,7 @@ export class AiService {
       sortColumn: 'date',
       sortDirection: 'desc',
       startDate,
+      types: transactionTypes,
       userCurrency,
       userId,
       withExcludedAccountsAndActivities: true
@@ -1447,6 +1453,49 @@ export class AiService {
     return undefined;
   }
 
+  private extractDataSourceFromMessage({
+    message
+  }: {
+    message: string;
+  }): DataSource | undefined {
+    const loweredMessage = message.toLowerCase();
+    const aliases: { dataSource: DataSource; terms: string[] }[] = [
+      {
+        dataSource: DataSource.HYPERLIQUID,
+        terms: ['hyperliquid', 'hyper liquid']
+      }
+    ];
+
+    for (const { dataSource, terms } of aliases) {
+      if (terms.some((term) => loweredMessage.includes(term))) {
+        return dataSource;
+      }
+    }
+
+    return undefined;
+  }
+
+  private getTransactionTypesForMessage({
+    message
+  }: {
+    message: string;
+  }): Type[] | undefined {
+    const loweredMessage = message.toLowerCase();
+    const asksForTrades =
+      loweredMessage.includes(' trade ') ||
+      loweredMessage.includes(' trades ') ||
+      loweredMessage.includes('trade?') ||
+      loweredMessage.includes('trades?') ||
+      loweredMessage.startsWith('trade ') ||
+      loweredMessage.startsWith('trades ');
+
+    if (asksForTrades) {
+      return [Type.BUY, Type.SELL];
+    }
+
+    return undefined;
+  }
+
   private extractQuoteSelectionFromHistory({
     history,
     message
@@ -1484,7 +1533,7 @@ export class AiService {
       return selectedFromOptions;
     }
 
-    return /^[a-z0-9.-]{1,30}$/i.test(normalizedSelection)
+    return /^[a-z0-9./-]{1,30}$/i.test(normalizedSelection)
       ? normalizedSelection
       : undefined;
   }
@@ -1494,7 +1543,7 @@ export class AiService {
       .trim()
       .replace(/^["'`]|["'`]$/g, '')
       .replace(/\s+\([^)]+\)\s*$/g, '')
-      .replace(/^[^a-z0-9.-]+|[^a-z0-9.-]+$/gi, '')
+      .replace(/^[^a-z0-9./-]+|[^a-z0-9./-]+$/gi, '')
       .trim();
   }
 
@@ -1505,14 +1554,14 @@ export class AiService {
   }): string | undefined {
     const loweredMessage = message.toLowerCase();
     const directPatternMatch =
-      /(?:price|quote)\s+(?:of|for)\s+([a-z0-9.-]+)/.exec(loweredMessage);
+      /(?:price|quote)\s+(?:of|for)\s+([a-z0-9./-]+)/.exec(loweredMessage);
 
     if (directPatternMatch?.[1]) {
       return directPatternMatch[1];
     }
 
     const currentPriceMatch =
-      /current\s+price\s+(?:of|for)?\s*([a-z0-9.-]+)/.exec(loweredMessage);
+      /current\s+price\s+(?:of|for)?\s*([a-z0-9./-]+)/.exec(loweredMessage);
 
     if (currentPriceMatch?.[1]) {
       return currentPriceMatch[1];

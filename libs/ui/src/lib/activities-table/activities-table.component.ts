@@ -121,6 +121,7 @@ export class GfActivitiesTableComponent
   @Output() export = new EventEmitter<void>();
   @Output() exportDrafts = new EventEmitter<string[]>();
   @Output() import = new EventEmitter<void>();
+  @Output() importHyperliquid = new EventEmitter<void>();
   @Output() importDividends = new EventEmitter<AssetProfileIdentifier>();
   @Output() pageChanged = new EventEmitter<PageEvent>();
   @Output() selectedActivities = new EventEmitter<Activity[]>();
@@ -315,6 +316,10 @@ export class GfActivitiesTableComponent
 
   public onImport() {
     this.import.emit();
+  }
+
+  public onImportHyperliquid() {
+    this.importHyperliquid.emit();
   }
 
   public onImportDividends() {

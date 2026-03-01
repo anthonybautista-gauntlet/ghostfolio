@@ -19,6 +19,12 @@
       </button>
     }
     <mat-menu #activitiesMenu="matMenu" class="no-max-width" xPosition="before">
+      <button mat-menu-item (click)="onImportHyperliquid()">
+        <span class="align-items-center d-flex">
+          <ion-icon class="mr-2" name="cloud-upload-outline" />
+          <span><ng-container i18n>Import Hyperliquid</ng-container>...</span>
+        </span>
+      </button>
       <button
         mat-menu-item
         [disabled]="dataSource()?.data.length === 0"
@@ -381,6 +387,20 @@
                 <ion-icon class="mr-2" name="cloud-upload-outline" />
                 <span
                   ><ng-container i18n>Import Activities</ng-container>...</span
+                >
+              </span>
+            </button>
+          }
+          @if (hasPermissionToCreateActivity) {
+            <button
+              class="align-items-center d-flex"
+              mat-menu-item
+              (click)="onImportHyperliquid()"
+            >
+              <span class="align-items-center d-flex">
+                <ion-icon class="mr-2" name="cloud-upload-outline" />
+                <span
+                  ><ng-container i18n>Import Hyperliquid</ng-container>...</span
                 >
               </span>
             </button>

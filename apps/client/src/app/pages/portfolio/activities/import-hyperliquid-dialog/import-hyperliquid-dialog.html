@@ -1,0 +1,91 @@
+<gf-dialog-header
+  [deviceType]="data.deviceType"
+  [title]="dialogTitle"
+  (closeButtonClicked)="onCancel()"
+/>
+
+<div class="flex-grow-1" mat-dialog-content>
+  <form class="pt-2" [formGroup]="form" (ngSubmit)="onImport()">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label i18n>Wallet Address</mat-label>
+      <input
+        autocomplete="off"
+        formControlName="walletAddress"
+        matInput
+        placeholder="0x..."
+      />
+      @if (form.get('walletAddress')?.hasError('required')) {
+        <mat-error i18n>Wallet address is required.</mat-error>
+      }
+      @if (form.get('walletAddress')?.hasError('pattern')) {
+        <mat-error i18n>Please enter a valid EVM wallet address.</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label i18n>From date (optional)</mat-label>
+          <input
+            formControlName="fromDate"
+            matInput
+            [matDatepicker]="fromPicker"
+          />
+          <mat-datepicker-toggle matIconSuffix [for]="fromPicker" />
+          <mat-datepicker #fromPicker />
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label i18n>From time</mat-label>
+          <input formControlName="fromTime" matInput type="time" />
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label i18n>To date (optional)</mat-label>
+          <input formControlName="toDate" matInput [matDatepicker]="toPicker" />
+          <mat-datepicker-toggle matIconSuffix [for]="toPicker" />
+          <mat-datepicker #toPicker />
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label i18n>To time</mat-label>
+          <input formControlName="toTime" matInput type="time" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-checkbox class="mb-2" formControlName="includeLedger" i18n>
+      Include ledger updates
+    </mat-checkbox>
+
+    <p class="mb-0 text-muted">
+      <small i18n>
+        This imports Hyperliquid fills, funding, and (optionally) supported
+        ledger updates into activities.
+      </small>
+    </p>
+  </form>
+
+  <div class="actions mt-3">
+    <button mat-button [disabled]="isLoading" (click)="onCancel()">
+      <ng-container i18n>Cancel</ng-container>
+    </button>
+    <button
+      class="ml-1"
+      color="primary"
+      mat-flat-button
+      [disabled]="form.invalid || isLoading"
+      (click)="onImport()"
+    >
+      <ng-container i18n>Import</ng-container>
+    </button>
+  </div>
+</div>
+
+<gf-dialog-footer
+  [deviceType]="data.deviceType"
+  (closeButtonClicked)="onCancel()"
+/>

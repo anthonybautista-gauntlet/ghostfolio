@@ -33,6 +33,7 @@ import { GfCreateOrUpdateActivityDialogComponent } from './create-or-update-acti
 import { CreateOrUpdateActivityDialogParams } from './create-or-update-activity-dialog/interfaces/interfaces';
 import { GfImportActivitiesDialogComponent } from './import-activities-dialog/import-activities-dialog.component';
 import { ImportActivitiesDialogParams } from './import-activities-dialog/interfaces/interfaces';
+import { GfImportHyperliquidDialogComponent } from './import-hyperliquid-dialog/import-hyperliquid-dialog.component';
 
 @Component({
   host: { class: 'has-fab' },
@@ -297,6 +298,30 @@ export class GfActivitiesPageComponent implements OnDestroy, OnInit {
           .subscribe();
 
         this.fetchActivities();
+      });
+  }
+
+  public onImportHyperliquid() {
+    const dialogRef = this.dialog.open(GfImportHyperliquidDialogComponent, {
+      data: {
+        deviceType: this.deviceType
+      },
+      height: this.deviceType === 'mobile' ? '98vh' : undefined,
+      width: this.deviceType === 'mobile' ? '100vw' : '36rem'
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.unsubscribeSubject))
+      .subscribe((didImport: boolean) => {
+        if (didImport) {
+          this.userService
+            .get(true)
+            .pipe(takeUntil(this.unsubscribeSubject))
+            .subscribe();
+
+          this.fetchActivities();
+        }
       });
   }
 
