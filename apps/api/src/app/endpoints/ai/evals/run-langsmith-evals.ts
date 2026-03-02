@@ -1,20 +1,29 @@
-import { resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { spawn } from 'node:child_process';
 
 async function run() {
-  const evalRunnerModuleUrl = pathToFileURL(
-    resolve(
-      process.cwd(),
-      'libs/ghostagent-evals/src/lib/run-ghostagent-evals.ts'
-    )
-  ).href;
-  const evalRunner = (await import(evalRunnerModuleUrl)) as {
-    default?: () => Promise<void>;
-  };
+  await new Promise<void>((resolve, reject) => {
+    const child = spawn(
+      process.execPath,
+      [
+        '--input-type=module',
+        '-e',
+        "import('@ghost_agent/evals/runners/run-ghostagent-evals')"
+      ],
+      {
+        stdio: 'inherit'
+      }
+    );
 
-  if (typeof evalRunner.default === 'function') {
-    await evalRunner.default();
-  }
+    child.on('error', reject);
+    child.on('exit', (code) => {
+      if (code === 0) {
+        resolve();
+        return;
+      }
+
+      reject(new Error(`Eval runner exited with code ${code ?? 'unknown'}`));
+    });
+  });
 }
 
 run().catch((error: unknown) => {

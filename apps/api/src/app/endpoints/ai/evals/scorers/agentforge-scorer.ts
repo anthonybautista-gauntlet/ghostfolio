@@ -1,2 +1,2 @@
-export { scoreCase } from '@ghostfolio/ghostagent-evals/scorers/ghostagent-scorer';
-export type { EvalScore } from '@ghostfolio/ghostagent-evals/scorers/ghostagent-scorer';
+export { scoreCase } from '@ghost_agent/evals';
+export type { EvalScore } from '@ghost_agent/evals';

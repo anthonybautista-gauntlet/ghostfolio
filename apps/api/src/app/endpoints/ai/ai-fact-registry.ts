@@ -1,2 +1,2 @@
-export { buildAiFactRegistry } from '@ghostfolio/ghostagent/backend/ai-fact-registry';
-export type { AiFactRegistry } from '@ghostfolio/ghostagent/backend/ai-fact-registry';
+export { buildAiFactRegistry } from '@ghost_agent/core';
+export type { AiFactRegistry } from '@ghost_agent/core';

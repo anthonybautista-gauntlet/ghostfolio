@@ -1,1 +1,1 @@
-export { GhostAgentVerificationService as VerificationService } from '@ghostfolio/ghostagent/backend/verification.service';
+export { GhostAgentVerificationService as VerificationService } from '@ghost_agent/core';

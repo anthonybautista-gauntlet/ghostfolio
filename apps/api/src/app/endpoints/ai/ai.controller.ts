@@ -8,8 +8,8 @@ import {
 } from '@ghostfolio/common/interfaces';
 import { hasRole, permissions } from '@ghostfolio/common/permissions';
 import type { AiPromptMode, RequestWithUser } from '@ghostfolio/common/types';
-import { resolveSessionRestoreResult } from '@ghostfolio/ghostagent/backend/session-restore-policy';
 
+import { resolveSessionRestoreResult } from '@ghost_agent/core';
 import {
   Body,
   Controller,

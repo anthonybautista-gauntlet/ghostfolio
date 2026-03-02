@@ -1,6 +1,6 @@
 {
   "consistencyRate": 1,
-  "fixturePath": "/home/xrpant/Desktop/projects/ghostfolio/libs/ghostagent-evals/src/lib/staged/golden-deterministic-fixtures.json",
+  "fixturePath": "/home/xrpant/Desktop/projects/ghostfolio/node_modules/@ghost_agent/evals/dist/staged/golden-deterministic-fixtures.json",
   "passRate": 1,
   "perCase": [
     {

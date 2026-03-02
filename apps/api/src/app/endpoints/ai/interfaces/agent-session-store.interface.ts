@@ -1,4 +1,1 @@
-export type {
-  AgentSessionMessage,
-  AgentSessionStore
-} from '@ghostfolio/ghostagent/contracts/agent-session-store.interface';
+export type { AgentSessionMessage, AgentSessionStore } from '@ghost_agent/core';

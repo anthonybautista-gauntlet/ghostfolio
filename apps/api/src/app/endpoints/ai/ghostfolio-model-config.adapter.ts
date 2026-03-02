@@ -1,14 +1,14 @@
 import { ConfigurationService } from '@ghostfolio/api/services/configuration/configuration.service';
+
 import {
   buildGhostAgentModelCatalog,
   resolveGhostAgentModel
-} from '@ghostfolio/ghostagent/backend/model-catalog';
+} from '@ghost_agent/core';
 import type {
   GhostAgentModelConfigAdapter,
   GhostAgentModelConfigOptions,
   GhostAgentResolvedModelConfig
-} from '@ghostfolio/ghostagent/contracts/model-config.interface';
-
+} from '@ghost_agent/core';
 import { HttpException, Injectable } from '@nestjs/common';
 import { StatusCodes } from 'http-status-codes';
 
