@@ -1,1 +1,1 @@
-export type { VerificationContract } from '@ghostfolio/ghostagent/contracts/verification-contract.interface';
+export type { VerificationContract } from '@ghost_agent/core';

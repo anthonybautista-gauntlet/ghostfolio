@@ -17,12 +17,14 @@ import type {
   DateRange,
   UserWithSettings
 } from '@ghostfolio/common/types';
-import { buildAiFactRegistry } from '@ghostfolio/ghostagent/backend/ai-fact-registry';
-import { routeMessageToTools } from '@ghostfolio/ghostagent/backend/ai-tool-selection';
-import { buildFeedbackDuplicateSelector } from '@ghostfolio/ghostagent/backend/feedback-lifecycle';
-import { resolveMarketDataCandidates } from '@ghostfolio/ghostagent/backend/market-data-candidate-selection';
-import { GhostAgentVerificationService as VerificationService } from '@ghostfolio/ghostagent/backend/verification.service';
 
+import {
+  buildAiFactRegistry,
+  buildFeedbackDuplicateSelector,
+  GhostAgentVerificationService as VerificationService,
+  resolveMarketDataCandidates,
+  routeMessageToTools
+} from '@ghost_agent/core';
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { ChatOpenAI } from '@langchain/openai';
 import { HttpException, Injectable, Logger } from '@nestjs/common';

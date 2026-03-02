@@ -1,6 +1,6 @@
 {
-  "datasetPath": "/home/xrpant/Desktop/projects/ghostfolio/libs/ghostagent-evals/src/lib/staged/golden-cases.json",
-  "generatedAt": "2026-02-27T22:50:09.852Z",
+  "datasetPath": "/home/xrpant/Desktop/projects/ghostfolio/node_modules/@ghost_agent/evals/dist/staged/golden-cases.json",
+  "generatedAt": "2026-03-02T05:03:38.690Z",
   "variants": {
     "baseline": {
       "description": "Current baseline behavior",
@@ -11,9 +11,9 @@
       },
       "passRate": 1,
       "performance": {
-        "avgMs": 3589.6,
-        "p50Ms": 3214,
-        "p95Ms": 6144
+        "avgMs": 3426,
+        "p50Ms": 3405,
+        "p95Ms": 7368
       },
       "tokenUsage": {
         "averageInputTokens": 0,
@@ -37,9 +37,9 @@
       },
       "passRate": 1,
       "performance": {
-        "avgMs": 3230.6,
-        "p50Ms": 3262,
-        "p95Ms": 4917
+        "avgMs": 3725.8,
+        "p50Ms": 3455,
+        "p95Ms": 7394
       },
       "tokenUsage": {
         "averageInputTokens": 0,
@@ -61,11 +61,11 @@
         "systemPromptVariant": "v1",
         "temperature": 0
       },
-      "passRate": 1,
+      "passRate": 0.8,
       "performance": {
-        "avgMs": 4459,
-        "p50Ms": 3269,
-        "p95Ms": 12442
+        "avgMs": 10513.4,
+        "p50Ms": 4476,
+        "p95Ms": 39365
       },
       "tokenUsage": {
         "averageInputTokens": 0,
